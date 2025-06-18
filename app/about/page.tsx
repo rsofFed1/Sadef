@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card"
 import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, TrendingUp, Shield, Star } from "lucide-react"
 
 export default function AboutPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("ar")
+  const [language, setLanguage] = useState<"en" | "ar">("en")
 
   const toggleLanguage = () => {
     setLanguage(language === "en" ? "ar" : "en")

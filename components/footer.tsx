@@ -23,12 +23,10 @@ export function Footer({ language }: FooterProps) {
         properties: "Properties",
         services: "Services",
         contact: "Contact",
-        maintenance: "Maintenance",
       },
       servicesList: {
         development: "Property Development",
         investment: "Investment Consulting",
-        maintenance: "Property Maintenance",
         legal: "Legal Support",
       },
       contactInfo: {
@@ -50,12 +48,10 @@ export function Footer({ language }: FooterProps) {
         properties: "العقارات",
         services: "الخدمات",
         contact: "اتصل بنا",
-        maintenance: "الصيانة",
       },
       servicesList: {
         development: "التطوير العقاري",
         investment: "الاستشارات الاستثمارية",
-        maintenance: "صيانة العقارات",
         legal: "الدعم القانوني",
       },
       contactInfo: {
@@ -120,7 +116,6 @@ export function Footer({ language }: FooterProps) {
             <div className="space-y-2">
               <div className="text-gray-400">{currentContent.servicesList.development}</div>
               <div className="text-gray-400">{currentContent.servicesList.investment}</div>
-              <div className="text-gray-400">{currentContent.servicesList.maintenance}</div>
               <div className="text-gray-400">{currentContent.servicesList.legal}</div>
             </div>
           </div>

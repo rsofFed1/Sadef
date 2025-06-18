@@ -14,7 +14,7 @@ import { Card } from "@/components/ui/card"
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Building2, Users, HeadphonesIcon } from "lucide-react"
 
 export default function ContactPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("ar")
+  const [language, setLanguage] = useState<"en" | "ar">("en")
   const [formData, setFormData] = useState({
     name: "",
     email: "",

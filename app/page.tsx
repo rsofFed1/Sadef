@@ -9,9 +9,14 @@ import { Badge } from "@/components/ui/badge"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Building2, MapPin, Star, TrendingUp, Shield, Award, MessageCircle, Play, ArrowRight } from "lucide-react"
+import WhatsAppButton from "@/components/WhatsAppButton"
+import InteractiveMap from "@/components/InteractiveMap"
+import FeaturedSection from "@/components/FeaturedSection"
+import MediaCenter from "@/components/MediaCenter"
+import SuccessPartners from "@/components/PartnerSlider"
 
 export default function HomePage() {
-  const [language, setLanguage] = useState<"en" | "ar">("ar")
+  const [language, setLanguage] = useState<"en" | "ar">("en")
 
   const toggleLanguage = () => {
     setLanguage(language === "en" ? "ar" : "en")
@@ -89,7 +94,7 @@ export default function HomePage() {
       startingPrice: "SAR 115,000",
       rentalYield: "Up to SAR 75,000",
       resaleValue: "Up to SAR 600,000",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 101.jpg",
       badge: "Featured",
     },
     {
@@ -101,7 +106,7 @@ export default function HomePage() {
       startingPrice: "SAR 95,000",
       rentalYield: "Up to SAR 60,000",
       resaleValue: "Up to SAR 480,000",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 052.jpg",
       badge: "New Launch",
     },
     {
@@ -113,7 +118,7 @@ export default function HomePage() {
       startingPrice: "SAR 180,000",
       rentalYield: "Up to SAR 120,000",
       resaleValue: "Up to SAR 900,000",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 085.jpg",
       badge: "Luxury",
     },
   ]
@@ -126,12 +131,14 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <Image
-            src="/placeholder.svg?height=1080&width=1920"
-            alt="Jeddah Skyline"
-            fill
-            className="object-cover"
-            priority
+          <video
+            src="/videos/VideoBanner.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="object-cover w-full h-full"
+            style={{ objectFit: 'cover' }}
           />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
@@ -156,8 +163,7 @@ export default function HomePage() {
 
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg rounded-full"
+                className="bg-[#BDA25A] hover:bg-[#A8935A] text-white px-8 py-4 text-lg rounded-full"
                 asChild
               >
                 <Link href="/about">{currentContent.hero.cta2}</Link>
@@ -327,8 +333,13 @@ export default function HomePage() {
         </div>
       </section>
 
+      <FeaturedSection />
+      <InteractiveMap />
+      <MediaCenter />
+      <SuccessPartners />
+
       {/* Why Choose Sadef */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.whyChoose.title}</h2>
@@ -393,6 +404,7 @@ export default function HomePage() {
                   WhatsApp
                 </Link>
               </Button>
+              <WhatsAppButton/>
             </div>
           </div>
         </div>

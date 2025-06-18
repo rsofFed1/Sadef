@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Filter, MapPin, Building2, Bed, Bath, Square } from "lucide-react"
 
 export default function PropertiesPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("ar")
+  const [language, setLanguage] = useState<"en" | "ar">("en")
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedType, setSelectedType] = useState("all")
   const [selectedLocation, setSelectedLocation] = useState("all")
