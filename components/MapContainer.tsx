@@ -38,9 +38,8 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
       // 2. Load the ES-module straight from UNPKG with the correct MIME-type
       //    webpack/bundlers must ignore this remote URL
       //    eslint-disable is required only if you have the lint-rule enabled
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const leaflet = await import(/* webpackIgnore: true */ "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js")
+      //    eslint-disable is required only if you have the lint-rule enabled
+      const leaflet = await import("leaflet")
 
       if (mounted) {
         L = leaflet
