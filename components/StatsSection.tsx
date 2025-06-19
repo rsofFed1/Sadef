@@ -1,4 +1,3 @@
-
 import { Content } from "@/types/content";
 import { ScrollAnimation } from "./animations/ScrollAnimation";
 
