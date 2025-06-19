@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-
+import { ScrollAnimation } from './animations/ScrollAnimation';
 interface Partner {
   id: number;
   name: string;
@@ -103,7 +103,7 @@ export default function SuccessPartners() {
         >
           {partners.map((partner) => (
             <SwiperSlide key={partner.id}>
-              <div className="flex items-center justify-center h-24 px-4">
+              <ScrollAnimation delay={0.2} direction='down' className="flex items-center justify-center h-24 px-4">
                 <div className="relative w-full h-full">
                   <Image
                     src={partner.logo}
@@ -113,7 +113,7 @@ export default function SuccessPartners() {
                     className="object-contain transition-all duration-300"
                   />
                 </div>
-              </div>
+              </ScrollAnimation>
             </SwiperSlide>
           ))}
         </Swiper>

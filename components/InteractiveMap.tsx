@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
 import { locations } from '@/app/data/locations';
+import { ScrollAnimation } from './animations/ScrollAnimation';
 
 // Dynamic import of Leaflet with no SSR
 const MapComponent = dynamic(() => import('@/components/MapContainer'), {
@@ -46,16 +47,16 @@ const InteractiveMap = () => {
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="flex flex-col md:flex-row">
                         {/* Map Container */}
-                        <div className="w-full md:w-2/3 h-[400px] md:h-[650px] relative">
+                        <ScrollAnimation delay={0.2} direction='up' className="w-full md:w-2/3 h-[400px] md:h-[650px] relative">
                             <MapComponent
                                 locations={locations}
                                 activeLocation={activeLocation}
                                 setActiveLocation={setActiveLocation}
                             />
-                        </div>
+                        </ScrollAnimation>
 
                         {/* Info Panel */}
-                        <div className="w-full md:w-1/3 bg-[#f8f4f0] p-6">
+                        <ScrollAnimation delay={0.2} direction='down' className="w-full md:w-1/3 bg-[#f8f4f0] p-6">
                             {/* Map Filters */}
                             <div className="flex flex-wrap justify-start border-b p-4 gap-2">
                                 {["All", "Riyadh", "Jeddah", "Dammam"].map((filter) => (
@@ -101,7 +102,7 @@ const InteractiveMap = () => {
                                     A fully integrated and flourishing lifestyle brimming with diverse social and recreational activities, supporting residents' lives through a comprehensive range of services and facilities including green spaces, children's parks, a library, fitness centers, cafes, and an assortment of other amenities.
                                 </p>
                             </div>
-                        </div>
+                        </ScrollAnimation>
                     </div>
                 </div>
             </div>

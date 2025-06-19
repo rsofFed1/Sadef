@@ -37,7 +37,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 75,000",
       resaleValue: "Up to SAR 600,000",
       annualReturn: "12-15%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 01.jpg?height=300&width=400",
       badge: "Featured",
       status: "Available",
       completionDate: "Q4 2025",
@@ -55,7 +55,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 60,000",
       resaleValue: "Up to SAR 480,000",
       annualReturn: "10-13%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 02.jpg?height=300&width=400",
       badge: "New Launch",
       status: "Available",
       completionDate: "Q2 2026",
@@ -73,7 +73,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 120,000",
       resaleValue: "Up to SAR 900,000",
       annualReturn: "15-18%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 085.jpg?height=300&width=400",
       badge: "Luxury",
       status: "Available",
       completionDate: "Q1 2026",
@@ -91,7 +91,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 42,000",
       resaleValue: "Up to SAR 320,000",
       annualReturn: "11-14%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 052.jpg?height=300&width=400",
       badge: "Affordable",
       status: "Available",
       completionDate: "Q3 2025",
@@ -109,7 +109,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 180,000",
       resaleValue: "Up to SAR 1,400,000",
       annualReturn: "16-20%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 101.jpg?height=300&width=400",
       badge: "Premium",
       status: "Limited",
       completionDate: "Q4 2026",
@@ -127,7 +127,7 @@ export default function PropertiesPage() {
       rentalYield: "Up to SAR 90,000",
       resaleValue: "Up to SAR 700,000",
       annualReturn: "13-16%",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "/images/SAFA 03.jpg?height=300&width=400",
       badge: "Family",
       status: "Available",
       completionDate: "Q1 2027",
@@ -200,8 +200,8 @@ export default function PropertiesPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-8">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
+        <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-4">
             <Link href="/" className="hover:text-[#BDA25A]">
               {language === "ar" ? "الرئيسية" : "Home"}
@@ -212,10 +212,10 @@ export default function PropertiesPage() {
           <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">{currentContent.title}</h1>
           <p className="text-xl text-gray-600 mt-2">{currentContent.subtitle}</p>
         </div>
-      </div>
+      </section>
 
       {/* Filters */}
-      <div className="bg-white border-b">
+      <section className="border-b bg-gray-900 py-2">
         <div className="container mx-auto px-4 py-6">
           <div className="grid md:grid-cols-4 gap-4">
             <div className="relative">
@@ -261,7 +261,7 @@ export default function PropertiesPage() {
             </Button>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Properties Grid */}
       <div className="container mx-auto px-4 py-12">
@@ -289,7 +289,7 @@ export default function PropertiesPage() {
             <Card key={property.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
               <div className="relative overflow-hidden">
                 <Image
-                  src={property.image || "/placeholder.svg"}
+                  src={property.image || "/images/SAFA 01.jpg"}
                   alt={property.name}
                   width={400}
                   height={300}

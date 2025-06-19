@@ -216,7 +216,7 @@ export default function ContactPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-[#BDA25A]">

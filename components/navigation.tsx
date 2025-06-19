@@ -51,7 +51,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
 
   return (
 
-    <header className="absolute left-0 right-0 top-0 bg-[#ffffff] text-dark py-0 px-12 h-[110px] z-50 lg:left-[7.5%] lg:right-[7.5%] lg:top-[2%] lg:rounded-t-[20px] lg:py-0 lg:px-12 md:left-0 md:right-0 md:top-0 md:rounded-0 md:p-0">
+    <header className="absolute left-0 right-0 top-0 bg-[#ffffff] text-dark py-0 px-1 md:px-12 h-[110px] z-50 lg:left-[7.5%] lg:right-[7.5%] lg:top-[2%] lg:rounded-t-[20px] lg:py-0 lg:px-12 md:left-0 md:right-0 md:top-0 md:rounded-0 md:p-0">
       <div className="container mx-auto h-full px-4 lg:px-6">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}

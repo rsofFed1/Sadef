@@ -140,7 +140,7 @@ export default function AboutPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="relative py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-[#BDA25A]">
@@ -162,7 +162,7 @@ export default function AboutPage() {
 
             <div className="relative">
               <Image
-                src="/placeholder.svg?height=600&width=800"
+                src="/images/SAFA 02.jpg?height600&width=800"
                 alt="Sadef Real Estate Development"
                 width={800}
                 height={600}
@@ -239,7 +239,7 @@ export default function AboutPage() {
 
             <div className="relative">
               <Image
-                src="/placeholder.svg?height=500&width=600"
+                src="/images/SAFA 03.jpg?height=500&width=600"
                 alt="Sadef Achievements"
                 width={600}
                 height={500}
@@ -289,7 +289,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[1, 2, 3].map((member) => (
               <Card key={member} className="text-center p-6">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4"></div>
+                <img className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 object-cover shadow-md" src={`/images/MEMBER 0${member}.jpg`} alt={`Team Member ${member}`} />
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Leadership Member {member}</h3>
                 <p className="text-[#BDA25A] font-semibold mb-2">Executive Position</p>
                 <p className="text-gray-600 text-sm">

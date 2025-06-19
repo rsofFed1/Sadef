@@ -14,6 +14,10 @@ import InteractiveMap from "@/components/InteractiveMap"
 import FeaturedSection from "@/components/FeaturedSection"
 import MediaCenter from "@/components/MediaCenter"
 import SuccessPartners from "@/components/PartnerSlider"
+import { ScrollAnimation } from "@/components/animations/ScrollAnimation"
+import { Content } from "@/types/content"
+import HeroSection from "@/components/HeroSection"
+import StatsSection from "@/components/StatsSection"
 
 export default function HomePage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -22,7 +26,7 @@ export default function HomePage() {
     setLanguage(language === "en" ? "ar" : "en")
   }
 
-  const content = {
+  const content: Content = {
     en: {
       hero: {
         title: "Sadef.. The Fabric of the Present",
@@ -128,201 +132,119 @@ export default function HomePage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <video
-            src="/videos/VideoBanner.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="object-cover w-full h-full"
-            style={{ objectFit: 'cover' }}
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 text-center text-white">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">{currentContent.hero.title}</h1>
-            <p className="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">{currentContent.hero.description}</p>
-
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Button
-                size="lg"
-                className="bg-[#BDA25A] hover:bg-[#A8935A] text-white px-8 py-4 text-lg rounded-full"
-                asChild
-              >
-                <Link href="/properties">
-                  {currentContent.hero.cta1}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-
-              <Button
-                size="lg"
-                className="bg-[#BDA25A] hover:bg-[#A8935A] text-white px-8 py-4 text-lg rounded-full"
-                asChild
-              >
-                <Link href="/about">{currentContent.hero.cta2}</Link>
-              </Button>
-
-              <Button size="lg" variant="ghost" className="text-white hover:bg-white/20 px-8 py-4 text-lg rounded-full">
-                <Play className="mr-2 h-5 w-5" />
-                {currentContent.hero.watchVideo}
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
-          </div>
-        </div>
-      </section>
+      <HeroSection currentContent={{hero: currentContent.hero}}/>
 
       {/* Stats Section */}
-      <section className="py-20 bg-[#BDA25A]">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center text-white">
-              <div className="text-4xl lg:text-5xl font-bold mb-2">17+</div>
-              <div className="text-lg opacity-90">{currentContent.stats.experience}</div>
-            </div>
-            <div className="text-center text-white">
-              <div className="text-4xl lg:text-5xl font-bold mb-2">50+</div>
-              <div className="text-lg opacity-90">{currentContent.stats.projects}</div>
-            </div>
-            <div className="text-center text-white">
-              <div className="text-4xl lg:text-5xl font-bold mb-2">1000+</div>
-              <div className="text-lg opacity-90">{currentContent.stats.investors}</div>
-            </div>
-            <div className="text-center text-white">
-              <div className="text-4xl lg:text-5xl font-bold mb-2">15%</div>
-              <div className="text-lg opacity-90">{currentContent.stats.returns}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StatsSection currentContent={{stats: currentContent.stats}}/>
 
       {/* Featured Properties */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.featured.title}</h2>
-            <p className="text-xl text-gray-600">{currentContent.featured.subtitle}</p>
-          </div>
+      <ScrollAnimation delay={0.2}>
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <ScrollAnimation delay={0.2}>
+              <div className="text-center mb-16">
+                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                  {currentContent.featured.title}
+                </h2>
+                <p className="text-xl text-gray-600">{currentContent.featured.subtitle}</p>
+              </div>
+            </ScrollAnimation>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {properties.map((property) => (
-              <Card key={property.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={property.image || "/placeholder.svg"}
-                    alt={property.name}
-                    width={400}
-                    height={300}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-[#BDA25A] text-white">{property.badge}</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{property.name}</h3>
-                      <div className="flex items-center text-gray-600 mb-2">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        <span className="text-sm">{property.location}</span>
-                      </div>
-                      <div className="flex items-center text-gray-600">
-                        <Building2 className="h-4 w-4 mr-2" />
-                        <span className="text-sm">
-                          {property.type} • {property.area}
-                        </span>
-                      </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {properties.map((property, index) => (
+                <ScrollAnimation key={property.id} delay={index * 0.1}>
+                  <Card key={property.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div className="relative overflow-hidden">
+                      <Image
+                        src={property.image || "/placeholder.svg"}
+                        alt={property.name}
+                        width={400}
+                        height={300}
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-[#BDA25A] text-white">{property.badge}</Badge>
                     </div>
+                    <CardContent className="p-6">
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">{property.name}</h3>
+                          <div className="flex items-center text-gray-600 mb-2">
+                            <MapPin className="h-4 w-4 mr-2" />
+                            <span className="text-sm">{property.location}</span>
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <Building2 className="h-4 w-4 mr-2" />
+                            <span className="text-sm">
+                              {property.type} • {property.area}
+                            </span>
+                          </div>
+                        </div>
 
-                    <div className="space-y-2 pt-4 border-t">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Starting Price:</span>
-                        <span className="font-semibold text-[#BDA25A]">{property.startingPrice}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Annual Rental Yield:</span>
-                        <span className="font-semibold text-green-600">{property.rentalYield}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Projected Resale:</span>
-                        <span className="font-semibold text-blue-600">{property.resaleValue}</span>
-                      </div>
-                    </div>
+                        <div className="space-y-2 pt-4 border-t">
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Starting Price:</span>
+                            <span className="font-semibold text-[#BDA25A]">{property.startingPrice}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Annual Rental Yield:</span>
+                            <span className="font-semibold text-green-600">{property.rentalYield}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Projected Resale:</span>
+                            <span className="font-semibold text-blue-600">{property.resaleValue}</span>
+                          </div>
+                        </div>
 
-                    <Button className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white mt-4" asChild>
-                      <Link href={`/properties/${property.id}`}>View Details</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                        <Button className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white mt-4" asChild>
+                          <Link href={`/properties/${property.id}`}>View Details</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </ScrollAnimation>
+
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-[#BDA25A] text-[#BDA25A] hover:bg-[#BDA25A] hover:text-white px-8 py-3"
+                asChild
+              >
+                <Link href="/properties">View All Properties</Link>
+              </Button>
+            </div>
           </div>
-
-          <div className="text-center mt-12">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-[#BDA25A] text-[#BDA25A] hover:bg-[#BDA25A] hover:text-white px-8 py-3"
-              asChild
-            >
-              <Link href="/properties">View All Properties</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </ScrollAnimation>
 
       {/* Services Preview */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.services.title}</h2>
-            <p className="text-xl text-gray-600">{currentContent.services.subtitle}</p>
-          </div>
-
+          <ScrollAnimation delay={0.2} direction="left">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.services.title}</h2>
+              <p className="text-xl text-gray-600">{currentContent.services.subtitle}</p>
+            </div>
+          </ScrollAnimation >
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow group">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Building2 className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Property Development</h3>
-              <p className="text-gray-600">Premium off-plan residential projects with modern amenities</p>
-            </Card>
-
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow group">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <TrendingUp className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Investment Consulting</h3>
-              <p className="text-gray-600">Expert guidance on property investment opportunities</p>
-            </Card>
-
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow group">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Property Maintenance</h3>
-              <p className="text-gray-600">Complete maintenance and management services</p>
-            </Card>
-
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow group">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Award className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Legal Support</h3>
-              <p className="text-gray-600">Full legal assistance for property transactions</p>
-            </Card>
+            {[
+              { Icon: Building2, title: "Property Development", description: "Premium off-plan residential projects with modern amenities" },
+              { Icon: TrendingUp, title: "Investment Consulting", description: "Expert guidance on property investment opportunities" },
+              { Icon: Shield, title: "Property Maintenance", description: "Complete maintenance and management services" },
+              { Icon: Award, title: "Legal Support", description: "Full legal assistance for property transactions" },
+            ].map((service, index) => (
+              <ScrollAnimation key={service.title} delay={index * 0.1} direction="right">
+                <Card className="text-center p-6 hover:shadow-lg transition-shadow group">
+                  <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <service.Icon className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                  <p className="text-gray-600">{service.description}</p>
+                </Card>
+              </ScrollAnimation>
+            ))}
           </div>
 
           <div className="text-center mt-12">
@@ -347,68 +269,69 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center group">
+            <ScrollAnimation delay={0.2} direction="left" className="text-center group">
               <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <Shield className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Full Transparency</h3>
               <p className="text-gray-600">Complete disclosure of all costs and projected returns</p>
-            </div>
+            </ScrollAnimation>
 
-            <div className="text-center group">
+            <ScrollAnimation delay={0.2} direction="left" className="text-center group">
               <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <Award className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">17 Years Experience</h3>
               <p className="text-gray-600">Proven track record in Jeddah's real estate market</p>
-            </div>
+            </ScrollAnimation>
 
-            <div className="text-center group">
+            <ScrollAnimation delay={0.2} direction="right" className="text-center group">
               <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <Star className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Premium Quality</h3>
               <p className="text-gray-600">High-standard construction and modern amenities</p>
-            </div>
+            </ScrollAnimation>
 
-            <div className="text-center group">
+            <ScrollAnimation delay={0.2} direction="right" className="text-center group">
               <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <MessageCircle className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">24/7 Support</h3>
               <p className="text-gray-600">Dedicated customer service and maintenance support</p>
-            </div>
+            </ScrollAnimation>
           </div>
         </div>
       </section>
 
       {/* Contact CTA */}
-      <section className="py-20 bg-gradient-to-r from-[#BDA25A] to-[#A8935A]">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto text-white">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Invest in Your Future?</h2>
-            <p className="text-xl mb-8 opacity-90">Contact our experts today for personalized investment guidance</p>
+      <ScrollAnimation>
+        <section className="py-20 bg-gradient-to-r from-[#BDA25A] to-[#A8935A]">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-3xl mx-auto text-white">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Invest in Your Future?</h2>
+              <p className="text-xl mb-8 opacity-90">Contact our experts today for personalized investment guidance</p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-[#BDA25A] hover:bg-gray-100 px-8 py-3 text-lg" asChild>
-                <Link href="/contact">Get In Touch</Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#BDA25A] px-8 py-3 text-lg"
-                asChild
-              >
-                <Link href="https://wa.me/966XXXXXXXXX" target="_blank">
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  WhatsApp
-                </Link>
-              </Button>
-              <WhatsAppButton/>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="bg-white text-[#BDA25A] hover:bg-gray-100 px-8 py-3 text-lg" asChild>
+                  <Link href="/contact">Get In Touch</Link>
+                </Button>
+                <Button
+                  size="lg"
+                  className="bg-white text-[#BDA25A] hover:bg-gray-100 px-8 py-3 text-lg"
+                  asChild
+                >
+                  <Link href="https://wa.me/966XXXXXXXXX" target="_blank">
+                    <MessageCircle className="h-5 w-5 mr-2" />
+                    WhatsApp
+                  </Link>
+                </Button>
+                <WhatsAppButton/>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollAnimation>
 
       <Footer language={language} />
     </div>

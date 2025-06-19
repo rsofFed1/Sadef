@@ -271,7 +271,7 @@ export default function ServicesPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-[#BDA25A]">
@@ -380,7 +380,7 @@ export default function ServicesPage() {
 
             <div className="relative">
               <Image
-                src="/placeholder.svg?height=500&width=600"
+                src="/images/SAFA 01.jpg?height=500&width=600"
                 alt="Sadef Services"
                 width={600}
                 height={500}
@@ -404,8 +404,7 @@ export default function ServicesPage() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#BDA25A] px-8 py-3 text-lg"
+                className="bg-white text-[#BDA25A] hover:bg-gray-100 px-8 py-3 text-lg"
                 asChild
               >
                 <Link href="tel:+966XXXXXXXXX">
