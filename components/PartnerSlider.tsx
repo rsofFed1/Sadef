@@ -103,7 +103,7 @@ export default function SuccessPartners() {
         >
           {partners.map((partner) => (
             <SwiperSlide key={partner.id}>
-              <ScrollAnimation delay={0.2} direction='down' className="flex items-center justify-center h-24 px-4">
+              <ScrollAnimation delay={0.2} direction='left' className="flex items-center justify-center h-24 px-4">
                 <div className="relative w-full h-full">
                   <Image
                     src={partner.logo}

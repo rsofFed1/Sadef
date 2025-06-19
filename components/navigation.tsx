@@ -25,6 +25,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
         about: "About Us",
         properties: "Properties",
         services: "Services",
+        blogs: "Blogs",
         contact: "Contact",
       },
     },
@@ -34,6 +35,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
         about: "من نحن",
         properties: "العقارات",
         services: "الخدمات",
+        blogs: "المدونات",
         contact: "اتصل بنا",
       },
     },
@@ -46,6 +48,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
     { href: "/about", label: currentContent.nav.about },
     { href: "/properties", label: currentContent.nav.properties },
     { href: "/services", label: currentContent.nav.services },
+    { href: "/blogs", label: currentContent.nav.blogs },
     { href: "/contact", label: currentContent.nav.contact },
   ]
 
@@ -59,14 +62,14 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
             <Image
               src="/images/sadef-logo-horizontal.png"
               alt="Sadef Real Estate"
-              width={120}
-              height={40}
-              className="h-8 w-auto"
+              width={150}
+              height={60}
+              className="h-12 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -80,7 +83,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
             ))}
           </nav>
 
-          {/* Language Toggle & WhatsApp */}
+          {/* Language Toggle */}
           <div className="flex items-center space-x-4">
             <Button
               variant="outline"

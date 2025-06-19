@@ -72,7 +72,7 @@ const InteractiveMap = () => {
                                     </button>
                                 ))}
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 font-tajawal text-[#BDA25A]">Karak Gulwa Locations</h3>
+                            <h3 className="text-2xl font-bold mb-4 font-tajawal text-[#BDA25A]">Sadef Locations</h3>
 
                             <div className="space-y-4">
                                 {filteredLocations.map((location) => (

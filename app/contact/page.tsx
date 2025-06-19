@@ -86,7 +86,7 @@ export default function ContactPage() {
         },
         phone: {
           title: "Phone Number",
-          value: "+966 12 XXX XXXX",
+          value: "966595344758",
         },
         email: {
           title: "Email Address",
@@ -382,14 +382,14 @@ export default function ContactPage() {
                 <h3 className="text-xl font-bold text-gray-900 mb-6">{currentContent.quickActions.title}</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <Button className="bg-green-600 hover:bg-green-700 text-white" asChild>
-                    <Link href="https://wa.me/966XXXXXXXXX" target="_blank">
+                    <Link href="https://wa.me/966595344758" target="_blank">
                       <MessageCircle className="h-4 w-4 mr-2" />
                       {currentContent.quickActions.whatsapp}
                     </Link>
                   </Button>
 
                   <Button className="bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
-                    <Link href="tel:+966XXXXXXXXX">
+                    <Link href="tel:+966595344758">
                       <Phone className="h-4 w-4 mr-2" />
                       {currentContent.quickActions.call}
                     </Link>
