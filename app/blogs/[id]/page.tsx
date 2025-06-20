@@ -7,7 +7,7 @@ import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Calendar, User, Facebook, Twitter, Linkedin } from "lucide-react"
+import { ArrowLeft, Calendar, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getBlogById, type Blog } from "@/lib/api"
 import { format } from "date-fns"
 
@@ -140,9 +140,15 @@ export default function BlogDetailPage() {
           <div className="max-w-4xl mx-auto">
             <article className="bg-white rounded-lg shadow-sm overflow-hidden">
               {/* Featured Image */}
-              {blog.imageUrl && (
+              {blog.coverImage && (
                 <div className="relative h-96 w-full">
-                  <Image src={blog.imageUrl || "/placeholder.svg"} alt={blog.title} fill className="object-cover" />
+                  <Image
+                    src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA 052.jpg"}
+                    alt={blog.title}
+                    width={800}
+                    height={400}
+                    className="w-full h-96 object-cover rounded-lg mb-8"
+                  />
                 </div>
               )}
 
@@ -152,14 +158,8 @@ export default function BlogDetailPage() {
                   <div className="flex items-center space-x-6 text-sm text-gray-500">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      <span>{format(new Date(blog.publishedDate), "MMMM dd, yyyy")}</span>
+                      <span>{format(new Date(blog.publishedAt), "MMMM dd, yyyy")}</span>
                     </div>
-                    {blog.author && (
-                      <div className="flex items-center">
-                        <User className="h-4 w-4 mr-2" />
-                        <span>{blog.author}</span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Share Buttons */}
@@ -206,17 +206,6 @@ export default function BlogDetailPage() {
 
                 {/* Title */}
                 <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">{blog.title}</h1>
-
-                {/* Tags */}
-                {blog.tags && blog.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {blog.tags.map((tag, index) => (
-                      <span key={index} className="px-3 py-1 bg-[#BDA25A] text-white text-sm rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
 
                 {/* Content */}
                 <div

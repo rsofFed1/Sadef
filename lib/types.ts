@@ -15,31 +15,41 @@ export interface PaginatedResponse<T> {
 export interface Blog {
   id: number
   title: string
-  excerpt?: string
   content: string
-  imageUrl?: string
-  publishedDate: string
-  author?: string
-  tags?: string[]
+  coverImage: string
+  publishedAt: string
+  isPublished: boolean
+  excerpt?: string // Optional, for UI convenience
 }
 
 export interface Property {
-  id: number
-  name: string
-  description?: string
-  location: string
-  propertyType: string
-  bedrooms?: number
-  bathrooms?: number
-  area: string
-  startingPrice: string
-  rentalYield?: string
-  resaleValue?: string
-  annualReturn?: string
-  imageUrl?: string
-  images?: string[]
-  status: string
-  completionDate?: string
-  features?: string[]
-  badge?: string
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  propertyType: string;
+  unitCategory?: string | null;
+  city: string;
+  location: string;
+  areaSize: number;
+  bedrooms: number;
+  bathrooms: number;
+  parking?: number; // Added for UI
+  code?: string; // Added for UI
+  imageBase64Strings: string[];
+  status: number;
+  expiryDate?: string | null;
+  isExpired: boolean;
+  videoUrls?: string[] | null;
+  unitName?: string | null;
+  projectedResaleValue?: number | null;
+  expectedAnnualRent?: number | null;
+  warrantyInfo?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  whatsAppNumber?: string | null;
+  expectedDeliveryDate?: string | null;
+  isInvestorOnly: boolean;
+  features: string[];
+  area?: string; // Added for UI compatibility
 }

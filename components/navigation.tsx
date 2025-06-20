@@ -108,7 +108,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`text-lg font-medium ${pathname === item.href ? "text-[#BDA25A]" : "text-gray-700"}`}
+                      className={`text-lg font-medium ${pathname === item.href ? "text-[#BDA25A]" : "text-black"}`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}

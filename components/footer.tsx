@@ -23,6 +23,7 @@ export function Footer({ language }: FooterProps) {
         properties: "Properties",
         services: "Services",
         contact: "Contact",
+        blog: "Blog",
       },
       servicesList: {
         development: "Property Development",
@@ -48,6 +49,7 @@ export function Footer({ language }: FooterProps) {
         properties: "العقارات",
         services: "الخدمات",
         contact: "اتصل بنا",
+        blog: "المدونة",
       },
       servicesList: {
         development: "التطوير العقاري",
@@ -107,6 +109,9 @@ export function Footer({ language }: FooterProps) {
               </Link>
               <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors">
                 {currentContent.nav.contact}
+              </Link>
+              <Link href="/blog" className="block text-gray-400 hover:text-white transition-colors">
+                {currentContent.nav.blog}
               </Link>
             </div>
           </div>

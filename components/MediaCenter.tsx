@@ -131,14 +131,14 @@ export default function MediaCenter() {
                 >
                   <div className="relative h-52">
                     <Image
-                      src={blog.imageUrl || "/images/SAFA 052.jpg"}
+                      src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA 052.jpg"}
                       alt={blog.title}
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div className="p-6">
-                    <p className="text-gray-500 text-sm mb-3">{format(new Date(blog.publishedDate), "dd/MM/yyyy")}</p>
+                    <p className="text-gray-500 text-sm mb-3">{format(new Date(blog.publishedAt), "dd/MM/yyyy")}</p>
                     <h4 className="text-[#243242] text-lg font-medium mb-4 line-clamp-2">{blog.title}</h4>
                     {blog.excerpt && <p className="text-gray-600 text-sm mb-4 line-clamp-3">{blog.excerpt}</p>}
                     <Link

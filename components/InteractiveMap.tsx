@@ -47,7 +47,7 @@ const InteractiveMap = () => {
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="flex flex-col md:flex-row">
                         {/* Map Container */}
-                        <ScrollAnimation delay={0.2} direction='up' className="w-full md:w-2/3 h-[400px] md:h-[650px] relative">
+                        <ScrollAnimation delay={0.2} direction='up' className="w-full md:w-2/3 relative">
                             <MapComponent
                                 locations={locations}
                                 activeLocation={activeLocation}

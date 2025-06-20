@@ -294,7 +294,7 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {currentContent.services.map((service, index) => (
-              <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 group">
+              <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300  bg-white rounded-lg border border-gray-200">
                 <div className="text-center mb-6">
                   <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <service.icon className="h-8 w-8 text-white" />
@@ -327,7 +327,7 @@ export default function ServicesPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {currentContent.process.steps.map((step, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
+              <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow bg-white rounded-lg border border-gray-200">
                 <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">{step.step}</span>
                 </div>

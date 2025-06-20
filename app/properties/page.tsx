@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Filter, MapPin, Building2, Bed, Bath, Square } from "lucide-react"
+import { Search, Filter, MapPin, Bed, Bath } from "lucide-react"
 import { useProperties } from "@/hooks/useProperties"
 
 export default function PropertiesPage() {
@@ -45,8 +45,7 @@ export default function PropertiesPage() {
   const filteredAndSortedProperties = useMemo(() => {
     const filtered = properties.filter((property) => {
       const matchesSearch =
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        property.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (property.description && property.description.toLowerCase().includes(searchTerm.toLowerCase()))
 
       const matchesType = selectedType === "all" || property.propertyType.toLowerCase() === selectedType.toLowerCase()
@@ -59,29 +58,14 @@ export default function PropertiesPage() {
     // Sort properties
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a, b) => {
-          const priceA = Number.parseInt(a.startingPrice.replace(/[^\d]/g, ""))
-          const priceB = Number.parseInt(b.startingPrice.replace(/[^\d]/g, ""))
-          return priceA - priceB
-        })
+        filtered.sort((a, b) => a.price - b.price)
         break
       case "price-high":
-        filtered.sort((a, b) => {
-          const priceA = Number.parseInt(a.startingPrice.replace(/[^\d]/g, ""))
-          const priceB = Number.parseInt(b.startingPrice.replace(/[^\d]/g, ""))
-          return priceB - priceA
-        })
-        break
-      case "newest":
-        filtered.sort((a, b) => new Date(b.completionDate || "").getTime() - new Date(a.completionDate || "").getTime())
+        filtered.sort((a, b) => b.price - a.price)
         break
       case "featured":
       default:
-        filtered.sort((a, b) => {
-          if (a.badge === "Featured" && b.badge !== "Featured") return -1
-          if (a.badge !== "Featured" && b.badge === "Featured") return 1
-          return 0
-        })
+        // No special sorting, just return as is
         break
     }
 
@@ -147,6 +131,14 @@ export default function PropertiesPage() {
 
   const currentContent = content[language]
 
+  const getImageSrc = (img: string) => {
+    if (!img) return "/images/SAFA 01.jpg"
+    if (/^([A-Za-z0-9+/=]+)$/.test(img) && img.length > 100) {
+      return `data:image/png;base64,${img}`
+    }
+    return img
+  }
+
   return (
     <div className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
@@ -176,12 +168,12 @@ export default function PropertiesPage() {
                 placeholder={currentContent.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-white text-gray-900"
               />
             </div>
 
             <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white text-gray-900">
                 <SelectValue placeholder={currentContent.propertyType} />
               </SelectTrigger>
               <SelectContent>
@@ -195,7 +187,7 @@ export default function PropertiesPage() {
             </Select>
 
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white text-gray-900">
                 <SelectValue placeholder={currentContent.location} />
               </SelectTrigger>
               <SelectContent>
@@ -251,7 +243,6 @@ export default function PropertiesPage() {
 
             {filteredAndSortedProperties.length === 0 ? (
               <div className="text-center py-12">
-                <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">{currentContent.noProperties}</h3>
                 <p className="text-gray-500">Try adjusting your search criteria</p>
               </div>
@@ -261,103 +252,59 @@ export default function PropertiesPage() {
                   {filteredAndSortedProperties.map((property) => (
                     <Card
                       key={property.id}
-                      className="overflow-hidden hover:shadow-xl transition-all duration-300 group"
+                      className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden flex flex-col transition hover:shadow-lg relative"
+                      style={{ background: '#FCF7F1' }}
                     >
-                      <div className="relative overflow-hidden">
+                      <div className="relative">
                         <Image
-                          src={property.imageUrl || property.images?.[0] || "/images/SAFA 01.jpg"}
-                          alt={property.name}
+                          src={property.imageBase64Strings && property.imageBase64Strings.length > 0 ? getImageSrc(property.imageBase64Strings[0]) : "/images/SAFA 01.jpg"}
+                          alt={property.title ? `Photo of ${property.title}` : "Property image"}
                           width={400}
-                          height={300}
-                          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                          height={220}
+                          className="w-full h-56 object-cover"
                         />
-                        {property.badge && (
-                          <Badge className="absolute top-4 left-4 bg-[#BDA25A] text-white">{property.badge}</Badge>
-                        )}
-                        <Badge
-                          className={`absolute top-4 right-4 ${
-                            property.status === "Available" ? "bg-green-600" : "bg-orange-600"
-                          } text-white`}
-                        >
-                          {property.status}
-                        </Badge>
+                        {/* Top left badges */}
+                        <div className="absolute top-4 left-4 flex gap-2 z-10">
+                          <span className="bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg> For rent</span>
+                        </div>
+                        {/* Overlay property type and icons */}
+                        <div className="absolute bottom-4 left-4 flex gap-2 z-10">
+                          <span className="bg-white/80 text-gray-700 text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> {property.unitCategory || property.propertyType || 'Apartment'}</span>
+                        </div>
                       </div>
-
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
-                          <div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">{property.name}</h3>
-                            <div className="flex items-center text-gray-600 mb-3">
-                              <MapPin className="h-4 w-4 mr-2" />
-                              <span className="text-sm">{property.location}</span>
-                            </div>
-
-                            <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-                              {property.bedrooms && (
-                                <div className="flex items-center">
-                                  <Bed className="h-4 w-4 mr-1" />
-                                  <span>{property.bedrooms}</span>
-                                </div>
-                              )}
-                              {property.bathrooms && (
-                                <div className="flex items-center">
-                                  <Bath className="h-4 w-4 mr-1" />
-                                  <span>{property.bathrooms}</span>
-                                </div>
-                              )}
-                              <div className="flex items-center">
-                                <Square className="h-4 w-4 mr-1" />
-                                <span>{property.area}</span>
-                              </div>
-                            </div>
+                      <CardContent className="flex-1 flex flex-col p-6 pb-4">
+                        <div className="mb-2">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{property.title}</h3>
+                          <div className="flex items-center text-[#BDA25A] text-sm gap-2 mb-1">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z"/></svg>
+                            <span>{property.area || property.areaSize + ' sqm'}</span>
                           </div>
-
-                          <div className="space-y-2 pt-4 border-t">
-                            <div className="flex justify-between">
-                              <span className="text-sm text-gray-600">{currentContent.startingPrice}:</span>
-                              <span className="font-semibold text-[#BDA25A]">{property.startingPrice}</span>
-                            </div>
-                            {property.rentalYield && (
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-600">{currentContent.annualYield}:</span>
-                                <span className="font-semibold text-green-600">{property.rentalYield}</span>
-                              </div>
-                            )}
-                            {property.resaleValue && (
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-600">{currentContent.projectedResale}:</span>
-                                <span className="font-semibold text-blue-600">{property.resaleValue}</span>
-                              </div>
-                            )}
-                            {property.completionDate && (
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-600">{currentContent.completionDate}:</span>
-                                <span className="font-semibold text-gray-700">{property.completionDate}</span>
-                              </div>
-                            )}
+                          <div className="flex items-center justify-between">
+                            <span className="text-2xl font-bold text-[#BDA25A]">﷼ {property.price?.toLocaleString() || '80,000'}</span>
                           </div>
-
-                          {property.features && property.features.length > 0 && (
-                            <div className="pt-4 border-t">
-                              <p className="text-sm text-gray-600 mb-2">{currentContent.features}:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {property.features.slice(0, 3).map((feature, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs">
-                                    {feature}
-                                  </Badge>
-                                ))}
-                                {property.features.length > 3 && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    +{property.features.length - 3} more
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          <Button className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white mt-4" asChild>
-                            <Link href={`/properties/${property.id}`}>{currentContent.viewDetails}</Link>
-                          </Button>
+                        </div>
+                        <hr className="my-2 border-[#F5E7D6]" />
+                        <div className="flex items-center gap-6 text-[#BDA25A] text-sm mb-3">
+                          <span className="flex items-center gap-1"><Bed className="w-5 h-5" /> {property.bedrooms}</span>
+                          <span className="flex items-center gap-1"><Bath className="w-5 h-5" /> {property.bathrooms}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
+                          <div><span className="font-semibold">Unit Name:</span> {property.unitName}</div>
+                          <div><span className="font-semibold">Projected Resale:</span> {property.projectedResaleValue}</div>
+                          <div><span className="font-semibold">Annual Rent:</span> {property.expectedAnnualRent}</div>
+                          <div><span className="font-semibold">Warranty:</span> {property.warrantyInfo}</div>
+                          {/* <div><span className="font-semibold">Lat/Lng:</span> {property.latitude}, {property.longitude}</div> */}
+                          {/* <div><span className="font-semibold">WhatsApp:</span> {property.whatsAppNumber}</div> */}
+                          <div><span className="font-semibold">Delivery:</span> {property.expectedDeliveryDate?.split('T')[0]}</div>
+                          <div><span className="font-semibold">Investor Only:</span> {property.isInvestorOnly ? 'Yes' : 'No'}</div>
+                          <div><span className="font-semibold">Status:</span> {property.status}</div>
+                          {/* <div><span className="font-semibold">Expiry:</span> {property.expiryDate}</div> */}
+                          <div><span className="font-semibold">Expired:</span> {property.isExpired ? 'Yes' : 'No'}</div>
+                          {/* <div className="col-span-2"><span className="font-semibold">Videos:</span> {property.videoUrls && Array.isArray(property.videoUrls) && property.videoUrls.length > 0 ? property.videoUrls.join(', ') : '-'}</div> */}
+                          <div className="col-span-2"><span className="font-semibold">Features:</span> {property.features && property.features.length > 0 ? property.features.join(', ') : '-'}</div>
+                        </div>
+                        <div className="flex gap-2 mt-auto">
+                          <Button className="rounded-full bg-[#BDA25A] hover:bg-[#BDA25A] text-white px-5" asChild><Link href={`/properties/${property.id}`}>View more</Link></Button>
                         </div>
                       </CardContent>
                     </Card>
@@ -393,7 +340,6 @@ export default function PropertiesPage() {
           </>
         )}
       </div>
-
       <Footer language={language} />
     </div>
   )

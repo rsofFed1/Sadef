@@ -175,9 +175,9 @@ export default function AboutPage() {
 
       {/* Mission & Vision */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12">
-            <Card className="p-8 border-l-4 border-[#BDA25A]">
+        <div className="container mx-auto px-4 ">
+          <div className="grid md:grid-cols-2 gap-12 ">
+            <Card className="p-8 border-l-4 border-[#BDA25A] bg-white hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 bg-[#BDA25A] rounded-full flex items-center justify-center mr-4">
                   <Target className="h-6 w-6 text-white" />
@@ -187,7 +187,7 @@ export default function AboutPage() {
               <p className="text-gray-600 leading-relaxed">{currentContent.mission.description}</p>
             </Card>
 
-            <Card className="p-8 border-l-4 border-[#BDA25A]">
+            <Card className="p-8 border-l-4 border-[#BDA25A] bg-white hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 bg-[#BDA25A] rounded-full flex items-center justify-center mr-4">
                   <Eye className="h-6 w-6 text-white" />
@@ -209,7 +209,7 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {currentContent.values.items.map((value, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
+              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow bg-white rounded-lg border border-gray-200">
                 <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
                   <value.icon className="h-8 w-8 text-white" />
                 </div>
@@ -288,7 +288,7 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {[1, 2, 3].map((member) => (
-              <Card key={member} className="text-center p-6">
+              <Card key={member} className="text-center p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
                 <img className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 object-cover shadow-md" src={`/images/MEMBER 0${member}.jpg`} alt={`Team Member ${member}`} />
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Leadership Member {member}</h3>
                 <p className="text-[#BDA25A] font-semibold mb-2">Executive Position</p>
@@ -315,8 +315,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#BDA25A]"
+                className="bg-white text-[#BDA25A] hover:bg-gray-100"
                 asChild
               >
                 <Link href="/contact">Contact Us</Link>

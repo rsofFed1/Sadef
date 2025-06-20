@@ -396,8 +396,7 @@ export default function ContactPage() {
                   </Button>
 
                   <Button
-                    variant="outline"
-                    className="border-[#BDA25A] text-[#BDA25A] hover:bg-[#BDA25A] hover:text-white"
+                    className="bg-[#BDA25A] hover:bg-[#A8935A] text-white"
                     asChild
                   >
                     <Link href="mailto:info@sadef.com.sa">
@@ -407,8 +406,7 @@ export default function ContactPage() {
                   </Button>
 
                   <Button
-                    variant="outline"
-                    className="border-[#BDA25A] text-[#BDA25A] hover:bg-[#BDA25A] hover:text-white"
+                    className="bg-[#BDA25A] hover:bg-[#A8935A] text-white"
                   >
                     <Clock className="h-4 w-4 mr-2" />
                     {currentContent.quickActions.schedule}
@@ -437,11 +435,11 @@ export default function ContactPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
                   <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.sales.phone}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.sales.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
                   <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.sales.email}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.sales.email}</span>
                 </div>
               </div>
             </Card>
@@ -455,11 +453,11 @@ export default function ContactPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
                   <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.support.phone}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.support.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
                   <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.support.email}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.support.email}</span>
                 </div>
               </div>
             </Card>
@@ -473,11 +471,11 @@ export default function ContactPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
                   <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.maintenance.phone}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.maintenance.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
                   <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span>{currentContent.departments.maintenance.email}</span>
+                  <span className="text-[#BDA25A]">{currentContent.departments.maintenance.email}</span>
                 </div>
               </div>
             </Card>
