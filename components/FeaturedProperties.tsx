@@ -145,7 +145,7 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
                     </div>
                   </div>
                   <CardContent className="flex-1 flex flex-col p-6 pb-4">
-                    <div className="mb-2">
+                    <div className="mb-2 min-h-32">
                       <h3 className="text-lg font-bold text-gray-900 mb-1">{property.title}</h3>
                       <div className="flex items-center text-[#BDA25A] text-sm gap-2 mb-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z"/></svg>
