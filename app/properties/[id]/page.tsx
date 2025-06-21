@@ -22,16 +22,27 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { getPropertyById, type Property } from "@/lib/api";
+import dynamic from "next/dynamic";
+import { locations } from "@/app/data/locations";
 
 export default function PropertyDetailPage() {
   const params = useParams();
   const propertyId = Number.parseInt(params.id as string);
-
+  const [activeLocation, setActiveLocation] = useState<number | null>(null);
   const [language, setLanguage] = useState<"en" | "ar">("en");
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const MapComponent = dynamic(() => import('@/components/MapContainer'), {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full bg-gray-100 flex items-center justify-center">
+        <div className="animate-pulse text-[#BDA25A]">Loading map...</div>
+      </div>
+    ),
+  });
 
   const toggleLanguage = () => {
     setLanguage(language === "en" ? "ar" : "en");
@@ -283,18 +294,26 @@ export default function PropertyDetailPage() {
                 </div>
               )}
             </div>
-
             {/* Property Information */}
             <div className="space-y-6">
-              {/* Property Stats */}
               <Card className="p-6 bg-white border border-white shadow-lg">
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
                     {property.title}
                   </h1>
                   <div className="flex items-center text-gray-600 mb-4">
-                    <MapPin className="h-5 w-5 mr-2" />
-                    <span className="text-lg">{property.location}</span>
+                    <a
+                      href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#BDA25A] hover:text-[#a8935a] transition"
+                      title="View on Google Maps"
+                    >
+                      <div className="flex justify-between gap-2">
+                        <MapPin className="h-6 w-6" />
+                        <span className="text-lg">{property.location}</span>
+                      </div>
+                    </a>
                   </div>
                   {property.description && (
                     <p className="text-gray-700 leading-relaxed mb-6">
@@ -314,7 +333,6 @@ export default function PropertyDetailPage() {
                         <p className="font-semibold text-sm text-gray-600 ml-2">{property.propertyType}</p>
                       </div>
                     </div>
-
                     {property.bedrooms && (
                       <div className="flex items-center">
                         <Bed className="h-5 w-5 text-[#BDA25A] mr-2" />
@@ -326,7 +344,6 @@ export default function PropertyDetailPage() {
                         </div>
                       </div>
                     )}
-
                     {property.bathrooms && (
                       <div className="flex items-center">
                         <Bath className="h-5 w-5 text-[#BDA25A] mr-2" />
@@ -338,7 +355,6 @@ export default function PropertyDetailPage() {
                         </div>
                       </div>
                     )}
-
                     <div className="flex items-center">
                       <Square className="h-5 w-5 text-[#BDA25A] mr-2" />
                       <div className="flex">
@@ -355,27 +371,27 @@ export default function PropertyDetailPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600"> {currentContent.startingPrice}: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg"> {property.price} </span>
+                      <span className="font-bold text-[#BDA25A] text-md"> {property.price} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600"> Unit Name:: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg"> {property.unitName} </span>
+                      <span className="font-bold text-[#BDA25A] text-md"> {property.unitName} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600"> Projected Resale: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg"> {property.projectedResaleValue} </span>
+                      <span className="font-bold text-[#BDA25A] text-md"> {property.projectedResaleValue} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600"> Annual Rent: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg"> {property.expectedAnnualRent} </span>
+                      <span className="font-bold text-[#BDA25A] text-md"> {property.expectedAnnualRent} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600"> Warranty: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg"> {property.warrantyInfo} </span>
+                      <span className="font-bold text-[#BDA25A] text-md"> {property.warrantyInfo} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600"> Status: </span>
-                      <span className="font-bold text-[#BDA25A] text-lg">
+                      <span className="font-bold text-[#BDA25A] text-md">
                         {(() => {
                           switch (property.status) {
                             case 1: return 'Pending';
@@ -391,21 +407,6 @@ export default function PropertyDetailPage() {
                   </div>
                 </div>
                 <div>
-                  {/* {property.features && property.features.length > 0 && (
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">
-                        {currentContent.features}
-                      </h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        {property.features.map((feature, index) => (
-                          <div key={index} className="flex items-center">
-                            <div className="w-2 h-2 bg-[#BDA25A] rounded-full mr-3"></div>
-                            <span className="text-gray-700">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )} */}
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -413,37 +414,28 @@ export default function PropertyDetailPage() {
                   </h3>
                   <div className="flex justify-between">
                     <span className="text-gray-600"> {currentContent.features}: </span>
-                    <span className="font-bold text-[#BDA25A] text-lg"> {property.features} </span>
+                    <span className="font-bold text-[#BDA25A] text-md"> {property.features} </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600"> Delivery: </span>
-                    <span className="font-bold text-[#BDA25A] text-lg"> {property.expectedDeliveryDate?.split('T')[0]} </span>
+                    <span className="font-bold text-[#BDA25A] text-md"> {property.expectedDeliveryDate?.split('T')[0]} </span>
                   </div>
                    <div className="flex justify-between">
                     <span className="text-gray-600"> Investor Only:: </span>
-                    <span className="font-bold text-[#BDA25A] text-lg"> {property.isInvestorOnly ? 'Yes' : 'No'} </span>
+                    <span className="font-bold text-[#BDA25A] text-md"> {property.isInvestorOnly ? 'Yes' : 'No'} </span>
                   </div>
                 </div>
               </Card>
               {/* Contact Actions */}
               <div className="space-y-4">
-                <Button
-                  size="lg"
-                  className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white"
-                  asChild
-                >
+                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild >
                   <Link href="/contact">
                     <Phone className="h-5 w-5 mr-2" />
-                    {currentContent.contactUs}
+                    {property.whatsAppNumber}
                   </Link>
                 </Button>
-
-                <Button
-                  size="lg"
-                  className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white"
-                  asChild
-                >
-                  <Link href="https://wa.me/966595344758" target="_blank">
+                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild >
+                  <Link href={`https://wa.me/${property.whatsAppNumber}`} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-5 w-5 mr-2" />
                     WhatsApp
                   </Link>
@@ -453,7 +445,13 @@ export default function PropertyDetailPage() {
           </div>
         </div>
       </section>
-
+      <div className="container p-0 my-12 w-full h-[500px] rounded-sm overflow-hidden shadow-md">
+        <MapComponent
+          locations={locations}
+          activeLocation={activeLocation}
+          setActiveLocation={setActiveLocation}
+        />
+      </div>
       <Footer language={language} />
     </div>
   );
