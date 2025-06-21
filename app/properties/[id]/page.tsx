@@ -8,6 +8,9 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PropertyCardSkeleton } from "@/components/PropertyCardSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+
 import {
   ArrowLeft,
   MapPin,
@@ -113,6 +116,39 @@ export default function PropertyDetailPage() {
     return img;
   };
 
+  const statusMap = {
+    1: { label: "Pending", color: "bg-yellow-500", svg: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+        <path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    2: { label: "Approved", color: "bg-green-600", svg: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+        <path d="M9 12l2 2l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    3: { label: "Sold", color: "bg-blue-600", svg: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+        <path d="M7 12l3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    4: { label: "Rejected", color: "bg-red-600", svg: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+        <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    5: { label: "Archived", color: "bg-gray-500", svg: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
+        <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
+      </svg>
+    )},
+  };
+
   if (loading) {
     return (
       <div
@@ -121,9 +157,16 @@ export default function PropertyDetailPage() {
       >
         <Navigation language={language} onLanguageToggle={toggleLanguage} />
         <div className="container mx-auto px-4 py-40">
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BDA25A]"></div>
-            <span className="ml-4 text-gray-600">{currentContent.loading}</span>
+          <div className="grid lg:grid-cols-2 gap-12">
+            <div className="space-y-4">
+              <Skeleton className="h-96 w-full rounded-lg" />
+              <div className="grid grid-cols-4 gap-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <Skeleton key={i} className="h-20 w-full rounded-lg" />
+                ))}
+              </div>
+            </div>
+            <PropertyCardSkeleton />
           </div>
         </div>
         <Footer language={language} />
@@ -156,6 +199,10 @@ export default function PropertyDetailPage() {
       ? property.imageBase64Strings
       : ["/placeholder.svg"];
 
+  const statusKey = Number(property.status) as keyof typeof statusMap;
+  const status = statusMap[statusKey] || { label: property.status, color: "bg-black", svg: null };
+
+
   return (
     <div
       className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`}
@@ -164,7 +211,7 @@ export default function PropertyDetailPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-white pt-40">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-[#BDA25A]">
@@ -188,7 +235,7 @@ export default function PropertyDetailPage() {
       </section>
 
       {/* Property Details */}
-      <section className="py-12">
+      <section className="py-12 pt-0 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Images */}
@@ -200,6 +247,16 @@ export default function PropertyDetailPage() {
                   fill
                   className="object-cover"
                 />
+                <div className="absolute top-4 left-4 flex gap-2 z-10">
+                  <span className="bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg> For rent</span>
+                </div>
+                {/* Top right badges */}
+                <div className={`absolute top-4 right-4 flex gap-2 z-10`}>
+                  <span className={`${status.color} text-white text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
+                    {status.svg}
+                    {status.label}
+                  </span>
+                </div>
               </div>
 
               {/* Image Thumbnails */}
@@ -313,8 +370,23 @@ export default function PropertyDetailPage() {
                       <span className="font-bold text-[#BDA25A] text-lg"> {property.expectedAnnualRent} </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600"> Warranty </span>
+                      <span className="text-gray-600"> Warranty: </span>
                       <span className="font-bold text-[#BDA25A] text-lg"> {property.warrantyInfo} </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600"> Status: </span>
+                      <span className="font-bold text-[#BDA25A] text-lg">
+                        {(() => {
+                          switch (property.status) {
+                            case 1: return 'Pending';
+                            case 2: return 'Approved';
+                            case 3: return 'Sold';
+                            case 4: return 'Rejected';
+                            case 5: return 'Archived';
+                            default: return property.status;
+                          }
+                        })()}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -346,10 +418,6 @@ export default function PropertyDetailPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-600"> Delivery: </span>
                     <span className="font-bold text-[#BDA25A] text-lg"> {property.expectedDeliveryDate?.split('T')[0]} </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600"> {currentContent.features}: </span>
-                    <span className="font-bold text-[#BDA25A] text-lg"> {property.features} </span>
                   </div>
                    <div className="flex justify-between">
                     <span className="text-gray-600"> Investor Only:: </span>

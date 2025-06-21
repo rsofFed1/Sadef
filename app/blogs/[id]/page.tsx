@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getBlogById, type Blog } from "@/lib/api"
 import { format } from "date-fns"
+import { BlogDetailSkeleton } from "@/components/PropertyCardSkeleton"
 
 export default function BlogDetailPage() {
   const params = useParams()
@@ -77,15 +78,12 @@ export default function BlogDetailPage() {
   if (loading) {
     return (
       <div className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
-        <Navigation language={language} onLanguageToggle={toggleLanguage} />
-        <div className="container mx-auto px-4 py-40">
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BDA25A]"></div>
-            <span className="ml-4 text-gray-600">{currentContent.loading}</span>
-          </div>
-        </div>
-        <Footer language={language} />
+      <Navigation language={language} onLanguageToggle={toggleLanguage} />
+      <div className="container mx-auto px-4 py-40">
+        <BlogDetailSkeleton />
       </div>
+      <Footer language={language} />
+    </div>
     )
   }
 
@@ -111,7 +109,7 @@ export default function BlogDetailPage() {
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-white pt-40">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-[#BDA25A]">
@@ -135,7 +133,7 @@ export default function BlogDetailPage() {
       </section>
 
       {/* Blog Content */}
-      <section className="py-12">
+      <section className="py-12 pt-0 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <article className="bg-white rounded-lg shadow-sm overflow-hidden">

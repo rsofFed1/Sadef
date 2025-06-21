@@ -9,9 +9,14 @@ import "swiper/css/navigation"
 import { ScrollAnimation } from "./animations/ScrollAnimation"
 import { useBlogs } from "@/hooks/useBlogs"
 import { format } from "date-fns"
+import { MediaCenterSkeleton } from "./PropertyCardSkeleton"
 
 export default function MediaCenter() {
   const { blogs, loading, error } = useBlogs(1, 6)
+
+  if (loading) {
+    return <MediaCenterSkeleton />;
+  }
 
   if (loading) {
     return (
@@ -60,7 +65,9 @@ export default function MediaCenter() {
           >
             <div className="flex md:flex-col gap-4">
               <h3 className="text-[#BDA25A] text-2xl">Latest News</h3>
-              <button className="bg-[#EEF1F4] rounded-full px-6 py-2 text-[#243242]">Blogs</button>
+              <Link href="/blogs" passHref legacyBehavior>
+                <button className="bg-[#EEF1F4] rounded-full px-6 py-2 text-[#243242]">Blogs</button>
+              </Link>
             </div>
             <div className="hidden md:flex gap-4 items-center">
               <button className="custom-prev-button group relative" aria-label="Previous slide">
@@ -92,7 +99,7 @@ export default function MediaCenter() {
                 </div>
               </button>
             </div>
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:flex items-center mt-4">
               <Link href="/blogs" className="text-[#BDA25A] font-medium hover:text-[#a08a3f] transition-colors">
                 View all News
               </Link>
@@ -117,7 +124,7 @@ export default function MediaCenter() {
                 slidesPerView: 2,
               },
               1024: {
-                slidesPerView: 3,
+                slidesPerView: 2,
               },
             }}
             className="w-full"
@@ -140,7 +147,9 @@ export default function MediaCenter() {
                   <div className="p-6">
                     <p className="text-gray-500 text-sm mb-3">{format(new Date(blog.publishedAt), "dd/MM/yyyy")}</p>
                     <h4 className="text-[#243242] text-lg font-medium mb-4 line-clamp-2">{blog.title}</h4>
-                    {blog.excerpt && <p className="text-gray-600 text-sm mb-4 line-clamp-3">{blog.excerpt}</p>}
+                    {blog.content && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-1"> {blog.content} </p>
+                    )}
                     <Link
                       href={`/blogs/${blog.id}`}
                       className="text-[#BDA25A] font-medium hover:text-[#a08a3f] transition-colors"

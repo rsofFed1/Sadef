@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Search, Calendar } from "lucide-react"
 import { useBlogs } from "@/hooks/useBlogs"
 import { format } from "date-fns"
+import { BlogCardSkeleton } from "@/components/PropertyCardSkeleton"
 
 export default function BlogsPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -43,6 +44,7 @@ export default function BlogsPage() {
       noBlogs: "No blogs found",
       previousPage: "Previous",
       nextPage: "Next",
+      content: '',
     },
     ar: {
       title: "آخر الأخبار والمدونات",
@@ -54,6 +56,7 @@ export default function BlogsPage() {
       noBlogs: "لم يتم العثور على مدونات",
       previousPage: "السابق",
       nextPage: "التالي",
+      content: '',
     },
   }
 
@@ -100,9 +103,10 @@ export default function BlogsPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BDA25A]"></div>
-              <span className="ml-4 text-gray-600">{currentContent.loading}</span>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))}
             </div>
           ) : error ? (
             <div className="text-center py-12">
@@ -139,7 +143,9 @@ export default function BlogsPage() {
 
                         <h3 className="text-xl font-bold text-gray-900 line-clamp-2">{blog.title}</h3>
 
-                        {blog.excerpt && <p className="text-gray-600 line-clamp-3">{blog.excerpt}</p>}
+                        {blog.content && (
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-3"> {blog.content} </p>
+                        )}
 
                         <Button className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
                           <Link href={`/blogs/${blog.id}`}>{currentContent.readMore}</Link>
