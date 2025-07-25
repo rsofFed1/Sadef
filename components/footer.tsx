@@ -67,7 +67,7 @@ export function Footer({ language }: FooterProps) {
   const currentContent = content[language]
 
   return (
-    <footer className="bg-gray-900 text-white py-16">
+    <footer className="bg-primary text-bg-main py-16">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
@@ -78,65 +78,65 @@ export function Footer({ language }: FooterProps) {
               height={50}
               className="h-10 w-auto brightness-0 invert"
             />
-            <p className="text-gray-400 leading-relaxed">{currentContent.description}</p>
+            <p className="text-helper leading-relaxed">{currentContent.description}</p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="#" className="text-helper hover:text-bg-main transition-colors">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="#" className="text-helper hover:text-bg-main transition-colors">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="#" className="text-helper hover:text-bg-main transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="#" className="text-helper hover:text-bg-main transition-colors">
                 <Linkedin className="h-5 w-5" />
               </Link>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">{currentContent.quickLinks}</h3>
+            <h3 className="text-h3 font-bold mb-4">{currentContent.quickLinks}</h3>
             <div className="space-y-2">
-              <Link href="/about" className="block text-gray-400 hover:text-white transition-colors">
+              <Link href="/about" className="block text-helper hover:text-bg-main transition-colors">
                 {currentContent.nav.about}
               </Link>
-              <Link href="/properties" className="block text-gray-400 hover:text-white transition-colors">
+              <Link href="/properties" className="block text-helper hover:text-bg-main transition-colors">
                 {currentContent.nav.properties}
               </Link>
-              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors">
+              <Link href="/services" className="block text-helper hover:text-bg-main transition-colors">
                 {currentContent.nav.services}
               </Link>
-              <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors">
+              <Link href="/contact" className="block text-helper hover:text-bg-main transition-colors">
                 {currentContent.nav.contact}
               </Link>
-              <Link href="/blog" className="block text-gray-400 hover:text-white transition-colors">
+              <Link href="/blog" className="block text-helper hover:text-bg-main transition-colors">
                 {currentContent.nav.blog}
               </Link>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">{currentContent.services}</h3>
+            <h3 className="text-h3 font-bold mb-4">{currentContent.services}</h3>
             <div className="space-y-2">
-              <div className="text-gray-400">{currentContent.servicesList.development}</div>
-              <div className="text-gray-400">{currentContent.servicesList.investment}</div>
-              <div className="text-gray-400">{currentContent.servicesList.legal}</div>
+              <div className="text-helper">{currentContent.servicesList.development}</div>
+              <div className="text-helper">{currentContent.servicesList.investment}</div>
+              <div className="text-helper">{currentContent.servicesList.legal}</div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">{currentContent.contact}</h3>
+            <h3 className="text-h3 font-bold mb-4">{currentContent.contact}</h3>
             <div className="space-y-3">
-              <div className="flex items-center text-gray-400">
+              <div className="flex items-center text-helper">
                 <Phone className="h-4 w-4 mr-3" />
                 {currentContent.contactInfo.phone}
               </div>
-              <div className="flex items-center text-gray-400">
+              <div className="flex items-center text-helper">
                 <Mail className="h-4 w-4 mr-3" />
                 {currentContent.contactInfo.email}
               </div>
-              <div className="flex items-center text-gray-400">
+              <div className="flex items-center text-helper">
                 <MapPin className="h-4 w-4 mr-3" />
                 {currentContent.contactInfo.address}
               </div>
@@ -144,8 +144,8 @@ export function Footer({ language }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-          <p className="text-gray-400">{currentContent.rights}</p>
+        <div className="border-t border-bg-light mt-12 pt-8 text-center">
+          <p className="text-helper">{currentContent.rights}</p>
         </div>
       </div>
     </footer>

@@ -11,6 +11,7 @@ import { ArrowLeft, Calendar, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getBlogById, type Blog } from "@/lib/api"
 import { format } from "date-fns"
 import { BlogDetailSkeleton } from "@/components/PropertyCardSkeleton"
+import { formatDateTime } from "@/app/utils/dateUtils"
 
 export default function BlogDetailPage() {
   const params = useParams()
@@ -141,7 +142,7 @@ export default function BlogDetailPage() {
               {blog.coverImage && (
                 <div className="relative h-96 w-full">
                   <Image
-                    src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA 052.jpg"}
+                    src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA_052.webp"}
                     alt={blog.title}
                     width={800}
                     height={400}
@@ -156,7 +157,7 @@ export default function BlogDetailPage() {
                   <div className="flex items-center space-x-6 text-sm text-gray-500">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      <span>{format(new Date(blog.publishedAt), "MMMM dd, yyyy")}</span>
+                      <span className="text-body mb-3">{formatDateTime(blog.publishedAt)}</span>
                     </div>
                   </div>
 

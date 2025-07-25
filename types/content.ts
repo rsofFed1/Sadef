@@ -16,7 +16,7 @@ interface Stats {
 
 interface Section {
   title: string;
-  subtitle: string;
+  subtitle?: string;
 }
 
 interface ContentLanguage {
@@ -25,6 +25,11 @@ interface ContentLanguage {
   featured: Section;
   services: Section;
   whyChoose: Section;
+  contactCTA: Section;
+  interactiveMap: Section;
+  mediaCenter: Section;
+  featureContent: Section
+  successPartners: Section
 }
 
 export interface Content {

@@ -28,7 +28,7 @@ export interface Property {
   description: string;
   price: number;
   propertyType: string;
-  unitCategory?: string | null;
+  unitCategory: string | number;
   city: string;
   location: string;
   areaSize: number;
@@ -41,7 +41,7 @@ export interface Property {
   expiryDate?: string | null;
   isExpired: boolean;
   videoUrls?: string[] | null;
-  unitName?: string | null;
+  unitName?: string | number;
   projectedResaleValue?: number | null;
   expectedAnnualRent?: number | null;
   warrantyInfo?: string | null;
@@ -51,5 +51,29 @@ export interface Property {
   expectedDeliveryDate?: string | null;
   isInvestorOnly: boolean;
   features: string[];
-  area?: string; // Added for UI compatibility
+  area?: string;
+  totalFloors: number;
+}
+
+export interface CreateLeadPayload {
+  fullName: string;
+  email: string;
+  phone: string;
+  message: string;
+  propertyId: number;
+}
+
+export interface LeadResponse {
+  succeeded: boolean;
+  message: string;
+  validationResultModel: any;
+  data: {
+    id: number;
+    fullName: string;
+    email: string;
+    phone: string;
+    message: string;
+    propertyId: number;
+    status: number;
+  };
 }

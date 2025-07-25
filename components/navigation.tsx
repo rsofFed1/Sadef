@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Globe, Menu, MessageCircle, Phone } from "lucide-react"
 
 interface NavigationProps {
@@ -54,7 +54,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
 
   return (
 
-    <header className="absolute left-0 right-0 top-0 bg-[#ffffff] text-dark py-0 px-1 md:px-12 h-[110px] z-50 lg:left-[7.5%] lg:right-[7.5%] lg:top-[2%] lg:rounded-t-[20px] lg:py-0 lg:px-12 md:left-0 md:right-0 md:top-0 md:rounded-0 md:p-0">
+    <header className="absolute left-0 right-0 top-0 bg-bg-main text-primary py-0 px-1 md:px-12 h-[110px] z-50 lg:left-[7.5%] lg:right-[7.5%] lg:top-[2%] lg:rounded-t-[20px] lg:py-0 lg:px-12 md:left-0 md:right-0 md:top-0 md:rounded-0 md:p-0">
       <div className="container mx-auto h-full px-4 lg:px-6">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -74,8 +74,8 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-medium transition-colors hover:text-[#BDA25A] ${
-                  pathname === item.href ? "text-[#BDA25A] border-b-2 border-[#BDA25A] pb-1" : "text-gray-700"
+                className={`font-medium transition-colors hover:text-secondary ${
+                  pathname === item.href ? "text-secondary border-b-2 border-secondary pb-1" : "text-generalText"
                 }`}
               >
                 {item.label}
@@ -103,12 +103,15 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
                 </Button>
               </SheetTrigger>
               <SheetContent side={isRTL ? "left" : "right"} className="w-[300px]">
+                <SheetHeader>
+                  <SheetTitle className="hidden"></SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col space-y-4 mt-8">
                   {navItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`text-lg font-medium ${pathname === item.href ? "text-[#BDA25A]" : "text-black"}`}
+                      className={`text-h3 font-medium ${pathname === item.href ? "text-secondary" : "text-primary"}`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}

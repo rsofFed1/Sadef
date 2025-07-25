@@ -8,10 +8,17 @@ import "swiper/css"
 import "swiper/css/navigation"
 import { ScrollAnimation } from "./animations/ScrollAnimation"
 import { useBlogs } from "@/hooks/useBlogs"
-import { format } from "date-fns"
 import { MediaCenterSkeleton } from "./PropertyCardSkeleton"
+import { Content } from "@/types/content"
+import { formatDateTime } from "@/app/utils/dateUtils"
 
-export default function MediaCenter() {
+type Props = {
+  currentContent: {
+    mediaCenter: Content["en"]["mediaCenter"] | Content["ar"]["mediaCenter"]
+  }
+}
+
+export default function MediaCenter({ currentContent }: Props) {
   const { blogs, loading, error } = useBlogs(1, 6)
 
   if (loading) {
@@ -20,12 +27,11 @@ export default function MediaCenter() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-bg-light">
         <div className="container mx-auto">
-          <h2 className="text-4xl font-normal text-center">
-            <span className="text-[#BDA25A]">Media</span>
-            <span className="text-[#243242]"> Center</span>
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.mediaCenter.title}</h2>
+          </div>
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BDA25A]"></div>
           </div>
@@ -36,12 +42,11 @@ export default function MediaCenter() {
 
   if (error) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-bg-light">
         <div className="container mx-auto">
-          <h2 className="text-4xl font-normal text-center">
-            <span className="text-[#BDA25A]">Media</span>
-            <span className="text-[#243242]"> Center</span>
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.mediaCenter.title}</h2>
+          </div>
           <div className="flex justify-center items-center h-64">
             <p className="text-red-600">Error loading blogs: {error}</p>
           </div>
@@ -51,12 +56,11 @@ export default function MediaCenter() {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-bg-light">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-normal text-center">
-          <span className="text-[#BDA25A]">Media</span>
-          <span className="text-[#243242]"> Center</span>
-        </h2>
+        <div className="text-center mb-16">
+          <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.mediaCenter.title}</h2>
+        </div>
         <div className="flex flex-col md:flex-row space-y-8 gap-8">
           <ScrollAnimation
             delay={0.2}
@@ -64,14 +68,14 @@ export default function MediaCenter() {
             className="flex md:flex-col justify-center md:justify-evenly items-center mt-4 w-100 md:w-[450px]"
           >
             <div className="flex md:flex-col gap-4">
-              <h3 className="text-[#BDA25A] text-2xl">Latest News</h3>
+              <h3 className="text-primary text-h3">Latest News</h3>
               <Link href="/blogs" passHref legacyBehavior>
-                <button className="bg-[#EEF1F4] rounded-full px-6 py-2 text-[#243242]">Blogs</button>
+                <button className="bg-bg-light rounded-full px-6 py-2 text-primary">Blogs</button>
               </Link>
             </div>
             <div className="hidden md:flex gap-4 items-center">
               <button className="custom-prev-button group relative" aria-label="Previous slide">
-                <div className="bg-[#BDA25A] p-3 rounded-full transition-all duration-300 group-hover:bg-[#a08a3f] group-hover:shadow-lg">
+                <div className="bg-primary p-3 rounded-full transition-all duration-300 group-hover:bg-primary-hover group-hover:shadow-lg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -100,7 +104,7 @@ export default function MediaCenter() {
               </button>
             </div>
             <div className="hidden md:flex items-center mt-4">
-              <Link href="/blogs" className="text-[#BDA25A] font-medium hover:text-[#a08a3f] transition-colors">
+              <Link href="/blogs" className="text-secondary font-medium hover:text-secondary/80 transition-colors">
                 View all News
               </Link>
             </div>
@@ -134,25 +138,25 @@ export default function MediaCenter() {
                 <ScrollAnimation
                   delay={0.2}
                   direction="right"
-                  className="bg-white rounded-lg shadow-sm overflow-hidden h-full"
+                  className="bg-bg-main rounded-lg shadow-sm overflow-hidden h-full"
                 >
                   <div className="relative h-52">
                     <Image
-                      src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA 052.jpg"}
+                      src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA_052.webp"}
                       alt={blog.title}
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div className="p-6">
-                    <p className="text-gray-500 text-sm mb-3">{format(new Date(blog.publishedAt), "dd/MM/yyyy")}</p>
-                    <h4 className="text-[#243242] text-lg font-medium mb-4 line-clamp-2">{blog.title}</h4>
+                    <p className="text-body mb-3">{formatDateTime(blog.publishedAt)}</p>
+                    <h4 className="text-primary text-h3 font-medium mb-4 line-clamp-2">{blog.title}</h4>
                     {blog.content && (
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-1"> {blog.content} </p>
+                      <p className="text-generalText text-body mb-4 line-clamp-1"> {blog.content} </p>
                     )}
                     <Link
                       href={`/blogs/${blog.id}`}
-                      className="text-[#BDA25A] font-medium hover:text-[#a08a3f] transition-colors"
+                      className="text-secondary font-medium hover:text-secondary/80 transition-colors"
                     >
                       Read more
                     </Link>

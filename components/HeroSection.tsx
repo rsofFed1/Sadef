@@ -28,15 +28,15 @@ export default function HeroSection( { currentContent }: Props ) {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 text-center text-white">
+        <div className="relative z-10 container mx-auto px-4 text-center text-bg-main">
           <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">{currentContent.hero.title}</h1>
-            <p className="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">{currentContent.hero.description}</p>
+            <h1 className="text-h1 font-bold leading-tight">{currentContent.hero.title}</h1>
+            <p className="text-h3 opacity-90 max-w-2xl mx-auto">{currentContent.hero.description}</p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Button
                 size="lg"
-                className="bg-[#BDA25A] hover:bg-[#A8935A] text-white px-8 py-4 text-lg rounded-full"
+                className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-4 text-body rounded-full"
                 asChild
               >
                 <Link href="/properties"> {currentContent.hero.cta1} <ArrowRight className="ml-2 h-5 w-5" /> </Link>
@@ -44,13 +44,13 @@ export default function HeroSection( { currentContent }: Props ) {
 
               <Button
                 size="lg"
-                className="bg-[#BDA25A] hover:bg-[#A8935A] text-white px-8 py-4 text-lg rounded-full"
+                className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-4 text-body rounded-full"
                 asChild
               >
                 <Link href="/about">{currentContent.hero.cta2}</Link>
               </Button>
 
-              <Button size="lg" variant="ghost" className="text-white hover:bg-white/20 px-8 py-4 text-lg rounded-full">
+              <Button size="lg" variant="ghost" className="text-bg-main hover:bg-bg-main/20 px-8 py-4 text-body rounded-full">
                 <Play className="mr-2 h-5 w-5" />
                 {currentContent.hero.watchVideo}
               </Button>

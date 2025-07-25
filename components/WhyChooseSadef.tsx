@@ -10,15 +10,11 @@ type Props = {
 
 export default function WhyChooseSadef({ currentContent }: Props) {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-bg-light">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            {currentContent.whyChoose.title}
-          </h2>
-          <p className="text-xl text-gray-600">
-            {currentContent.whyChoose.subtitle}
-          </p>
+          <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.whyChoose.title}</h2>
+          <p className="text-primaryText text-generalText">{currentContent.whyChoose.subtitle}</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -27,13 +23,13 @@ export default function WhyChooseSadef({ currentContent }: Props) {
             direction="left"
             className="text-center group"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-gradient-to-br from-secondary to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
               <Shield className="h-10 w-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <h3 className="text-h3 font-bold text-primary mb-3">
               Full Transparency
             </h3>
-            <p className="text-gray-600">
+            <p className="text-generalText">
               Complete disclosure of all costs and projected returns
             </p>
           </ScrollAnimation>
@@ -43,13 +39,13 @@ export default function WhyChooseSadef({ currentContent }: Props) {
             direction="left"
             className="text-center group"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-gradient-to-br from-secondary to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
               <Award className="h-10 w-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <h3 className="text-h3 font-bold text-primary mb-3">
               17 Years Experience
             </h3>
-            <p className="text-gray-600">
+            <p className="text-generalText">
               Proven track record in Jeddah's real estate market
             </p>
           </ScrollAnimation>
@@ -59,13 +55,13 @@ export default function WhyChooseSadef({ currentContent }: Props) {
             direction="right"
             className="text-center group"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-gradient-to-br from-secondary to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
               <Star className="h-10 w-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <h3 className="text-h3 font-bold text-primary mb-3">
               Premium Quality
             </h3>
-            <p className="text-gray-600">
+            <p className="text-generalText">
               High-standard construction and modern amenities
             </p>
           </ScrollAnimation>
@@ -75,13 +71,13 @@ export default function WhyChooseSadef({ currentContent }: Props) {
             direction="right"
             className="text-center group"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-[#BDA25A] to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-gradient-to-br from-secondary to-[#A8935A] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
               <MessageCircle className="h-10 w-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <h3 className="text-h3 font-bold text-primary mb-3">
               24/7 Support
             </h3>
-            <p className="text-gray-600">
+            <p className="text-generalText">
               Dedicated customer service and maintenance support
             </p>
           </ScrollAnimation>

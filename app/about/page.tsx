@@ -7,7 +7,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, TrendingUp, Shield, Star } from "lucide-react"
+import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, TrendingUp, Shield, Star, Briefcase, Download, MessageCircle } from "lucide-react"
 
 export default function AboutPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -20,10 +20,8 @@ export default function AboutPage() {
 
   const content = {
     en: {
-      title: "About Sadef Real Estate Development",
-      subtitle: "17 Years of Excellence in Real Estate Development",
-      intro:
-        "Sadef Real Estate Development has been a pioneering force in Saudi Arabia's real estate sector for over 17 years, specializing in premium off-plan residential projects in Jeddah.",
+      title: "Welcome to the Sadef Real Estate Development platform",
+      subtitle: "We offer you the best real estate projects in the Kingdom of Saudi Arabia with high quality and a distinctive future vision. Discover our projects or contact us to book a real estate consultation immediately.",
       mission: {
         title: "Our Mission",
         description:
@@ -70,17 +68,55 @@ export default function AboutPage() {
           "Consistent investment returns",
         ],
       },
+      stats: {
+        completedProjects: {
+          value: "50+",
+          label: "Completed Projects"
+        },
+        happyInvestors: {
+          value: "1000+",
+          label: "Happy Investors"
+        },
+        yearsExperience: {
+          value: "17+",
+          label: "Years Experience"
+        },
+        averageReturns: {
+          value: "15%",
+          label: "Average Returns"
+        }
+      },
       team: {
         title: "Our Leadership Team",
-        description:
-          "Led by experienced professionals with deep expertise in real estate development, investment, and construction management.",
+        description:"Led by experienced professionals with deep expertise in real estate development, investment, and construction management.",
+        teamMembers: [
+          {
+            name: "Leadership Member 1",
+            position: "Executive Position",
+            description: "Experienced professional with extensive background in real estate development and investment.",
+          },
+          {
+            name: "Leadership Member 2",
+            position: "Executive Position",
+            description: "Experienced professional with extensive background in real estate development and investment.",
+          },
+          {
+            name: "Leadership Member 3",
+            position: "Executive Position",
+            description: "Experienced professional with extensive background in real estate development and investment.",
+          },
+        ],
+      },
+      cta: {
+        title: "Ready to Start Your Investment Journey?",
+        subtitle: "Join thousands of satisfied investors who trust Sadef for their real estate investments",
+        button1: "View Properties",
+        button2: "Contact Us",
       },
     },
     ar: {
-      title: "عن سديف للتطوير العقاري",
-      subtitle: "17 عاماً من التميز في التطوير العقاري",
-      intro:
-        "تعد سديف للتطوير العقاري قوة رائدة في قطاع العقارات في المملكة العربية السعودية لأكثر من 17 عاماً، متخصصة في المشاريع السكنية المتميزة على الخريطة في جدة.",
+      title: "مرحبًا بكم في منصة سدث للتطوير العقاري",
+      subtitle: "نقدم لكم أفضل المشاريع العقارية في المملكة العربية السعودية بجودة عالية ورؤية مستقبلية مميزة. اكتشف مشاريعنا أو تواصل معنا لحجز استشارة عقارية فورًا",
       mission: {
         title: "رسالتنا",
         description: "إنشاء مجتمعات سكنية استثنائية تعزز جودة الحياة مع توفير فرص استثمارية مستدامة لعملائنا.",
@@ -126,9 +162,50 @@ export default function AboutPage() {
           "عوائد استثمارية ثابتة",
         ],
       },
+      stats: {
+        completedProjects: {
+          value: "٥٠+",
+          label: "المشاريع المكتملة"
+        },
+        happyInvestors: {
+          value: "١٠٠٠+",
+          label: "المستثمرون السعداء"
+        },
+        yearsExperience: {
+          value: "١٧+",
+          label: "سنوات الخبرة"
+        },
+        averageReturns: {
+          value: "١٥٪",
+          label: "متوسط العائد"
+        }
+      },
       team: {
         title: "فريق القيادة",
         description: "بقيادة محترفين ذوي خبرة مع خبرة عميقة في التطوير العقاري والاستثمار وإدارة البناء.",
+        teamMembers: [
+          {
+            name: "عضو القيادة 1",
+            position: "منصب تنفيذي",
+            description: "محترف ذو خبرة واسعة في تطوير العقارات والاستثمار.",
+          },
+          {
+            name: "عضو القيادة 2",
+            position: "منصب تنفيذي",
+            description: "محترف ذو خبرة واسعة في تطوير العقارات والاستثمار.",
+          },
+          {
+            name: "عضو القيادة 3",
+            position: "منصب تنفيذي",
+            description: "محترف ذو خبرة واسعة في تطوير العقارات والاستثمار.",
+          },
+        ],
+      },
+      cta: {
+        title: "هل أنت مستعد لبدء رحلتك الاستثمارية؟",
+        subtitle: "انضم إلى آلاف المستثمرين الراضين الذين يثقون بسديف لاستثماراتهم العقارية",
+        button1: "عرض العقارات",
+        button2: "تواصل معنا",
       },
     },
   }
@@ -136,33 +213,74 @@ export default function AboutPage() {
   const currentContent = content[language]
 
   return (
-    <div className={`min-h-screen bg-white ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`min-h-screen bg-bg-main text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
+      <section className="relative py-20 bg-gradient-to-br from-bg-light to-bg-main pt-40">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-            <Link href="/" className="hover:text-[#BDA25A]">
+          <div className="flex items-center space-x-2 text-sm text-helper mb-6">
+            <Link href="/" className="hover:text-secondary">
               {language === "ar" ? "الرئيسية" : "Home"}
             </Link>
             <span>/</span>
-            <span className="text-[#BDA25A]">{language === "ar" ? "من نحن" : "About Us"}</span>
+            <span className="text-secondary">{language === "ar" ? "من نحن" : "About Us"}</span>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">{currentContent.title}</h1>
-              <p className="text-xl text-[#BDA25A] font-semibold">{currentContent.subtitle}</p>
-              <p className="text-lg text-gray-600 leading-relaxed">{currentContent.intro}</p>
-              <Button size="lg" className="bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
-                <Link href="/contact">Get In Touch</Link>
-              </Button>
+              <h2 className="text-h2 font-bold text-primary">{currentContent.title}</h2>
+              <p className="text-primaryText text-secondary">{currentContent.subtitle}</p>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="bg-primary hover:bg-primary-hover text-bg-main flex items-center gap-2"
+                  asChild
+                >
+                  <Link href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="w-5 h-5" />
+                    {language === "ar" ? "تواصل عبر واتساب" : "Chat on WhatsApp"}
+                  </Link>
+                </Button>
+
+                {/* Download Brochure */}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="bg-secondary text-bg-main hover:bg-[#B5A56B] flex items-center gap-2"
+                  asChild
+                >
+                  <a
+                    href="https://ascpt.onlinelibrary.wiley.com/doi/pdf/10.1002%2Fcpt.1796"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="w-5 h-5" />
+                    {language === "ar" ? "تحميل البروشور" : "Download Brochure"}
+                  </a>
+                </Button>
+
+                {/* Call Now */}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="bg-[#00BCD4] text-white hover:bg-[#00A3BA] flex items-center gap-2"
+                  asChild
+                >
+                  <Link href="tel:+966500000000">
+                    <Briefcase className="w-5 h-5" />
+                    {language === "ar" ? "فرص استثمارية" : "Investment Opportunities"}
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             <div className="relative">
               <Image
-                src="/images/SAFA 02.jpg?height600&width=800"
+                src="/images/SAFA_02.webp?height600&width=800"
                 alt="Sadef Real Estate Development"
                 width={800}
                 height={600}
@@ -174,47 +292,47 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-bg-main">
         <div className="container mx-auto px-4 ">
           <div className="grid md:grid-cols-2 gap-12 ">
-            <Card className="p-8 border-l-4 border-[#BDA25A] bg-white hover:shadow-lg transition-shadow">
+            <Card className="p-8 border-l-4 border-secondary bg-bg-main hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-[#BDA25A] rounded-full flex items-center justify-center mr-4">
-                  <Target className="h-6 w-6 text-white" />
+                <div className= {`w-12 h-12 bg-secondary rounded-full flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4' }`  }>
+                  <Target className="h-6 w-6 text-bg-main" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{currentContent.mission.title}</h2>
+                <h2 className="text-h2 font-bold text-primary">{currentContent.mission.title}</h2>
               </div>
-              <p className="text-gray-600 leading-relaxed">{currentContent.mission.description}</p>
+              <p className="text-generalText leading-relaxed">{currentContent.mission.description}</p>
             </Card>
 
-            <Card className="p-8 border-l-4 border-[#BDA25A] bg-white hover:shadow-lg transition-shadow">
+            <Card className="p-8 border-l-4 border-secondary bg-bg-main hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-[#BDA25A] rounded-full flex items-center justify-center mr-4">
-                  <Eye className="h-6 w-6 text-white" />
+              <div className= {`w-12 h-12 bg-secondary rounded-full flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4' }`}>
+                  <Eye className="h-6 w-6 text-bg-main" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{currentContent.vision.title}</h2>
+                <h2 className="text-h2 font-bold text-primary">{currentContent.vision.title}</h2>
               </div>
-              <p className="text-gray-600 leading-relaxed">{currentContent.vision.description}</p>
+              <p className="text-generalText leading-relaxed">{currentContent.vision.description}</p>
             </Card>
           </div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-bg-light">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.values.title}</h2>
+            <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.values.title}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {currentContent.values.items.map((value, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow bg-white rounded-lg border border-gray-200">
-                <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="h-8 w-8 text-white" />
+              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow bg-bg-main rounded-lg border border-bg-light">
+                <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                  <value.icon className="h-8 w-8 text-bg-main" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+                <h3 className="text-h3 font-bold text-primary mb-3">{value.title}</h3>
+                <p className="text-generalText">{value.description}</p>
               </Card>
             ))}
           </div>
@@ -222,16 +340,16 @@ export default function AboutPage() {
       </section>
 
       {/* Achievements */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-bg-main">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">{currentContent.achievements.title}</h2>
+              <h2 className="text-h2 font-bold text-primary mb-8">{currentContent.achievements.title}</h2>
               <div className="space-y-4">
                 {currentContent.achievements.items.map((achievement, index) => (
                   <div key={index} className="flex items-center">
-                    <CheckCircle className="h-6 w-6 text-[#BDA25A] mr-4 flex-shrink-0" />
-                    <span className="text-lg text-gray-700">{achievement}</span>
+                    <CheckCircle className={`h-5 w-5 text-secondary ${isRTL ? "ml-4" : "mr-4"}  flex-shrink-0`} />
+                    <span className="text-primaryText text-generalText">{achievement}</span>
                   </div>
                 ))}
               </div>
@@ -239,7 +357,7 @@ export default function AboutPage() {
 
             <div className="relative">
               <Image
-                src="/images/SAFA 03.jpg?height=500&width=600"
+                src="/images/SAFA_03.webp?height=500&width=600"
                 alt="Sadef Achievements"
                 width={600}
                 height={500}
@@ -251,50 +369,55 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-20 bg-[#BDA25A]">
+      <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center text-white">
-              <Building2 className="h-12 w-12 mx-auto mb-4" />
-              <div className="text-4xl lg:text-5xl font-bold mb-2">50+</div>
-              <div className="text-lg opacity-90">Completed Projects</div>
+            <div className="text-center text-bg-main">
+              <Building2 className="h-10 w-10 mx-auto mb-4" />
+              <h3 className="text-h3 font-bold mb-2">{currentContent.stats.averageReturns.value}</h3>
+              <p className="text-primaryText opacity-90">{currentContent.stats.averageReturns.label}</p>
             </div>
-            <div className="text-center text-white">
-              <Users className="h-12 w-12 mx-auto mb-4" />
-              <div className="text-4xl lg:text-5xl font-bold mb-2">1000+</div>
-              <div className="text-lg opacity-90">Happy Investors</div>
+            <div className="text-center text-bg-main">
+              <Users className="h-10 w-10 mx-auto mb-4" />
+              <h3 className="text-h3 font-bold mb-2">{currentContent.stats.completedProjects.value}</h3>
+              <p className="text-primaryTextopacity-90">{currentContent.stats.completedProjects.label}</p>
             </div>
-            <div className="text-center text-white">
-              <Award className="h-12 w-12 mx-auto mb-4" />
-              <div className="text-4xl lg:text-5xl font-bold mb-2">17+</div>
-              <div className="text-lg opacity-90">Years Experience</div>
+            <div className="text-center text-bg-main">
+              <Award className="h-10 w-10 mx-auto mb-4" />
+              <h3 className="text-h3 font-bold mb-2">{currentContent.stats.yearsExperience.value}</h3>
+              <p className="text-primaryText opacity-90">{currentContent.stats.yearsExperience.label}</p>
             </div>
-            <div className="text-center text-white">
-              <TrendingUp className="h-12 w-12 mx-auto mb-4" />
-              <div className="text-4xl lg:text-5xl font-bold mb-2">15%</div>
-              <div className="text-lg opacity-90">Average Returns</div>
+            <div className="text-center text-bg-main">
+              <TrendingUp className="h-10 w-10 mx-auto mb-4" />
+              <h3 className="text-h3 font-bold mb-2">{currentContent.stats.happyInvestors.value}</h3>
+              <p className="text-primaryText opacity-90">{currentContent.stats.happyInvestors.label}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Team */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-bg-light">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.team.title}</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">{currentContent.team.description}</p>
+            <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.team.title}</h2>
+            <p className="text-primaryText text-generalText max-w-3xl mx-auto">{currentContent.team.description}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((member) => (
-              <Card key={member} className="text-center p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                <img className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 object-cover shadow-md" src={`/images/MEMBER 0${member}.jpg`} alt={`Team Member ${member}`} />
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Leadership Member {member}</h3>
-                <p className="text-[#BDA25A] font-semibold mb-2">Executive Position</p>
-                <p className="text-gray-600 text-sm">
-                  Experienced professional with extensive background in real estate development and investment.
-                </p>
+            {currentContent.team.teamMembers.map((member, index) => (
+              <Card
+                key={index}
+                className="text-center p-6 bg-bg-main rounded-lg border border-bg-light hover:shadow-lg transition-shadow"
+              >
+                <img
+                  className="w-24 h-24 bg-bg-light rounded-full mx-auto mb-4 object-cover shadow-md"
+                  src={`/images/MEMBER 0${index + 1}.jpg`}
+                  alt={member.name}
+                />
+                <h3 className="text-h3 font-bold text-primary mb-2">{member.name}</h3>
+                <p className="text-secondary font-semibold mb-2">{member.position}</p>
+                <p className="text-helper">{member.description}</p>
               </Card>
             ))}
           </div>
@@ -302,23 +425,21 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-[#BDA25A] to-[#A8935A]">
+      <section className="py-20 bg-gradient-to-r from-secondary to-[#A8935A]">
         <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto text-white">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Start Your Investment Journey?</h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join thousands of satisfied investors who trust Sadef for their real estate investments
-            </p>
+          <div className="max-w-3xl mx-auto text-bg-main">
+            <h2 className="text-h2 font-bold mb-4">{currentContent.cta.title}</h2>
+            <p className="text-h3 mb-8 opacity-90">{currentContent.cta.subtitle}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-[#BDA25A] hover:bg-gray-100" asChild>
-                <Link href="/properties">View Properties</Link>
+              <Button size="lg" className="bg-bg-main text-secondary hover:bg-bg-light" asChild>
+                <Link href="/properties">{currentContent.cta.button1}</Link>
               </Button>
               <Button
                 size="lg"
-                className="bg-white text-[#BDA25A] hover:bg-gray-100"
+                className="bg-bg-main text-secondary hover:bg-bg-light"
                 asChild
               >
-                <Link href="/contact">Contact Us</Link>
+                <Link href="/contact">{currentContent.cta.button2}</Link>
               </Button>
             </div>
           </div>

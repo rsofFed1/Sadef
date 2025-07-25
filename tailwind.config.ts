@@ -26,11 +26,12 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#BDA25A",
+          DEFAULT: "#002B5B",
+          hover: "#004080",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#878787",
+          DEFAULT: "#D4AF37",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -59,6 +60,18 @@ const config: Config = {
           grey: "#878787",
           "grey-light": "#F5F5F5",
         },
+        generalText : {
+          DEFAULT: "#333333",
+        },
+        link: {
+          DEFAULT: "#004080",
+        },
+        'bg-light': {
+          DEFAULT: "#F9F9F9",
+        },
+        'bg-main': {
+          DEFAULT: "#FFFFFF",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -81,6 +94,85 @@ const config: Config = {
       },
       fontFamily: {
         arabic: ["IBM Plex Arabic", "sans-serif"],
+      },
+      fontSize: {
+        h1: [
+          "2rem",
+          {
+            lineHeight: "2.25rem",
+            fontWeight: "700",
+          },
+        ],
+        'h1-min': [
+          "1.75rem",
+          {
+            lineHeight: "2rem",
+            fontWeight: "700",
+          },
+        ],
+        h2: [
+          "1.625rem",
+          {
+            lineHeight: "2rem",
+            fontWeight: "600",
+          },
+        ],
+        'h2-min': [
+          "1.5rem",
+          {
+            lineHeight: "1.75rem",
+            fontWeight: "600",
+          },
+        ],
+        h3: [
+          "1.375rem",
+          {
+            lineHeight: "1.75rem",
+            fontWeight: "600",
+          },
+        ],
+        'h3-min': [
+          "1.25rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "600",
+          },
+        ],
+        body: [
+          "1rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "400",
+          },
+        ],
+        primaryText: [
+          "1rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "400",
+          },
+        ],
+        secondaryText: [
+          "0.875rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "400",
+          },
+        ],
+        helper: [
+          "0.875rem",
+          {
+            lineHeight: "1.25rem",
+            fontWeight: "400",
+          },
+        ],
+        footer: [
+          "0.875rem",
+          {
+            lineHeight: "1.25rem",
+            fontWeight: "400",
+          },
+        ],
       },
     },
   },

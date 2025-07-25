@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -10,9 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Filter, MapPin, Bed, Bath } from "lucide-react"
+import { Search, Filter, MapPin, Bed, Bath, CloudCog, Bell } from "lucide-react"
 import { useProperties } from "@/hooks/useProperties"
 import { PropertyCardSkeleton } from "@/components/PropertyCardSkeleton";
+import getOptionLabel from "../utils/getOptionLabel"
+import { featuresOptions, propertyOptions, unitsOptions } from "@/components/constants/constants"
+import { statusMap } from "./(components)/statysMap"
+import { InquiryModal } from "./(components)/InquiryModal";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export default function PropertiesPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -20,10 +24,11 @@ export default function PropertiesPage() {
   const [selectedType, setSelectedType] = useState("all")
   const [selectedLocation, setSelectedLocation] = useState("all")
   const [sortBy, setSortBy] = useState("featured")
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 12
-
-  const { properties, loading, error, totalPages, totalCount } = useProperties(currentPage, pageSize)
+  const pageSize = 9
+  const [visibleCount, setVisibleCount] = useState(pageSize)
+  const { properties, loading, error} = useProperties()
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
 
   const toggleLanguage = () => {
     setLanguage(language === "en" ? "ar" : "en")
@@ -73,10 +78,13 @@ export default function PropertiesPage() {
     return filtered
   }, [properties, searchTerm, selectedType, selectedLocation, sortBy])
 
+  const visibleProperties = filteredAndSortedProperties.slice(0, visibleCount)
+
+
   const content = {
     en: {
-      title: "Our Properties",
-      subtitle: "Discover premium real estate investment opportunities",
+      title: "Welcome to the Sudeth Real Estate Development platform",
+      subtitle: "we offer you the best real estate projects in the Kingdom of Saudi Arabia with high quality and a distinctive future vision. Discover our projects or contact us to book a real estate consultation immediately.",
       searchPlaceholder: "Search properties...",
       propertyType: "Property Type",
       location: "Location",
@@ -98,12 +106,19 @@ export default function PropertiesPage() {
       loading: "Loading properties...",
       error: "Error loading properties",
       noProperties: "No properties found",
-      previousPage: "Previous",
-      nextPage: "Next",
+      propertyOverview: "Property Overview",
+      unitName: "Unit Name",
+      annualRent: "Annual Rent",
+      warranty: "Warranty",
+      delivery: "Delivery",
+      investorOnly: "Investor Only",
+      general: "General",
+      noImageAvailable: "No Image Available",
+      loadMore: "Load More",
     },
     ar: {
-      title: "عقاراتنا",
-      subtitle: "اكتشف فرص الاستثمار العقاري المتميزة",
+      title: "مرحبًا بكم في منصة سدث للتطوير العقاري",
+      subtitle: "نقدم لكم أفضل المشاريع العقارية في المملكة العربية السعودية، بجودة عالية ورؤية مستقبلية مميزة. اكتشف مشاريعنا أو تواصل معنا لحجز استشارة عقارية فورية.",
       searchPlaceholder: "البحث في العقارات...",
       propertyType: "نوع العقار",
       location: "الموقع",
@@ -125,127 +140,101 @@ export default function PropertiesPage() {
       loading: "جاري تحميل العقارات...",
       error: "خطأ في تحميل العقارات",
       noProperties: "لم يتم العثور على عقارات",
-      previousPage: "السابق",
-      nextPage: "التالي",
+      propertyOverview: "نظرة عامة على العقار",
+      unitName: "اسم الوحدة",
+      annualRent: "الإيجار السنوي",
+      warranty: "الضمان",
+      delivery: "التسليم",
+      investorOnly: "للمستثمرين فقط",
+      general: "عام",
+      noImageAvailable: "لا توجد صورة متاحة",
+      loadMore: "تحميل المزيد"
     },
   }
 
   const currentContent = content[language]
 
   const getImageSrc = (img: string) => {
-    if (!img) return "/images/SAFA 01.jpg"
+    if (!img) return "/images/SAFA_01.webp"
     if (/^([A-Za-z0-9+/=]+)$/.test(img) && img.length > 100) {
       return `data:image/png;base64,${img}`
     }
     return img
   }
 
-  const statusMap = {
-    1: { label: "Pending", color: "bg-yellow-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    2: { label: "Approved", color: "bg-green-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M9 12l2 2l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    3: { label: "Sold", color: "bg-blue-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M7 12l3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    4: { label: "Rejected", color: "bg-red-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    5: { label: "Archived", color: "bg-gray-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
-        <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
-      </svg>
-    )},
-  };
-
   return (
-    <div className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`min-h-scree text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
+      <section className="pb-10 bg-gradient-to-b pt-40 bg-bg-light">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-4">
-            <Link href="/" className="hover:text-[#BDA25A]">
+          <div className="flex items-center space-x-2 text-sm text-helper mb-4">
+            <Link href="/" className="hover:text-secondary">
               {language === "ar" ? "الرئيسية" : "Home"}
             </Link>
             <span>/</span>
-            <span className="text-[#BDA25A]">{language === "ar" ? "العقارات" : "Properties"}</span>
+            <span className="text-secondary">{language === "ar" ? "العقارات" : "Properties"}</span>
           </div>
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{currentContent.title}</h1>
-            <p className="text-xl text-gray-600 mb-8">{currentContent.subtitle}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Filters */}
-      <section className="border-b bg-gray-900 py-2">
-        <div className="container mx-auto px-4 py-6">
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder={currentContent.searchPlaceholder}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white text-gray-900"
-              />
-            </div>
-
-            <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger className="bg-white text-gray-900">
-                <SelectValue placeholder={currentContent.propertyType} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{currentContent.allTypes}</SelectItem>
-                {propertyTypes.map((type) => (
-                  <SelectItem key={type} value={type.toLowerCase()}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-              <SelectTrigger className="bg-white text-gray-900">
-                <SelectValue placeholder={currentContent.location} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{currentContent.allLocations}</SelectItem>
-                {locations.map((location) => (
-                  <SelectItem key={location} value={location.toLowerCase()}>
-                    {location}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Button className="bg-[#BDA25A] hover:bg-[#A8935A] text-white">
-              <Filter className="h-4 w-4 mr-2" />
-              {currentContent.applyFilters}
-            </Button>
+            <h2 className="text-h2 font-bold text-primary">{currentContent.title}</h2>
+            <p className="text-primaryText text-secondary mt-4">{currentContent.subtitle}</p>
           </div>
         </div>
       </section>
 
       {/* Properties Grid */}
       <div className="container mx-auto px-4 py-12">
+        <div className="container-fluid border-b bg-primary py-2 mb-3">
+          <div className="container mx-auto px-4 py-6">
+            <div className="grid md:grid-cols-4 gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-helper" />
+                <Input
+                  placeholder={currentContent.searchPlaceholder}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-bg-main text-primary"
+                />
+              </div>
+
+              <Select value={selectedType} onValueChange={setSelectedType}>
+                <SelectTrigger className="bg-bg-main text-primary">
+                  <SelectValue placeholder={currentContent.propertyType} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{currentContent.allTypes}</SelectItem>
+                  {propertyTypes.map((type) =>
+                    typeof type === "string" ? (
+                      <SelectItem key={type} value={type.toLowerCase()}>
+                        {type}
+                      </SelectItem>
+                    ) : null
+                  )}
+                </SelectContent>
+              </Select>
+
+              <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                <SelectTrigger className="bg-bg-main text-primary">
+                  <SelectValue placeholder={currentContent.location} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{currentContent.allLocations}</SelectItem>
+                  {locations.map((location) => (
+                    <SelectItem key={location} value={location.toLowerCase()}>
+                      {location}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Button variant="outline">
+                <Filter className="h-4 w-4 mr-2" />
+                {currentContent.applyFilters}
+              </Button>
+            </div>
+          </div>
+        </div>
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -261,8 +250,8 @@ export default function PropertiesPage() {
         ) : (
           <>
             <div className="flex justify-between items-center mb-8">
-              <p className="text-gray-600">
-                {currentContent.showing} {filteredAndSortedProperties.length} {currentContent.of} {totalCount}{" "}
+              <p className="text-helper">
+                {currentContent.showing} {filteredAndSortedProperties.length}{" "}
                 {currentContent.properties}
               </p>
               <Select value={sortBy} onValueChange={setSortBy}>
@@ -280,153 +269,186 @@ export default function PropertiesPage() {
 
             {filteredAndSortedProperties.length === 0 ? (
               <div className="text-center py-12">
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">{currentContent.noProperties}</h3>
-                <p className="text-gray-500">Try adjusting your search criteria</p>
+                <h3 className="text-h3 font-semibold mb-2">{currentContent.noProperties}</h3>
+                <p className="text-helper">Try adjusting your search criteria</p>
               </div>
             ) : (
               <>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredAndSortedProperties.map((property) => {
+                  {visibleProperties.map((property) => {
                     const statusKey = Number(property.status) as keyof typeof statusMap;
                     const status = statusMap[statusKey] || { label: property.status, color: "bg-black", svg: null };
                     return (
                       <Card
                         key={property.id}
-                        className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden flex flex-col transition hover:shadow-lg relative"
-                        style={{ background: '#FCF7F1' }}
+                        className="bg-bg-main rounded-2xl shadow-md border border-bg-light overflow-hidden flex flex-col transition hover:shadow-lg relative"
+                        style={{ background: undefined }}
                       >
                         <div className="relative">
-                          <Image
-                            src={property.imageBase64Strings && property.imageBase64Strings.length > 0 ? getImageSrc(property.imageBase64Strings[0]) : "/images/SAFA 01.jpg"}
-                            alt={property.title ? `Photo of ${property.title}` : "Property image"}
-                            width={400}
-                            height={220}
-                            className="w-full h-56 object-cover"
-                          />
-                          {/* Top left badges */}
+                          {property.imageBase64Strings?.length > 0 ? (
+                            <Image
+                              src={getImageSrc(property.imageBase64Strings[0])}
+                              alt={property.title ? `Photo of ${property.title}` : "Property image"}
+                              width={400}
+                              height={220}
+                              className="w-full h-56 object-cover rounded-xl"
+                            />
+                          ) : (
+                            <div className="w-full h-56 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm">
+                              {currentContent.noImageAvailable}
+                            </div>
+                          )}
                           <div className="absolute top-4 left-4 flex gap-2 z-10">
-                            <span className="bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg> For rent</span>
+                            <span className="bg-black/80 text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>{getOptionLabel(property.propertyType, propertyOptions)}</span>
                           </div>
-                          {/* Top right badges */}
                           <div className={`absolute top-4 right-4 flex gap-2 z-10`}>
-                            <span className={`${status.color} text-white text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
+                            <span className={`${status.color} text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
                               {status.svg}
                               {status.label}
                             </span>
                           </div>
-                          <div className={`absolute top-4 right-4 flex gap-2 z-10`}>
-                            <span className={`${status.color} text-white text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
-                              {status.svg}
-                              {status.label}
-                            </span>
-                          </div>
-                          {/* Overlay property type and icons */}
                           <div className="absolute bottom-4 left-4 flex gap-2 z-10">
-                            <span className="bg-white/80 text-gray-700 text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> {property.unitCategory || property.propertyType || 'Apartment'}</span>
+                            <span className="bg-bg-main/80 text-generalText text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> {getOptionLabel(property.unitCategory, unitsOptions)}</span>
                           </div>
                           <div className="absolute bottom-4 right-4 flex gap-2 z-10">
-                            <a
-                              href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[#BDA25A] hover:text-[#a8935a] transition"
-                              title="View on Google Maps"
-                            >
-                              <MapPin className="h-6 w-6" />
-                            </a>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <button
+                                  className="text-secondary"
+                                  title="Inquire about this property"
+                                  onClick={() => {
+                                    setSelectedPropertyId(property.id);
+                                    setModalOpen(true);
+                                  }}
+                                >
+                                  <Bell className="h-6 w-6" />
+                                </button>
+                              </DialogTrigger>
+                            </Dialog>
                           </div>
                         </div>
                         <CardContent className="flex-1 flex flex-col p-6 pb-4">
-                          <div className="mb-2">
-                            <h3 className="text-lg font-bold text-gray-900 mb-1">{property.title}</h3>
-                            <div className="flex flex-row justify-between gap-2 text-sm mb-4">
-                              <div className="flex items-center text-gray-600 gap-2">
-                                <a
-                                  href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-[#BDA25A] hover:text-[#a8935a] transition"
-                                  title="View on Google Maps"
-                                >
-                                  <div className="flex justify-between gap-2">
-                                    <MapPin className="h-5 w-5" />
-                                    <span className="text-[#BDA25A]">{property.location}</span>
-                                  </div>
-                                </a>
-                              </div>
-                              <div className="flex items-center text-[#BDA25A] gap-2">
+                          <div className="mb-6">
+                            <h3 className="text-xl font-bold text-primary mb-2">{property.title}</h3>
+                            <div className="flex flex-wrap justify-between items-start gap-4 text-sm text-gray-600 mb-4">
+                              <a
+                                href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 hover:text-primary transition-colors"
+                                title="View on Google Maps"
+                              >
+                                <MapPin className="w-5 h-5 text-secondary" />
+                                <span className="text-helper text-secondary">{property.location}</span>
+                              </a>
+                              <div className="flex items-center gap-2 text-secondary">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                  <path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z"/>
+                                  <path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z" />
                                 </svg>
                                 <span>{property.area || property.areaSize + ' sqm'}</span>
                               </div>
                             </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-2xl font-bold text-[#BDA25A]">﷼ {property.price?.toLocaleString() || '80,000'}</span>
+                            {/* Price */}
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="text-primaryText font-extrabold text-secondary tracking-tight">
+                                ﷼ {property.price?.toLocaleString() || '80,000'}
+                              </span>
+                              <div className="flex flex-wrap gap-4 text-sm text-secondary">
+                                <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
+                                  <Bed className="w-5 h-5" /> {property.bedrooms} {currentContent.bedrooms}
+                                </span>
+                                <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
+                                  <Bath className="w-5 h-5" /> {property.bathrooms} {currentContent.bathrooms}
+                                </span>
+                              </div>
                             </div>
+                            <hr className="my-3 border-gray-200" />
                           </div>
-                          <hr className="my-2 border-[#F5E7D6]" />
-                          <div className="flex items-center gap-6 text-[#BDA25A] text-sm mb-3">
-                            <span className="flex items-center gap-1"><Bed className="w-5 h-5" /> {property.bedrooms}</span>
-                            <span className="flex items-center gap-1"><Bath className="w-5 h-5" /> {property.bathrooms}</span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
-                            <div><span className="font-semibold">Unit Name:</span> {property.unitName}</div>
-                            <div><span className="font-semibold">Projected Resale:</span> {property.projectedResaleValue}</div>
-                            <div><span className="font-semibold">Annual Rent:</span> {property.expectedAnnualRent}</div>
-                            {/* <div><span className="font-semibold">WhatsApp:</span> {property.whatsAppNumber}</div> */}
-                            <div><span className="font-semibold">Delivery:</span> {property.expectedDeliveryDate?.split('T')[0]}</div>
-                            <div><span className="font-semibold">Investor Only:</span> {property.isInvestorOnly ? 'Yes' : 'No'}</div>
-                            {/* <div>
-                              <span className="font-semibold">Status:</span> {(() => {
-                                switch (property.status) {
-                                  case 1: return 'Pending';
-                                  case 2: return 'Approved';
-                                  case 3: return 'Sold';
-                                  case 4: return 'Rejected';
-                                  case 5: return 'Archived';
-                                  default: return property.status;
-                                }
-                              })()}
-                            </div> */}
-                            {/* <div><span className="font-semibold">Expiry:</span> {property.expiryDate}</div> */}
-                            <div><span className="font-semibold">Expired:</span> {property.isExpired ? 'Yes' : 'No'}</div>
-                            {/* <div className="col-span-2"><span className="font-semibold">Videos:</span> {property.videoUrls && Array.isArray(property.videoUrls) && property.videoUrls.length > 0 ? property.videoUrls.join(', ') : '-'}</div> */}
-                            <div><span className="font-semibold">Warranty:</span> {property.warrantyInfo}</div>
-                            <div><span className="font-semibold">Features:</span> {property.features && property.features.length > 0 ? property.features.join(', ') : '-'}</div>
-                          </div>
-                          <div className="flex gap-2 mt-auto">
-                            <Button className="rounded-full bg-[#BDA25A] hover:bg-[#BDA25A] text-white px-5" asChild><Link href={`/properties/${property.id}`}>View more</Link></Button>
+
+                          <div className="space-y-6">
+                            <div className="flex justify-between items-center border-b pb-4">
+                              <h3 className="text-lg font-semibold text-gray-900">{currentContent.propertyOverview}</h3>
+                              <span className="text-xs bg-primary text-white px-3 py-1 rounded-full">
+                                {property.isInvestorOnly ? currentContent.investorOnly : currentContent.general}
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm text-gray-700">
+                              <div>
+                                <span className="block font-medium text-gray-900 mb-1">{currentContent.unitName}</span>
+                                <span>{property.unitName}</span>
+                              </div>
+                              <div>
+                                <span className="block font-medium text-gray-900 mb-1">{currentContent.projectedResale}</span>
+                                <span>{property.projectedResaleValue}</span>
+                              </div>
+                              <div>
+                                <span className="block font-medium text-gray-900 mb-1">{currentContent.annualRent}</span>
+                                <span>{property.expectedAnnualRent}</span>
+                              </div>
+                              <div>
+                                <span className="block font-medium text-gray-900 mb-1">{currentContent.delivery}</span>
+                                <span>{property.expectedDeliveryDate?.split("T")[0] || "-"}</span>
+                              </div>
+                              {/* <div>
+                                <span className="block font-medium text-gray-900 mb-1">Expired</span>
+                                <span>{property.isExpired ? "Yes" : "No"}</span>
+                              </div> */}
+                              <div>
+                                <span className="block font-medium text-gray-900 mb-1">{currentContent.warranty}</span>
+                                <span>{property.warrantyInfo || "-"}</span>
+                              </div>
+                            </div>
+
+                            <div>
+                              <span className="block font-medium text-gray-900 mb-2">{currentContent.features}</span>
+                              <div className="flex flex-wrap gap-2">
+                                {property.features?.length ? (
+                                  property.features.map((feature, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full border border-gray-300"
+                                    >
+                                      {feature}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span className="text-sm text-gray-500">No features listed</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex justify-end">
+                              <Button className="rounded-full bg-green-600 text-white hover:bg-green-500 px-6 py-2 text-sm shadow" asChild>
+                                <Link href={`/properties/${property.id}`}>{currentContent.viewDetails}</Link>
+                              </Button>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
                     )
                   })}
                 </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex justify-center items-center space-x-4 mt-12">
+                {visibleCount < filteredAndSortedProperties.length && (
+                  <div className="flex justify-center mt-8">
                     <Button
                       variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                      disabled={currentPage === 1}
+                      onClick={() => setVisibleCount((prev) => prev + pageSize)}
+                      className="px-6 py-2 text-base font-medium"
                     >
-                      {currentContent.previousPage}
-                    </Button>
-
-                    <span className="text-gray-600">
-                      Page {currentPage} of {totalPages}
-                    </span>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                    >
-                      {currentContent.nextPage}
+                      {currentContent.loadMore}
                     </Button>
                   </div>
+                )}
+                {selectedPropertyId !== null && (
+                  <InquiryModal
+                    open={modalOpen}
+                    onOpenChange={(open) => {
+                      setModalOpen(open);
+                      if (!open) setSelectedPropertyId(null);
+                    }}
+                    propertyId={selectedPropertyId}
+                  />
                 )}
               </>
             )}

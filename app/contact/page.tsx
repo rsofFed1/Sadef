@@ -212,39 +212,39 @@ export default function ContactPage() {
   const currentContent = content[language]
 
   return (
-    <div className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`min-h-screen bg-bg-light text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
+      <section className="py-20 bg-gradient-to-br from-bg-light to-bg-main pt-40">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-            <Link href="/" className="hover:text-[#BDA25A]">
+          <div className="flex items-center space-x-2 text-sm text-helper mb-6">
+            <Link href="/" className="hover:text-secondary">
               {language === "ar" ? "الرئيسية" : "Home"}
             </Link>
             <span>/</span>
-            <span className="text-[#BDA25A]">{language === "ar" ? "اتصل بنا" : "Contact"}</span>
+            <span className="text-secondary">{language === "ar" ? "اتصل بنا" : "Contact"}</span>
           </div>
 
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{currentContent.title}</h1>
-            <p className="text-xl text-gray-600 mb-8">{currentContent.subtitle}</p>
-            <p className="text-lg text-gray-700">{currentContent.intro}</p>
+            <h1 className="text-h1 font-bold text-primary mb-6">{currentContent.title}</h1>
+            <p className="text-h3 text-generalText mb-8">{currentContent.subtitle}</p>
+            <p className="text-body text-generalText">{currentContent.intro}</p>
           </div>
         </div>
       </section>
 
       {/* Contact Form & Info */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-bg-main">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <Card className="p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">{currentContent.form.title}</h2>
+              <h2 className="text-h2 font-bold text-primary mb-6">{currentContent.form.title}</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{currentContent.form.name}</label>
+                    <label className="block text-sm font-medium text-helper mb-2">{currentContent.form.name}</label>
                     <Input
                       name="name"
                       value={formData.name}
@@ -254,7 +254,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{currentContent.form.email}</label>
+                    <label className="block text-sm font-medium text-helper mb-2">{currentContent.form.email}</label>
                     <Input
                       type="email"
                       name="email"
@@ -268,7 +268,7 @@ export default function ContactPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{currentContent.form.phone}</label>
+                    <label className="block text-sm font-medium text-helper mb-2">{currentContent.form.phone}</label>
                     <Input
                       type="tel"
                       name="phone"
@@ -279,7 +279,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-helper mb-2">
                       {currentContent.form.subject}
                     </label>
                     <Select
@@ -301,7 +301,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-helper mb-2">
                     {currentContent.form.preferredContact}
                   </label>
                   <Select
@@ -320,7 +320,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{currentContent.form.message}</label>
+                  <label className="block text-sm font-medium text-helper mb-2">{currentContent.form.message}</label>
                   <Textarea
                     name="message"
                     value={formData.message}
@@ -331,7 +331,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white">
+                <Button type="submit" className="w-full bg-primary hover:bg-primary-hover text-bg-main">
                   <Send className="h-4 w-4 mr-2" />
                   {currentContent.form.submit}
                 </Button>
@@ -341,37 +341,37 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-8">
               <Card className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">{currentContent.contactInfo.title}</h3>
+                <h3 className="text-h3 font-bold text-primary mb-6">{currentContent.contactInfo.title}</h3>
                 <div className="space-y-4">
                   <div className="flex items-start">
-                    <MapPin className="h-5 w-5 text-[#BDA25A] mr-3 mt-1" />
+                    <MapPin className="h-5 w-5 text-secondary mr-3 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-gray-900">{currentContent.contactInfo.address.title}</h4>
-                      <p className="text-gray-600">{currentContent.contactInfo.address.value}</p>
+                      <h4 className="font-semibold text-primary">{currentContent.contactInfo.address.title}</h4>
+                      <p className="text-helper">{currentContent.contactInfo.address.value}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <Phone className="h-5 w-5 text-[#BDA25A] mr-3 mt-1" />
+                    <Phone className="h-5 w-5 text-secondary mr-3 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-gray-900">{currentContent.contactInfo.phone.title}</h4>
-                      <p className="text-gray-600">{currentContent.contactInfo.phone.value}</p>
+                      <h4 className="font-semibold text-primary">{currentContent.contactInfo.phone.title}</h4>
+                      <p className="text-helper">{currentContent.contactInfo.phone.value}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <Mail className="h-5 w-5 text-[#BDA25A] mr-3 mt-1" />
+                    <Mail className="h-5 w-5 text-secondary mr-3 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-gray-900">{currentContent.contactInfo.email.title}</h4>
-                      <p className="text-gray-600">{currentContent.contactInfo.email.value}</p>
+                      <h4 className="font-semibold text-primary">{currentContent.contactInfo.email.title}</h4>
+                      <p className="text-helper">{currentContent.contactInfo.email.value}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <Clock className="h-5 w-5 text-[#BDA25A] mr-3 mt-1" />
+                    <Clock className="h-5 w-5 text-secondary mr-3 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-gray-900">{currentContent.contactInfo.hours.title}</h4>
-                      <p className="text-gray-600">{currentContent.contactInfo.hours.value}</p>
+                      <h4 className="font-semibold text-primary">{currentContent.contactInfo.hours.title}</h4>
+                      <p className="text-helper">{currentContent.contactInfo.hours.value}</p>
                     </div>
                   </div>
                 </div>
@@ -379,16 +379,16 @@ export default function ContactPage() {
 
               {/* Quick Actions */}
               <Card className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">{currentContent.quickActions.title}</h3>
+                <h3 className="text-h3 font-bold text-primary mb-6">{currentContent.quickActions.title}</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white" asChild>
+                  <Button className="bg-green-600 hover:bg-green-700 text-bg-main" asChild>
                     <Link href="https://wa.me/966595344758" target="_blank">
                       <MessageCircle className="h-4 w-4 mr-2" />
                       {currentContent.quickActions.whatsapp}
                     </Link>
                   </Button>
 
-                  <Button className="bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
+                  <Button className="bg-primary hover:bg-primary-hover text-bg-main" asChild>
                     <Link href="tel:+966595344758">
                       <Phone className="h-4 w-4 mr-2" />
                       {currentContent.quickActions.call}
@@ -396,7 +396,7 @@ export default function ContactPage() {
                   </Button>
 
                   <Button
-                    className="bg-[#BDA25A] hover:bg-[#A8935A] text-white"
+                    className="bg-primary hover:bg-primary-hover text-bg-main"
                     asChild
                   >
                     <Link href="mailto:info@sadef.com.sa">
@@ -406,7 +406,7 @@ export default function ContactPage() {
                   </Button>
 
                   <Button
-                    className="bg-[#BDA25A] hover:bg-[#A8935A] text-white"
+                    className="bg-primary hover:bg-primary-hover text-bg-main"
                   >
                     <Clock className="h-4 w-4 mr-2" />
                     {currentContent.quickActions.schedule}
@@ -419,63 +419,63 @@ export default function ContactPage() {
       </section>
 
       {/* Departments */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-bg-light">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{currentContent.departments.title}</h2>
+            <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.departments.title}</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
-                <Building2 className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="h-8 w-8 text-bg-main" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{currentContent.departments.sales.title}</h3>
-              <p className="text-gray-600 mb-4">{currentContent.departments.sales.description}</p>
+              <h3 className="text-h3 font-bold text-primary mb-2">{currentContent.departments.sales.title}</h3>
+              <p className="text-helper mb-4">{currentContent.departments.sales.description}</p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
-                  <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.sales.phone}</span>
+                  <Phone className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.sales.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.sales.email}</span>
+                  <Mail className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.sales.email}</span>
                 </div>
               </div>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
-                <HeadphonesIcon className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <HeadphonesIcon className="h-8 w-8 text-bg-main" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{currentContent.departments.support.title}</h3>
-              <p className="text-gray-600 mb-4">{currentContent.departments.support.description}</p>
+              <h3 className="text-h3 font-bold text-primary mb-2">{currentContent.departments.support.title}</h3>
+              <p className="text-helper mb-4">{currentContent.departments.support.description}</p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
-                  <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.support.phone}</span>
+                  <Phone className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.support.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.support.email}</span>
+                  <Mail className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.support.email}</span>
                 </div>
               </div>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="w-16 h-16 bg-[#BDA25A] rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-bg-main" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{currentContent.departments.maintenance.title}</h3>
-              <p className="text-gray-600 mb-4">{currentContent.departments.maintenance.description}</p>
+              <h3 className="text-h3 font-bold text-primary mb-2">{currentContent.departments.maintenance.title}</h3>
+              <p className="text-helper mb-4">{currentContent.departments.maintenance.description}</p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center">
-                  <Phone className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.maintenance.phone}</span>
+                  <Phone className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.maintenance.phone}</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Mail className="h-4 w-4 text-[#BDA25A] mr-2" />
-                  <span className="text-[#BDA25A]">{currentContent.departments.maintenance.email}</span>
+                  <Mail className="h-4 w-4 text-secondary mr-2" />
+                  <span className="text-secondary">{currentContent.departments.maintenance.email}</span>
                 </div>
               </div>
             </Card>

@@ -12,6 +12,7 @@ import { Search, Calendar } from "lucide-react"
 import { useBlogs } from "@/hooks/useBlogs"
 import { format } from "date-fns"
 import { BlogCardSkeleton } from "@/components/PropertyCardSkeleton"
+import { formatDateTime } from "../utils/dateUtils"
 
 export default function BlogsPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -63,37 +64,37 @@ export default function BlogsPage() {
   const currentContent = content[language]
 
   return (
-    <div className={`min-h-screen bg-gray-50 ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`min-h-screen bg-bg-light text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
+      <section className="py-20 bg-gradient-to-br from-bg-light to-bg-main pt-40">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-            <Link href="/" className="hover:text-[#BDA25A]">
+          <div className="flex items-center space-x-2 text-sm text-helper mb-6">
+            <Link href="/" className="hover:text-secondary">
               {language === "ar" ? "الرئيسية" : "Home"}
             </Link>
             <span>/</span>
-            <span className="text-[#BDA25A]">{language === "ar" ? "المدونات" : "Blogs"}</span>
+            <span className="text-secondary">{language === "ar" ? "المدونات" : "Blogs"}</span>
           </div>
 
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{currentContent.title}</h1>
-            <p className="text-xl text-gray-600 mb-8">{currentContent.subtitle}</p>
+            <h1 className="text-h1 font-bold text-primary mb-6">{currentContent.title}</h1>
+            <p className="text-h3 text-generalText mb-8">{currentContent.subtitle}</p>
           </div>
         </div>
       </section>
 
       {/* Search */}
-      <section className="border-b bg-gray-900 py-2">
+      <section className="border-b bg-primary py-2">
         <div className="container mx-auto px-4 py-6">
           <div className="max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-helper" />
             <Input
               placeholder={currentContent.searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white text-gray-900"
+              className="pl-10 bg-bg-main text-primary"
             />
           </div>
         </div>
@@ -116,16 +117,16 @@ export default function BlogsPage() {
             </div>
           ) : filteredBlogs.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600">{currentContent.noBlogs}</p>
+              <p className="text-helper">{currentContent.noBlogs}</p>
             </div>
           ) : (
             <>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredBlogs.map((blog) => (
-                  <Card key={blog.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-white border border-gray-200 rounded-lg">
+                  <Card key={blog.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-bg-main border border-bg-light rounded-lg">
                     <div className="relative overflow-hidden">
                       <Image
-                        src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA 052.jpg"}
+                        src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA_052.webp"}
                         alt={blog.title}
                         width={400}
                         height={250}
@@ -134,20 +135,21 @@ export default function BlogsPage() {
                     </div>
                     <CardContent className="p-6">
                       <div className="space-y-4">
-                        <div className="flex items-center text-sm text-gray-500 space-x-4">
+                        <div className="flex items-center text-sm text-helper space-x-4">
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
-                            <span>{format(new Date(blog.publishedAt), "MMM dd, yyyy")}</span>
+                            <span className="text-body mb-3">{formatDateTime(blog.publishedAt)}</span>
+
                           </div>
                         </div>
 
-                        <h3 className="text-xl font-bold text-gray-900 line-clamp-2">{blog.title}</h3>
+                        <h3 className="text-h3 font-bold text-primary line-clamp-2">{blog.title}</h3>
 
                         {blog.content && (
-                          <p className="text-gray-600 text-sm mb-4 line-clamp-3"> {blog.content} </p>
+                          <p className="text-generalText text-body mb-4 line-clamp-3"> {blog.content} </p>
                         )}
 
-                        <Button className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
+                        <Button className="w-full bg-primary hover:bg-primary-hover text-bg-main" asChild>
                           <Link href={`/blogs/${blog.id}`}>{currentContent.readMore}</Link>
                         </Button>
                       </div>
@@ -167,7 +169,7 @@ export default function BlogsPage() {
                     {currentContent.previousPage}
                   </Button>
 
-                  <span className="text-gray-600">
+                  <span className="text-helper">
                     Page {currentPage} of {totalPages}
                   </span>
 

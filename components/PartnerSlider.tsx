@@ -3,13 +3,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { ScrollAnimation } from './animations/ScrollAnimation';
+import { Content } from '@/types/content';
+
+type Props = {
+  currentContent: {
+    successPartners: Content["en"]["successPartners"] | Content["ar"]["successPartners"]
+  }
+}
 interface Partner {
   id: number;
   name: string;
   logo: string;
 }
 
-export default function SuccessPartners() {
+export default function SuccessPartners({currentContent}: Props) {
   const partners: Partner[] = [
     {
       id: 1,
@@ -66,10 +73,9 @@ export default function SuccessPartners() {
   return (
     <section className="container mx-auto px-4 py-16">
       <div className="flex flex-col space-y-8">
-        <h2 className="text-4xl font-normal text-center text-[#243242]">
-          Success Partners
-        </h2>
-
+        <div className="text-center mb-16">
+          <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.successPartners.title}</h2>
+        </div>
         <Swiper
           modules={[Autoplay]}
           spaceBetween={30}

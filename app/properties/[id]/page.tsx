@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PropertyCardSkeleton } from "@/components/PropertyCardSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import {
   ArrowLeft,
   MapPin,
@@ -24,6 +23,9 @@ import {
 import { getPropertyById, type Property } from "@/lib/api";
 import dynamic from "next/dynamic";
 import { locations } from "@/app/data/locations";
+import { DetailRow, PropertyDetail, statusMap } from "../(components)/statysMap";
+import { propertyOptions, propertyStatuses } from "@/components/constants/constants";
+import getOptionLabel from "@/app/utils/getOptionLabel";
 
 export default function PropertyDetailPage() {
   const params = useParams();
@@ -127,39 +129,6 @@ export default function PropertyDetailPage() {
     return img;
   };
 
-  const statusMap = {
-    1: { label: "Pending", color: "bg-yellow-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    2: { label: "Approved", color: "bg-green-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M9 12l2 2l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    3: { label: "Sold", color: "bg-blue-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M7 12l3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    4: { label: "Rejected", color: "bg-red-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    5: { label: "Archived", color: "bg-gray-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
-        <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
-      </svg>
-    )},
-  };
-
   if (loading) {
     return (
       <div
@@ -259,7 +228,7 @@ export default function PropertyDetailPage() {
                   className="object-cover"
                 />
                 <div className="absolute top-4 left-4 flex gap-2 z-10">
-                  <span className="bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg> For rent</span>
+                  <span className="bg-black/80 text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>{getOptionLabel(property.propertyType, propertyOptions)}</span>
                 </div>
                 {/* Top right badges */}
                 <div className={`absolute top-4 right-4 flex gap-2 z-10`}>
@@ -295,146 +264,85 @@ export default function PropertyDetailPage() {
               )}
             </div>
             {/* Property Information */}
-            <div className="space-y-6">
-              <Card className="p-6 bg-white border border-white shadow-lg">
+            <div className="space-y-8">
+              <Card className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl space-y-8">
+                
+                {/* Title & Location */}
                 <div>
-                  <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    {property.title}
-                  </h1>
-                  <div className="flex items-center text-gray-600 mb-4">
-                    <a
-                      href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#BDA25A] hover:text-[#a8935a] transition"
-                      title="View on Google Maps"
-                    >
-                      <div className="flex justify-between gap-2">
-                        <MapPin className="h-6 w-6" />
-                        <span className="text-lg">{property.location}</span>
-                      </div>
-                    </a>
-                  </div>
-                  {property.description && (
-                    <p className="text-gray-700 leading-relaxed mb-6">
-                      {property.description}
-                    </p>
-                  )}
+                  <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{property.title}</h1>
+                  <a
+                    href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-[#BDA25A] hover:text-[#a8935a] transition text-base"
+                    title="View on Google Maps"
+                  >
+                    <MapPin className="h-5 w-5" />
+                    <span className="underline">{property.location}</span>
+                  </a>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4"> {currentContent.propertyDetails} </h3>
-                  <div className="grid grid-cols-2 gap-4 mb-2">
-                    <div className="flex items-center">
-                      <Building2 className="h-5 w-5 text-[#BDA25A] mr-2" />
-                      <div className="flex">
-                        <p className="text-sm text-gray-600">
-                          {currentContent.propertyType}
-                        </p>
-                        <p className="font-semibold text-sm text-gray-600 ml-2">{property.propertyType}</p>
-                      </div>
-                    </div>
-                    {property.bedrooms && (
-                      <div className="flex items-center">
-                        <Bed className="h-5 w-5 text-[#BDA25A] mr-2" />
-                        <div className="flex">
-                          <p className="text-sm text-gray-600">
-                            {currentContent.bedrooms}
-                          </p>
-                          <p className="font-semibold text-sm text-gray-600 ml-2">{property.bedrooms}</p>
-                        </div>
-                      </div>
+
+                <div
+                  dangerouslySetInnerHTML={{__html: property.description || "<span class='text-gray-400'>No description provided.</span>",}}
+                  className="prose max-w-none text-gray-700">
+                </div>
+
+                {/* Property Details Section */}
+                <section>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">{currentContent.propertyDetails}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <PropertyDetail icon={<Building2 className="text-[#BDA25A]" />} label={currentContent.propertyType} value={property.propertyType} />
+                    {property.bedrooms && <PropertyDetail icon={<Bed className="text-[#BDA25A]" />} label={currentContent.bedrooms} value={property.bedrooms} />}
+                    {property.bathrooms && <PropertyDetail icon={<Bath className="text-[#BDA25A]" />} label={currentContent.bathrooms} value={property.bathrooms} />}
+                    <PropertyDetail icon={<Square className="text-[#BDA25A]" />} label={currentContent.area} value={`${property.areaSize} m²`} />
+                  </div>
+                </section>
+                {/* Investment Section */}
+                <section className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                  <h3 className="text-h3 font-bold text-generalText mb-6 flex items-center gap-2">Investment Details</h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+                    <DetailRow label={currentContent.startingPrice} value={property.price} />
+                    <DetailRow label="Unit Name" value={property.unitName} />
+                    <DetailRow label="Projected Resale" value={property.projectedResaleValue} />
+                    <DetailRow label="Annual Rent" value={property.expectedAnnualRent} />
+                    <DetailRow label="Warranty" value={property.warrantyInfo} />
+                    <DetailRow label="Status" value={propertyStatuses.find((status) => status.value === property.status)?.label ?? property.status}/>
+                  </div>
+                </section>
+
+                {/* Features Section */}
+                <section>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">{currentContent.features}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {property.features?.length > 0 ? (
+                      property.features.map((feature, i) => (
+                        <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full border border-gray-200">
+                          {feature}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-sm text-gray-500">No features listed</span>
                     )}
-                    {property.bathrooms && (
-                      <div className="flex items-center">
-                        <Bath className="h-5 w-5 text-[#BDA25A] mr-2" />
-                        <div className="flex">
-                          <p className="text-sm text-gray-600">
-                            {currentContent.bathrooms}
-                          </p>
-                          <p className="font-semibold text-sm text-gray-600 ml-2">{property.bathrooms}</p>
-                        </div>
-                      </div>
-                    )}
-                    <div className="flex items-center">
-                      <Square className="h-5 w-5 text-[#BDA25A] mr-2" />
-                      <div className="flex">
-                        <p className="text-sm text-gray-600">
-                          {currentContent.area}
-                        </p>
-                        <p className="font-semibold text-sm text-gray-600 ml-2">{property.areaSize} m²</p>
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4"> Investment Details </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> {currentContent.startingPrice}: </span>
-                      <span className="font-bold text-[#BDA25A] text-md"> {property.price} </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> Unit Name:: </span>
-                      <span className="font-bold text-[#BDA25A] text-md"> {property.unitName} </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> Projected Resale: </span>
-                      <span className="font-bold text-[#BDA25A] text-md"> {property.projectedResaleValue} </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> Annual Rent: </span>
-                      <span className="font-bold text-[#BDA25A] text-md"> {property.expectedAnnualRent} </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> Warranty: </span>
-                      <span className="font-bold text-[#BDA25A] text-md"> {property.warrantyInfo} </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600"> Status: </span>
-                      <span className="font-bold text-[#BDA25A] text-md">
-                        {(() => {
-                          switch (property.status) {
-                            case 1: return 'Pending';
-                            case 2: return 'Approved';
-                            case 3: return 'Sold';
-                            case 4: return 'Rejected';
-                            case 5: return 'Archived';
-                            default: return property.status;
-                          }
-                        })()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    {currentContent.features}
-                  </h3>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600"> {currentContent.features}: </span>
-                    <span className="font-bold text-[#BDA25A] text-md"> {property.features} </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600"> Delivery: </span>
-                    <span className="font-bold text-[#BDA25A] text-md"> {property.expectedDeliveryDate?.split('T')[0]} </span>
-                  </div>
-                   <div className="flex justify-between">
-                    <span className="text-gray-600"> Investor Only:: </span>
-                    <span className="font-bold text-[#BDA25A] text-md"> {property.isInvestorOnly ? 'Yes' : 'No'} </span>
-                  </div>
-                </div>
+                </section>
+
+                {/* Delivery & Investor Info */}
+                <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                  <DetailRow label="Delivery" value={property.expectedDeliveryDate?.split('T')[0]} />
+                  <DetailRow label="Investor Only" value={property.isInvestorOnly ? 'Yes' : 'No'} />
+                </section>
               </Card>
-              {/* Contact Actions */}
+
+              {/* Contact Buttons */}
               <div className="space-y-4">
-                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild >
+                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
                   <Link href="/contact">
                     <Phone className="h-5 w-5 mr-2" />
                     {property.whatsAppNumber}
                   </Link>
                 </Button>
-                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild >
+                <Button size="lg" className="w-full bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
                   <Link href={`https://wa.me/${property.whatsAppNumber}`} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-5 w-5 mr-2" />
                     WhatsApp

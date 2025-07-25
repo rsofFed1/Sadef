@@ -9,7 +9,7 @@ type Props = {
 
 export default function StatsSection( { currentContent }: Props ) {
   return (
-        <section className="py-20 bg-[#BDA25A]">
+        <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -19,9 +19,9 @@ export default function StatsSection( { currentContent }: Props ) {
                 { value: "15%", label: currentContent.stats.returns },
             ].map((stat, index) => (
                 <ScrollAnimation key={index} delay={index * 0.2} direction="left">
-                <div className="text-center text-white">
-                    <div className="text-4xl lg:text-5xl font-bold mb-2">{stat.value}</div>
-                    <div className="text-lg opacity-90">{stat.label}</div>
+                <div className="text-center text-bg-main">
+                    <div className="text-h1 font-bold mb-2">{stat.value}</div>
+                    <div className="text-body opacity-90">{stat.label}</div>
                 </div>
                 </ScrollAnimation>
             ))}

@@ -22,6 +22,7 @@ import FeaturedProperties from "@/components/FeaturedProperties"
 import OurServices from "@/components/OurServices"
 import WhyChooseSadef from "@/components/WhyChooseSadef"
 import ContactCTA from "@/components/ContactCta"
+import { title } from "process"
 
 export default function HomePage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -58,6 +59,23 @@ export default function HomePage() {
         title: "Why Choose Sadef",
         subtitle: "Your trusted partner in real estate investment",
       },
+      contactCTA: {
+        title: "Ready to Invest in Your Future?",
+        subtitle: "Contact our experts today for personalized investment guidance",
+      },
+      interactiveMap: {
+        title: "Interactive Map",
+        subtitle: "Vibrant Residential Complexes",
+      },
+      mediaCenter: {
+        title:"Media Center",
+      },
+      featureContent: {
+        title:"Feature Content",
+      },
+      successPartners: {
+        title:"Success Partners",
+      },
     },
     ar: {
       hero: {
@@ -86,6 +104,23 @@ export default function HomePage() {
         title: "لماذا تختار سديف",
         subtitle: "شريكك الموثوق في الاستثمار العقاري",
       },
+      contactCTA: {
+        title: "هل أنت مستعد للاستثمار في مستقبلك؟",
+        subtitle: "تواصل مع خبرائنا اليوم للحصول على إرشادات استثمارية مخصصة",
+      },
+      interactiveMap: {
+        title: "الخريطة التفاعلية",
+        subtitle: "مجمعات سكنية نابضة بالحياة",
+      },
+      mediaCenter: {
+        title: "المركز الإعلامي",
+      },
+      featureContent: {
+        title: "المحتوى المميز",
+      },
+      successPartners: {
+        title: "شركاء النجاح",
+      },
     },
   }
 
@@ -93,7 +128,7 @@ export default function HomePage() {
   const isRTL = language === "ar"
 
   return (
-    <div className={`min-h-screen overflow-hidden bg-white ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`min-h-screen overflow-hidden bg-bg-main text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Hero Section component */}
@@ -109,22 +144,22 @@ export default function HomePage() {
       <OurServices currentContent={{services: currentContent.services}} />
 
       {/* Featured Section component */}
-      <FeaturedSection />
+      <FeaturedSection currentContent={{featureContent: currentContent.featureContent}} />
 
       {/* Interactive Map component */}
-      <InteractiveMap />
+      <InteractiveMap currentContent={{interactiveMap: currentContent.interactiveMap}} />
 
       {/* Media Center component */}
-      <MediaCenter />
+      <MediaCenter currentContent={{mediaCenter: currentContent.mediaCenter}}/>
 
       {/* Success Partners component */}
-      <SuccessPartners />
+      <SuccessPartners currentContent={{successPartners: currentContent.successPartners}}/>
 
       {/* Why Choose Sadef component */}
       <WhyChooseSadef currentContent={{whyChoose: currentContent.whyChoose}} />
 
       {/* Contact CTA component */}
-      <ContactCTA />
+      <ContactCTA currentContent={{contactCTA: currentContent.contactCTA}} />
 
       <WhatsAppButton />
 

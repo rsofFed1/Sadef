@@ -62,8 +62,8 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
     if (!leafletLoaded || !L) return
 
     // Fix Leaflet icon issues with webpack
-    delete (L.Icon.Default.prototype as IconDefaultPrototype)._getIconUrl
-    L.Icon.Default.mergeOptions({
+    delete (L!.Icon.Default.prototype as IconDefaultPrototype)._getIconUrl
+    L!.Icon.Default.mergeOptions({
       iconRetinaUrl: "/images/marker-icon-2x.png",
       iconUrl: "/images/marker-icon.png",
       shadowUrl: "/images/marker-shadow.png",
@@ -71,7 +71,7 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
 
     // Initialize the map if it doesn't exist
     if (!mapRef.current) {
-      mapRef.current = L.map("map", {
+      mapRef.current = L!.map("map", {
         center: [24.0, 45.0], // Center of Saudi Arabia
         zoom: 6,
         zoomControl: true,
@@ -79,27 +79,27 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
       })
 
       // Add OpenStreetMap tile layer
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L!.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(mapRef.current)
+      }).addTo(mapRef.current!)
 
       // Add markers for each location
       locations.forEach((location) => {
-        const customIcon = L.divIcon({
+        const customIcon = L!.divIcon({
           className: "custom-div-icon",
           html: `
-                        <div style="background-color: #7D5A42; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
+                        <div style="background-color: #002B5B; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white" width="16" height="16">
                                 <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
                             </svg>
-                            ${location.id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #7D5A42; color: white; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center;">${location.name}</div>` : ""}
+                            ${location.id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #D4AF37; color: #002B5B; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center; font-weight: bold;">${location.name}</div>` : ""}
                         </div>
                     `,
           iconSize: [30, 30],
           iconAnchor: [15, 30],
         })
 
-        const marker = L.marker(location.coordinates, { icon: customIcon })
+        const marker = L!.marker(location.coordinates, { icon: customIcon })
           .addTo(mapRef.current!)
           .on("click", () => {
             setActiveLocation(location.id)
@@ -123,14 +123,14 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
           const id = Number.parseInt(key)
           const marker = markersRef.current[id]
 
-          const customIcon = L.divIcon({
+          const customIcon = L!.divIcon({
             className: "custom-div-icon",
             html: `
-                            <div style="background-color: #7D5A42; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
+                            <div style="background-color: #002B5B; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white" width="16" height="16">
                                     <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
                                 </svg>
-                                ${id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #7D5A42; color: white; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center;">${locations.find((l) => l.id === id)?.name}</div>` : ""}
+                                ${id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #D4AF37; color: #002B5B; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center; font-weight: bold;">${locations.find((l) => l.id === id)?.name}</div>` : ""}
                             </div>
                         `,
             iconSize: [30, 30],

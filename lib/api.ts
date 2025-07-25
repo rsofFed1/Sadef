@@ -1,5 +1,4 @@
-import { mockBlogs, mockProperties } from "./mock-data"
-import type { ApiResponse, PaginatedResponse, Blog, Property } from "./types"
+import type { ApiResponse, PaginatedResponse, Blog, Property, CreateLeadPayload, LeadResponse } from "./types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -27,15 +26,13 @@ export async function getBlogs(pageNumber = 1, pageSize = 10): Promise<ApiRespon
     return json
   } catch (error) {
     console.warn("API call failed, using mock data:", error)
-    // Fallback to local mock data
-    const start = (pageNumber - 1) * pageSize
-    const items = mockBlogs.slice(start, start + pageSize)
+
     return success({
-      items,
-      totalCount: mockBlogs.length,
-      pageNumber,
-      pageSize,
-      totalPages: Math.ceil(mockBlogs.length / pageSize),
+      items:[],
+      totalCount: 0,
+      pageNumber:1,
+      pageSize:0,
+      totalPages: 0,
     })
   }
 }
@@ -57,9 +54,7 @@ export async function getBlogById(id: number): Promise<ApiResponse<Blog>> {
     return (await res.json()) as ApiResponse<Blog>
   } catch (error) {
     console.warn("API call failed, using mock data:", error)
-    const blog = mockBlogs.find((b) => b.id === id)
-    if (!blog) return { succeeded: false, message: "Not found", data: {} as Blog }
-    return success(blog)
+    return { succeeded: false, message: "Not found", data: {} as Blog }
   }
 }
 
@@ -82,14 +77,12 @@ export async function getProperties(pageNumber = 1, pageSize = 10): Promise<ApiR
     return json
   } catch (error) {
     console.warn("API call failed, using mock data:", error)
-    const start = (pageNumber - 1) * pageSize
-    const items = mockProperties.slice(start, start + pageSize)
     return success({
-      items,
-      totalCount: mockProperties.length,
-      pageNumber,
-      pageSize,
-      totalPages: Math.ceil(mockProperties.length / pageSize),
+      items:[],
+      totalCount: 0,
+      pageNumber: 1,
+      pageSize: 0,
+      totalPages: 1,
     })
   }
 }
@@ -111,11 +104,49 @@ export async function getPropertyById(id: number): Promise<ApiResponse<Property>
     return (await res.json()) as ApiResponse<Property>
   } catch (error) {
     console.warn("API call failed, using mock data:", error)
-    const property = mockProperties.find((p) => p.id === id)
-    if (!property) return { succeeded: false, message: "Not found", data: {} as Property }
-    return success(property)
+    return { succeeded: false, message: "Not found", data: {} as Property }
   }
 }
+
+/* ---------- LEADS ---------- */
+
+export async function createLead(payload: CreateLeadPayload): Promise<LeadResponse> {
+  try {
+    if (!API_BASE_URL || API_BASE_URL.includes("your-api-domain.com")) throw new Error("No real API configured")
+
+    const res = await fetch(`${API_BASE_URL}/api/v1/lead/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+    }
+
+    return (await res.json()) as LeadResponse
+  } catch (error) {
+    console.warn("API call failed for createLead:", error)
+    return {
+      succeeded: false,
+      message: (error as Error).message,
+      validationResultModel: null,
+      data: {
+        id: 0,
+        fullName: payload.fullName,
+        email: payload.email,
+        phone: payload.phone,
+        message: payload.message,
+        propertyId: payload.propertyId,
+        status: 0,
+      },
+    }
+  }
+}
+
 
 // Export types for use in other files
 export type { Blog, Property, ApiResponse, PaginatedResponse }
