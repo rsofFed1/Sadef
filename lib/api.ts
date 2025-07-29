@@ -1,3 +1,4 @@
+import { CloudCog } from "lucide-react"
 import type { ApiResponse, PaginatedResponse, Blog, Property, CreateLeadPayload, LeadResponse } from "./types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
@@ -25,7 +26,7 @@ export async function getBlogs(pageNumber = 1, pageSize = 10): Promise<ApiRespon
     const json = (await res.json()) as ApiResponse<PaginatedResponse<Blog>>
     return json
   } catch (error) {
-    console.warn("API call failed, using mock data:", error)
+    console.warn("API call failed:", error)
 
     return success({
       items:[],
@@ -53,7 +54,7 @@ export async function getBlogById(id: number): Promise<ApiResponse<Blog>> {
 
     return (await res.json()) as ApiResponse<Blog>
   } catch (error) {
-    console.warn("API call failed, using mock data:", error)
+    console.warn("API call failed:", error)
     return { succeeded: false, message: "Not found", data: {} as Blog }
   }
 }
@@ -76,7 +77,7 @@ export async function getProperties(pageNumber = 1, pageSize = 10): Promise<ApiR
     const json = (await res.json()) as ApiResponse<PaginatedResponse<Property>>
     return json
   } catch (error) {
-    console.warn("API call failed, using mock data:", error)
+    console.warn("API call failed:", error)
     return success({
       items:[],
       totalCount: 0,
@@ -103,7 +104,7 @@ export async function getPropertyById(id: number): Promise<ApiResponse<Property>
 
     return (await res.json()) as ApiResponse<Property>
   } catch (error) {
-    console.warn("API call failed, using mock data:", error)
+    console.warn("API call failed:", error)
     return { succeeded: false, message: "Not found", data: {} as Property }
   }
 }

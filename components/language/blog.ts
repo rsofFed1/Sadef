@@ -1,0 +1,58 @@
+export const content = {
+    en: {
+        title: "Latest News & Blogs",
+        subtitle: "Stay updated with the latest news and insights from Sadef Real Estate",
+        searchPlaceholder: "Search blogs...",
+        readMore: "Read More",
+        loading: "Loading blogs...",
+        error: "Error loading blogs",
+        noBlogs: "No blogs found",
+        previousPage: "Previous",
+        nextPage: "Next",
+        content: '',
+        noImageAvailable: "No Image Available",
+        showing: "Showing",
+        blogs: "blogs",
+        loadMore: "Load More",
+        of: "of",
+
+    },
+    ar: {
+        title: "آخر الأخبار والمدونات",
+        subtitle: "ابق على اطلاع بآخر الأخبار والرؤى من سديف العقارية",
+        searchPlaceholder: "البحث في المدونات...",
+        readMore: "اقرأ المزيد",
+        loading: "جاري تحميل المدونات...",
+        error: "خطأ في تحميل المدونات",
+        noBlogs: "لم يتم العثور على مدونات",
+        previousPage: "السابق",
+        nextPage: "التالي",
+        content: '',
+        noImageAvailable: "لا توجد صورة متاحة",
+        showing: "عرض",
+        blogs: "مدونات",
+        loadMore: "تحميل المزيد",
+        of: "من",
+    },
+}
+
+export const contentBlogDetail = {
+    en: {
+      backToBlogs: "Back to Blogs",
+      shareArticle: "Share Article",
+      relatedPosts: "Related Posts",
+      loading: "Loading blog...",
+      error: "Error loading blog",
+      notFound: "Blog not found",
+      noImageAvailable: "No Image Available",
+    },
+    ar: {
+      backToBlogs: "العودة إلى المدونات",
+      shareArticle: "مشاركة المقال",
+      relatedPosts: "مقالات ذات صلة",
+      loading: "جاري تحميل المدونة...",
+      error: "خطأ في تحميل المدونة",
+      notFound: "المدونة غير موجودة",
+      noImageAvailable: "لا توجد صورة متاحة",
+    },
+  }

@@ -40,7 +40,7 @@ export interface Property {
   status: number;
   expiryDate?: string | null;
   isExpired: boolean;
-  videoUrls?: string[] | null;
+  videoUrls?: string[];
   unitName?: string | number;
   projectedResaleValue?: number | null;
   expectedAnnualRent?: number | null;

@@ -9,9 +9,9 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getBlogById, type Blog } from "@/lib/api"
-import { format } from "date-fns"
 import { BlogDetailSkeleton } from "@/components/PropertyCardSkeleton"
 import { formatDateTime } from "@/app/utils/dateUtils"
+import { contentBlogDetail } from "@/components/language/blog"
 
 export default function BlogDetailPage() {
   const params = useParams()
@@ -52,29 +52,9 @@ export default function BlogDetailPage() {
     }
   }, [blogId])
 
-  const content = {
-    en: {
-      backToBlogs: "Back to Blogs",
-      shareArticle: "Share Article",
-      relatedPosts: "Related Posts",
-      loading: "Loading blog...",
-      error: "Error loading blog",
-      notFound: "Blog not found",
-    },
-    ar: {
-      backToBlogs: "العودة إلى المدونات",
-      shareArticle: "مشاركة المقال",
-      relatedPosts: "مقالات ذات صلة",
-      loading: "جاري تحميل المدونة...",
-      error: "خطأ في تحميل المدونة",
-      notFound: "المدونة غير موجودة",
-    },
-  }
-
-  const currentContent = content[language]
+  const currentContent = contentBlogDetail[language]
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
-  const shareTitle = blog?.title || ""
 
   if (loading) {
     return (
@@ -112,114 +92,70 @@ export default function BlogDetailPage() {
       {/* Header */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 pt-40">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-            <Link href="/" className="hover:text-[#BDA25A]">
-              {language === "ar" ? "الرئيسية" : "Home"}
-            </Link>
-            <span>/</span>
-            <Link href="/blogs" className="hover:text-[#BDA25A]">
-              {language === "ar" ? "المدونات" : "Blogs"}
-            </Link>
-            <span>/</span>
-            <span className="text-[#BDA25A] truncate">{blog.title}</span>
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex items-start space-x-2 text-sm text-helper">
+              <Link href="/" className="hover:text-primary">
+                {language === "ar" ? "الرئيسية" : "Home"}
+              </Link>
+              <span>/</span>
+              <Link href="/blogs" className="hover:text-primary">
+                {language === "ar" ? "المدونات" : "Blogs"}
+              </Link>
+              <span>/</span>
+              <span className="text-primary text-center">{blog.title}</span>
+            </div>
+            <Button className="w-full lg:w-auto mt-4 lg:mt-0" variant="outline" asChild>
+              <Link href="/blogs">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                {currentContent.backToBlogs}
+              </Link>
+            </Button>
           </div>
-
-          <Button variant="outline" className="mb-6" asChild>
-            <Link href="/blogs">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {currentContent.backToBlogs}
-            </Link>
-          </Button>
         </div>
       </section>
 
       {/* Blog Content */}
-      <section className="py-12 pt-0 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="py-12 pt-5">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <article className="bg-white rounded-lg shadow-sm overflow-hidden">
-              {/* Featured Image */}
-              {blog.coverImage && (
-                <div className="relative h-96 w-full">
-                  <Image
-                    src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA_052.webp"}
-                    alt={blog.title}
-                    width={800}
-                    height={400}
-                    className="w-full h-96 object-cover rounded-lg mb-8"
-                  />
-                </div>
-              )}
-
               <div className="p-8">
+              {/* Featured Image */}
+              <div className="relative overflow-hidden mb-4">
+                {blog.coverImage?.length > 0 ? (
+                  <Image
+                    src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : ""}
+                    alt={blog.title ? `Photo of ${blog.title}` : "blog image"}
+                    width={400}
+                    height={220}
+                    className="w-full h-72 object-cover rounded-xl"
+                  />
+                ) : (
+                  <div className="w-full h-72 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm">
+                    {currentContent.noImageAvailable}
+                  </div>
+                )}
+              </div>
                 {/* Meta Information */}
                 <div className="flex items-center justify-between mb-6 pb-6 border-b">
                   <div className="flex items-center space-x-6 text-sm text-gray-500">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      <span className="text-body mb-3">{formatDateTime(blog.publishedAt)}</span>
+                      <span className="text-body">{formatDateTime(blog.publishedAt)}</span>
                     </div>
-                  </div>
-
-                  {/* Share Buttons */}
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-500 mr-2">{currentContent.shareArticle}:</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() =>
-                        window.open(
-                          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-                          "_blank",
-                        )
-                      }
-                    >
-                      <Facebook className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() =>
-                        window.open(
-                          `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`,
-                          "_blank",
-                        )
-                      }
-                    >
-                      <Twitter className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() =>
-                        window.open(
-                          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-                          "_blank",
-                        )
-                      }
-                    >
-                      <Linkedin className="h-4 w-4" />
-                    </Button>
                   </div>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">{blog.title}</h1>
+                <h2 className="text-h2 font-bold text-primary mb-6 leading-tight">{blog.title}</h2>
 
                 {/* Content */}
                 <div
-                  className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                  className="text-helper"
                   dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
               </div>
             </article>
-
-            {/* Navigation */}
-            <div className="mt-12 text-center">
-              <Button size="lg" className="bg-[#BDA25A] hover:bg-[#A8935A] text-white" asChild>
-                <Link href="/blogs">{currentContent.backToBlogs}</Link>
-              </Button>
-            </div>
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@ interface Hero {
   description: string;
   cta1: string;
   cta2: string;
-  watchVideo: string;
+  whatsAppChat: string;
 }
 
 interface Stats {
@@ -17,6 +17,7 @@ interface Stats {
 interface Section {
   title: string;
   subtitle?: string;
+  noImageAvailable?: string;
 }
 
 interface ContentLanguage {

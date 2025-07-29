@@ -1,13 +1,18 @@
 import React, { Suspense } from "react"
-import { Building2, MapPin, Bed, Bath } from "lucide-react"
+import { MapPin, Bed, Bath } from "lucide-react"
 import { Button } from "./ui/button"
-import { Badge } from "@/components/ui/badge"
 import type { Content } from "@/types/content"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent } from "./ui/card"
 import { useProperties } from "@/hooks/useProperties"
 import { Skeleton } from "@/components/ui/skeleton"
+import { statusMap } from "@/app/properties/(components)/statysMap"
+import { propertyOptions, unitsOptions } from "./constants/constants"
+import getOptionLabel from "@/app/utils/getOptionLabel"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination } from "swiper/modules"
+import "./FeaturedProperties.css";
 
 type Props = {
   currentContent: {
@@ -51,7 +56,7 @@ function FeaturedPropertiesSkeleton({ currentContent }: Props) {
 }
 
 function FeaturedPropertiesContent({ currentContent }: Props) {
-  const { properties, loading, error } = useProperties(1, 3)
+  const { properties, loading, error } = useProperties()
 
   if (loading) {
     return <FeaturedPropertiesSkeleton currentContent={currentContent} />
@@ -73,39 +78,6 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
     )
   }
 
-   const statusMap = {
-    1: { label: "Pending", color: "bg-yellow-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    2: { label: "Approved", color: "bg-green-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M9 12l2 2l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    3: { label: "Sold", color: "bg-blue-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M7 12l3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    4: { label: "Rejected", color: "bg-red-600", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-        <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )},
-    5: { label: "Archived", color: "bg-gray-500", svg: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
-        <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
-      </svg>
-    )},
-  };
-
   return (
     <section className="py-20 bg-bg-light">
       <div className="container mx-auto px-4">
@@ -113,35 +85,52 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
           <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.featured.title}</h2>
           <p className="text-primaryText text-generalText">{currentContent.featured.subtitle}</p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {properties.slice(0, 3).map((property, index) => {
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={24}
+          slidesPerView={1}
+          navigation={{
+            nextEl: ".swiper-button-next.custom-nav",
+            prevEl: ".swiper-button-prev.custom-nav"
+          }}
+          pagination={{ clickable: true }}
+          breakpoints={{
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 }
+          }}
+        >
+          {properties.map((property) => {
             const statusKey = Number(property.status) as keyof typeof statusMap;
             const status = statusMap[statusKey] || { label: property.status, color: "bg-black", svg: null };
             return (
-              <div key={property.id}>
+              <SwiperSlide key={property.id}>
                 <Card key={property.id} className="bg-bg-main rounded-2xl shadow-md border border-bg-light overflow-hidden flex flex-col transition hover:shadow-lg relative">
                   <div className="relative">
-                    <Image
-                      src={property.imageBase64Strings && property.imageBase64Strings.length > 0 ? getImageSrc(property.imageBase64Strings[0]) : "/images/SAFA_01.webp"}
-                      alt={property.title ? `Photo of ${property.title}` : "Property image"}
-                      width={400}
-                      height={220}
-                      className="w-full h-56 object-cover"
-                    />
-                    {/* Top left badges */}
+                    {property.imageBase64Strings?.length > 0 ? (
+                      <Image
+                        src={getImageSrc(property.imageBase64Strings[0])}
+                        alt={property.title ? `Photo of ${property.title}` : "Property image"}
+                        width={400}
+                        height={220}
+                        className="w-full h-56 object-cover rounded-xl"
+                      />
+                    ) : (
+                      <div className="w-full h-56 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm">
+                        {currentContent.featured.noImageAvailable}
+                      </div>
+                    )}
                     <div className="absolute top-4 left-4 flex gap-2 z-10">
-                      <span className="bg-black/80 text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg> For rent</span>
+                      <span className="bg-black/80 text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>{getOptionLabel(property.propertyType, propertyOptions)}</span>
                     </div>
                     {/* Top right badges */}
                     <div className={`absolute top-4 right-4 flex gap-2 z-10`}>
-                    <span className={`${status.color} text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
-                      {status.svg}
-                      {status.label}
-                    </span>
-                  </div>
-                    {/* Overlay property type and icons */}
+                      <span className={`${status.color} text-bg-main text-xs px-3 py-1 rounded-full flex items-center gap-1`}>
+                        {status.svg}
+                        {status.label}
+                      </span>
+                    </div>
                     <div className="absolute bottom-4 left-4 flex gap-2 z-10">
-                      <span className="bg-bg-main/80 text-generalText text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> {property.unitCategory || property.propertyType || 'Apartment'}</span>
+                      <span className="bg-bg-main/80 text-generalText text-xs px-3 py-1 rounded-full flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> {getOptionLabel(property.unitCategory, unitsOptions)}</span>
                     </div>
                   </div>
                   <CardContent className="flex-1 flex flex-col p-6 pb-4">
@@ -178,32 +167,18 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
                       <span className="flex items-center gap-1"><Bed className="w-5 h-5" /> {property.bedrooms}</span>
                       <span className="flex items-center gap-1"><Bath className="w-5 h-5" /> {property.bathrooms}</span>
                     </div>
-                    <div className="grid grid-cols-1 gap-2 text-xs text-generalText mb-3">
-                      <div className="flex items-center justify-between gap-6 text-generalText text-body mb-3">
-                        <span className="font-semibold">Unit Name:</span> {property.unitName}
-                      </div>
-                      <div className="flex items-center justify-between gap-6 text-generalText text-body mb-3">
-                        <span className="font-semibold">Projected Resale:</span> {property.projectedResaleValue}
-                      </div>
-                      <div className="flex items-center justify-between gap-6 text-generalText text-body mb-3">
-                        <span className="font-semibold">Annual Rent:</span> {property.expectedAnnualRent}
-                      </div>
-                      <div className="flex items-center justify-between gap-6 text-generalText text-body mb-3">
-                        <span className="font-semibold">Delivery:</span> {property.expectedDeliveryDate?.split('T')[0]}
-                      </div>
-                      <div className="flex items-center justify-between gap-6 text-generalText text-body mb-3">
-                        <span className="font-semibold">Investor Only:</span> {property.isInvestorOnly ? 'Yes' : 'No'}
-                      </div>
-                    </div>
                     <div className="flex mt-2 justify-center">
                       <Button className="rounded-full bg-primary hover:bg-primary-hover text-bg-main px-5" asChild><Link href={`/properties/${property.id}`}>View more</Link></Button>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </SwiperSlide>
             );
           })}
-        </div>
+          {/* Swiper navigation arrows (custom class for responsive hide) */}
+          <div className="swiper-button-prev custom-nav"></div>
+          <div className="swiper-button-next custom-nav"></div>
+        </Swiper>
         <div className="text-center mt-12">
           <Button size="lg" className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-3" asChild>
               <Link href="/properties">View All Properties</Link>

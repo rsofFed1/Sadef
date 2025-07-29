@@ -6,7 +6,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Globe, Menu, MessageCircle, Phone } from "lucide-react"
+import { Globe, Menu} from "lucide-react"
+import { content } from "./language/navigation"
 
 interface NavigationProps {
   language: "en" | "ar"
@@ -18,29 +19,6 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
   const pathname = usePathname()
   const isRTL = language === "ar"
 
-  const content = {
-    en: {
-      nav: {
-        home: "Home",
-        about: "About Us",
-        properties: "Properties",
-        services: "Services",
-        blogs: "Blogs",
-        contact: "Contact",
-      },
-    },
-    ar: {
-      nav: {
-        home: "الرئيسية",
-        about: "من نحن",
-        properties: "العقارات",
-        services: "الخدمات",
-        blogs: "المدونات",
-        contact: "اتصل بنا",
-      },
-    },
-  }
-
   const currentContent = content[language]
 
   const navItems = [
@@ -49,6 +27,7 @@ export function Navigation({ language, onLanguageToggle }: NavigationProps) {
     { href: "/properties", label: currentContent.nav.properties },
     { href: "/services", label: currentContent.nav.services },
     { href: "/blogs", label: currentContent.nav.blogs },
+    { href: "/faqs", label: currentContent.nav.faqs },
     { href: "/contact", label: currentContent.nav.contact },
   ]
 

@@ -1,4 +1,4 @@
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Content } from "@/types/content";
 import Link from "next/link";
@@ -30,9 +30,9 @@ export default function HeroSection( { currentContent }: Props ) {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 text-center text-bg-main">
           <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-h1 font-bold leading-tight">{currentContent.hero.title}</h1>
-            <p className="text-h3 opacity-90 max-w-2xl mx-auto">{currentContent.hero.description}</p>
-
+            <h1 className="text-h1">{currentContent.hero.title}</h1>
+            <h3 className="text-h3  text-secondary">{currentContent.hero.subtitle}</h3>
+            <p className="text-body">{currentContent.hero.description}</p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Button
                 size="lg"
@@ -44,15 +44,17 @@ export default function HeroSection( { currentContent }: Props ) {
 
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-4 text-body rounded-full"
+                className="bg-orange-700 hover:bg-orange-600 text-bg-main px-8 py-4 text-body rounded-full"
                 asChild
               >
                 <Link href="/about">{currentContent.hero.cta2}</Link>
               </Button>
 
-              <Button size="lg" variant="ghost" className="text-bg-main hover:bg-bg-main/20 px-8 py-4 text-body rounded-full">
-                <Play className="mr-2 h-5 w-5" />
-                {currentContent.hero.watchVideo}
+              <Button className="bg-green-700 hover:bg-green-600 rounded-full text-bg-main" asChild>
+                <Link href="https://wa.me/966595344758" target="_blank">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  {currentContent.hero.whatsAppChat}
+                </Link>
               </Button>
             </div>
           </div>

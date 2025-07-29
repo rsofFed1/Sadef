@@ -8,15 +8,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Search, Filter, MapPin, Bed, Bath, CloudCog, Bell } from "lucide-react"
 import { useProperties } from "@/hooks/useProperties"
 import { PropertyCardSkeleton } from "@/components/PropertyCardSkeleton";
 import getOptionLabel from "../utils/getOptionLabel"
-import { featuresOptions, propertyOptions, unitsOptions } from "@/components/constants/constants"
+import { propertyOptions, unitsOptions } from "@/components/constants/constants"
 import { statusMap } from "./(components)/statysMap"
 import { InquiryModal } from "./(components)/InquiryModal";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { content } from "../../components/language/properties"
 
 export default function PropertiesPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -35,7 +35,6 @@ export default function PropertiesPage() {
   }
 
   const isRTL = language === "ar"
-
   // Get unique property types and locations for filters
   const propertyTypes = useMemo(() => {
     const types = [...new Set(properties.map((p) => p.propertyType).filter(Boolean))]
@@ -79,78 +78,6 @@ export default function PropertiesPage() {
   }, [properties, searchTerm, selectedType, selectedLocation, sortBy])
 
   const visibleProperties = filteredAndSortedProperties.slice(0, visibleCount)
-
-
-  const content = {
-    en: {
-      title: "Welcome to the Sudeth Real Estate Development platform",
-      subtitle: "we offer you the best real estate projects in the Kingdom of Saudi Arabia with high quality and a distinctive future vision. Discover our projects or contact us to book a real estate consultation immediately.",
-      searchPlaceholder: "Search properties...",
-      propertyType: "Property Type",
-      location: "Location",
-      allTypes: "All Types",
-      allLocations: "All Locations",
-      applyFilters: "Apply Filters",
-      sortBy: "Sort by",
-      showing: "Showing",
-      of: "of",
-      properties: "properties",
-      viewDetails: "View Details",
-      bedrooms: "Bedrooms",
-      bathrooms: "Bathrooms",
-      startingPrice: "Starting Price",
-      annualYield: "Annual Rental Yield",
-      projectedResale: "Projected Resale",
-      completionDate: "Completion Date",
-      features: "Features",
-      loading: "Loading properties...",
-      error: "Error loading properties",
-      noProperties: "No properties found",
-      propertyOverview: "Property Overview",
-      unitName: "Unit Name",
-      annualRent: "Annual Rent",
-      warranty: "Warranty",
-      delivery: "Delivery",
-      investorOnly: "Investor Only",
-      general: "General",
-      noImageAvailable: "No Image Available",
-      loadMore: "Load More",
-    },
-    ar: {
-      title: "مرحبًا بكم في منصة سدث للتطوير العقاري",
-      subtitle: "نقدم لكم أفضل المشاريع العقارية في المملكة العربية السعودية، بجودة عالية ورؤية مستقبلية مميزة. اكتشف مشاريعنا أو تواصل معنا لحجز استشارة عقارية فورية.",
-      searchPlaceholder: "البحث في العقارات...",
-      propertyType: "نوع العقار",
-      location: "الموقع",
-      allTypes: "جميع الأنواع",
-      allLocations: "جميع المواقع",
-      applyFilters: "تطبيق المرشحات",
-      sortBy: "ترتيب حسب",
-      showing: "عرض",
-      of: "من",
-      properties: "عقار",
-      viewDetails: "عرض التفاصيل",
-      bedrooms: "غرف النوم",
-      bathrooms: "دورات المياه",
-      startingPrice: "السعر الابتدائي",
-      annualYield: "العائد السنوي من الإيجار",
-      projectedResale: "إعادة البيع المتوقعة",
-      completionDate: "تاريخ الإنجاز",
-      features: "المميزات",
-      loading: "جاري تحميل العقارات...",
-      error: "خطأ في تحميل العقارات",
-      noProperties: "لم يتم العثور على عقارات",
-      propertyOverview: "نظرة عامة على العقار",
-      unitName: "اسم الوحدة",
-      annualRent: "الإيجار السنوي",
-      warranty: "الضمان",
-      delivery: "التسليم",
-      investorOnly: "للمستثمرين فقط",
-      general: "عام",
-      noImageAvailable: "لا توجد صورة متاحة",
-      loadMore: "تحميل المزيد"
-    },
-  }
 
   const currentContent = content[language]
 
@@ -282,7 +209,6 @@ export default function PropertiesPage() {
                       <Card
                         key={property.id}
                         className="bg-bg-main rounded-2xl shadow-md border border-bg-light overflow-hidden flex flex-col transition hover:shadow-lg relative"
-                        style={{ background: undefined }}
                       >
                         <div className="relative">
                           {property.imageBase64Strings?.length > 0 ? (
@@ -291,7 +217,7 @@ export default function PropertiesPage() {
                               alt={property.title ? `Photo of ${property.title}` : "Property image"}
                               width={400}
                               height={220}
-                              className="w-full h-56 object-cover rounded-xl"
+                              className="w-full h-56 object-cover rounded-lg rounded-b-none"
                             />
                           ) : (
                             <div className="w-full h-56 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm">
@@ -328,97 +254,98 @@ export default function PropertiesPage() {
                           </div>
                         </div>
                         <CardContent className="flex-1 flex flex-col p-6 pb-4">
-                          <div className="mb-6">
-                            <h3 className="text-xl font-bold text-primary mb-2">{property.title}</h3>
-                            <div className="flex flex-wrap justify-between items-start gap-4 text-sm text-gray-600 mb-4">
-                              <a
-                                href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 hover:text-primary transition-colors"
-                                title="View on Google Maps"
-                              >
-                                <MapPin className="w-5 h-5 text-secondary" />
-                                <span className="text-helper text-secondary">{property.location}</span>
-                              </a>
-                              <div className="flex items-center gap-2 text-secondary">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                  <path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z" />
-                                </svg>
-                                <span>{property.area || property.areaSize + ' sqm'}</span>
-                              </div>
-                            </div>
-                            {/* Price */}
-                            <div className="flex items-center justify-between mb-4">
-                              <span className="text-primaryText font-extrabold text-secondary tracking-tight">
-                                ﷼ {property.price?.toLocaleString() || '80,000'}
-                              </span>
-                              <div className="flex flex-wrap gap-4 text-sm text-secondary">
-                                <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
-                                  <Bed className="w-5 h-5" /> {property.bedrooms} {currentContent.bedrooms}
-                                </span>
-                                <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
-                                  <Bath className="w-5 h-5" /> {property.bathrooms} {currentContent.bathrooms}
-                                </span>
-                              </div>
-                            </div>
-                            <hr className="my-3 border-gray-200" />
-                          </div>
-
-                          <div className="space-y-6">
-                            <div className="flex justify-between items-center border-b pb-4">
-                              <h3 className="text-lg font-semibold text-gray-900">{currentContent.propertyOverview}</h3>
-                              <span className="text-xs bg-primary text-white px-3 py-1 rounded-full">
-                                {property.isInvestorOnly ? currentContent.investorOnly : currentContent.general}
-                              </span>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm text-gray-700">
-                              <div>
-                                <span className="block font-medium text-gray-900 mb-1">{currentContent.unitName}</span>
-                                <span>{property.unitName}</span>
-                              </div>
-                              <div>
-                                <span className="block font-medium text-gray-900 mb-1">{currentContent.projectedResale}</span>
-                                <span>{property.projectedResaleValue}</span>
-                              </div>
-                              <div>
-                                <span className="block font-medium text-gray-900 mb-1">{currentContent.annualRent}</span>
-                                <span>{property.expectedAnnualRent}</span>
-                              </div>
-                              <div>
-                                <span className="block font-medium text-gray-900 mb-1">{currentContent.delivery}</span>
-                                <span>{property.expectedDeliveryDate?.split("T")[0] || "-"}</span>
-                              </div>
-                              {/* <div>
-                                <span className="block font-medium text-gray-900 mb-1">Expired</span>
-                                <span>{property.isExpired ? "Yes" : "No"}</span>
-                              </div> */}
-                              <div>
-                                <span className="block font-medium text-gray-900 mb-1">{currentContent.warranty}</span>
-                                <span>{property.warrantyInfo || "-"}</span>
-                              </div>
-                            </div>
-
+                          <div className="flex-1 flex flex-col justify-between">
+                            {/* Content Section */}
                             <div>
-                              <span className="block font-medium text-gray-900 mb-2">{currentContent.features}</span>
-                              <div className="flex flex-wrap gap-2">
-                                {property.features?.length ? (
-                                  property.features.map((feature, idx) => (
-                                    <span
-                                      key={idx}
-                                      className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full border border-gray-300"
-                                    >
-                                      {feature}
-                                    </span>
-                                  ))
-                                ) : (
-                                  <span className="text-sm text-gray-500">No features listed</span>
-                                )}
+                              <h3 className="text-xl font-bold text-primary mb-2">{property.title}</h3>
+                              <div className="flex flex-wrap justify-between items-start gap-4 text-sm text-gray-600 mb-4">
+                                <a
+                                  href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 hover:text-primary transition-colors"
+                                  title="View on Google Maps"
+                                >
+                                  <MapPin className="w-5 h-5 text-secondary" />
+                                  <span className="text-helper text-secondary">{property.location}</span>
+                                </a>
+                                <div className="flex items-center gap-2 text-secondary">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314l-4.243-4.243a4 4 0 00-5.657 5.657l4.243 4.243z" />
+                                  </svg>
+                                  <span>{property.area || property.areaSize + ' sqm'}</span>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-wrap items-center justify-between mb-4">
+                                <span className="text-primaryText font-extrabold text-secondary tracking-tight">
+                                  ﷼ {property.price?.toLocaleString()}
+                                </span>
+                                <div className="flex flex-wrap gap-1 text-sm text-secondary">
+                                  <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
+                                    <Bed className="w-5 h-5 mr-2" /> {property.bedrooms}
+                                  </span>
+                                  <span className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
+                                    <Bath className="w-5 h-5 mr-2" /> {property.bathrooms}
+                                  </span>
+                                </div>
+                              </div>
+                              <hr className="my-3 border-gray-200" />
+                              {/* Property Overview */}
+                              <div className="space-y-6">
+                                <div className="flex justify-between items-center border-b pb-4">
+                                  <h3 className="text-lg font-semibold text-gray-900">{currentContent.propertyOverview}</h3>
+                                  <span className="text-xs bg-primary text-white px-3 py-1 rounded-full">
+                                    {property.isInvestorOnly ? currentContent.investorOnly : currentContent.general}
+                                  </span>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm text-gray-700">
+                                  <div>
+                                    <span className="block font-medium text-gray-900 mb-1">{currentContent.unitName}</span>
+                                    <span>{property.unitName}</span>
+                                  </div>
+                                  <div>
+                                    <span className="block font-medium text-gray-900 mb-1">{currentContent.projectedResale}</span>
+                                    <span>{property.projectedResaleValue}</span>
+                                  </div>
+                                  <div>
+                                    <span className="block font-medium text-gray-900 mb-1">{currentContent.annualRent}</span>
+                                    <span>{property.expectedAnnualRent}</span>
+                                  </div>
+                                  <div>
+                                    <span className="block font-medium text-gray-900 mb-1">{currentContent.delivery}</span>
+                                    <span>{property.expectedDeliveryDate?.split("T")[0] || "-"}</span>
+                                  </div>
+                                  <div>
+                                    <span className="block font-medium text-gray-900 mb-1">{currentContent.warranty}</span>
+                                    <span>{property.warrantyInfo || "-"}</span>
+                                  </div>
+                                </div>
+
+                                {/* Features */}
+                                <div>
+                                  <span className="block font-medium text-gray-900 mb-2">{currentContent.features}</span>
+                                  <div className="flex flex-wrap gap-2">
+                                    {property.features?.length ? (
+                                      property.features.map((feature, idx) => (
+                                        <span
+                                          key={idx}
+                                          className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full border border-gray-300"
+                                        >
+                                          {feature}
+                                        </span>
+                                      ))
+                                    ) : (
+                                      <span className="text-sm text-gray-500">No features listed</span>
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
 
-                            <div className="flex justify-end">
+                            {/* Button at Bottom */}
+                            <div className="mt-6 flex justify-end">
                               <Button className="rounded-full bg-green-600 text-white hover:bg-green-500 px-6 py-2 text-sm shadow" asChild>
                                 <Link href={`/properties/${property.id}`}>{currentContent.viewDetails}</Link>
                               </Button>

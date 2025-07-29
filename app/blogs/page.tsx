@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -10,15 +9,16 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, Calendar } from "lucide-react"
 import { useBlogs } from "@/hooks/useBlogs"
-import { format } from "date-fns"
 import { BlogCardSkeleton } from "@/components/PropertyCardSkeleton"
 import { formatDateTime } from "../utils/dateUtils"
+import { content } from "@/components/language/blog"
 
 export default function BlogsPage() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
   const [searchTerm, setSearchTerm] = useState("")
+  const [displayCount, setDisplayCount] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 9
+  const pageSize = 50 // Fetch more blogs to support load more
 
   const { blogs, loading, error, totalPages } = useBlogs(currentPage, pageSize)
 
@@ -34,31 +34,11 @@ export default function BlogsPage() {
       blog.content.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  const content = {
-    en: {
-      title: "Latest News & Blogs",
-      subtitle: "Stay updated with the latest news and insights from Sadef Real Estate",
-      searchPlaceholder: "Search blogs...",
-      readMore: "Read More",
-      loading: "Loading blogs...",
-      error: "Error loading blogs",
-      noBlogs: "No blogs found",
-      previousPage: "Previous",
-      nextPage: "Next",
-      content: '',
-    },
-    ar: {
-      title: "آخر الأخبار والمدونات",
-      subtitle: "ابق على اطلاع بآخر الأخبار والرؤى من سديف العقارية",
-      searchPlaceholder: "البحث في المدونات...",
-      readMore: "اقرأ المزيد",
-      loading: "جاري تحميل المدونات...",
-      error: "خطأ في تحميل المدونات",
-      noBlogs: "لم يتم العثور على مدونات",
-      previousPage: "السابق",
-      nextPage: "التالي",
-      content: '',
-    },
+  const displayedBlogs = filteredBlogs.slice(0, displayCount)
+  const hasMoreBlogs = displayedBlogs.length < filteredBlogs.length
+
+  const handleLoadMore = () => {
+    setDisplayCount(prev => prev + 6)
   }
 
   const currentContent = content[language]
@@ -77,18 +57,21 @@ export default function BlogsPage() {
             <span>/</span>
             <span className="text-secondary">{language === "ar" ? "المدونات" : "Blogs"}</span>
           </div>
-
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-h1 font-bold text-primary mb-6">{currentContent.title}</h1>
-            <p className="text-h3 text-generalText mb-8">{currentContent.subtitle}</p>
+            <h2 className="text-h2 font-bold text-primary">{currentContent.title}</h2>
+            <p className="text-primaryText text-secondary mt-4">{currentContent.subtitle}</p>
           </div>
         </div>
       </section>
 
       {/* Search */}
-      <section className="border-b bg-primary py-2">
-        <div className="container mx-auto px-4 py-6">
-          <div className="max-w-md mx-auto relative">
+      <section className="container mt-4">
+        <div className="flex items-center justify-between">
+          <p className="text-helper">
+            {currentContent.showing} {filteredBlogs.length}{" "}
+            {currentContent.blogs}
+          </p>
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-helper" />
             <Input
               placeholder={currentContent.searchPlaceholder}
@@ -99,9 +82,8 @@ export default function BlogsPage() {
           </div>
         </div>
       </section>
-
       {/* Blogs Grid */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto px-4">
           {loading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -122,63 +104,56 @@ export default function BlogsPage() {
           ) : (
             <>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredBlogs.map((blog) => (
-                  <Card key={blog.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-bg-main border border-bg-light rounded-lg">
-                    <div className="relative overflow-hidden">
+                {displayedBlogs.map((blog) => (
+                  <Card
+                    key={blog.id}
+                    className="flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group bg-bg-main border border-bg-light rounded-lg"
+                  >
+                  <div className="relative overflow-hidden">
+                    {blog.coverImage?.length > 0 ? (
                       <Image
-                        src={blog.coverImage ? `data:image/png;base64,${blog.coverImage}` : "/images/SAFA_052.webp"}
-                        alt={blog.title}
+                        src={`data:image/png;base64,${blog.coverImage}`}
+                        alt={blog.title ? `Photo of ${blog.title}` : "blog image"}
                         width={400}
-                        height={250}
-                        className="w-full h-52 object-cover rounded-t-lg"
+                        height={220}
+                        className="w-full h-56 object-cover rounded-lg rounded-b-none"
                       />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center text-sm text-helper space-x-4">
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            <span className="text-body mb-3">{formatDateTime(blog.publishedAt)}</span>
-
-                          </div>
-                        </div>
-
-                        <h3 className="text-h3 font-bold text-primary line-clamp-2">{blog.title}</h3>
-
-                        {blog.content && (
-                          <p className="text-generalText text-body mb-4 line-clamp-3"> {blog.content} </p>
-                        )}
-
-                        <Button className="w-full bg-primary hover:bg-primary-hover text-bg-main" asChild>
-                          <Link href={`/blogs/${blog.id}`}>{currentContent.readMore}</Link>
-                        </Button>
+                    ) : (
+                      <div className="w-full h-56 bg-gray-100 flex items-center justify-center rounded-lg rounded-b-none text-gray-400 text-sm">
+                        {currentContent.noImageAvailable}
                       </div>
-                    </CardContent>
-                  </Card>
+                    )}
+                  </div>
+                  <CardContent className="p-6 flex flex-col flex-1 justify-between">
+                    <div>
+                      <div className="flex items-center text-sm text-helper space-x-4 mb-3">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        <span className="text-body">{formatDateTime(blog.publishedAt)}</span>
+                      </div>
+                      <h3 className="text-h3 font-bold text-primary line-clamp-2">{blog.title}</h3>
+                      {blog.content && (
+                        <div
+                          className="text-generalText text-secondaryText mt-2 mb-4 line-clamp-3"
+                          dangerouslySetInnerHTML={{ __html: blog.content }}
+                        />
+                      )}
+                    </div>
+                    <Button className="w-full bg-primary hover:bg-primary-hover text-bg-main mt-auto" asChild>
+                      <Link href={`/blogs/${blog.id}`}>{currentContent.readMore}</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
                 ))}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center space-x-4 mt-12">
+              {/* Load More Button */}
+              {hasMoreBlogs && (
+                <div className="flex justify-center mt-12">
                   <Button
-                    variant="outline"
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
+                    onClick={handleLoadMore}
+                    className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-3"
                   >
-                    {currentContent.previousPage}
-                  </Button>
-
-                  <span className="text-helper">
-                    Page {currentPage} of {totalPages}
-                  </span>
-
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                  >
-                    {currentContent.nextPage}
+                    {currentContent.loadMore || "Load More"}
                   </Button>
                 </div>
               )}
