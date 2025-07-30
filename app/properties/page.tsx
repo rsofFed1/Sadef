@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import { Search, Filter, MapPin, Bed, Bath, CloudCog, Bell } from "lucide-react"
+import { Search, Filter, MapPin, Bed, Bath, Bell } from "lucide-react"
 import { useProperties } from "@/hooks/useProperties"
 import { PropertyCardSkeleton } from "@/components/PropertyCardSkeleton";
 import getOptionLabel from "../utils/getOptionLabel"
@@ -17,9 +17,10 @@ import { statusMap } from "./(components)/statysMap"
 import { InquiryModal } from "./(components)/InquiryModal";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { content } from "../../components/language/properties"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function PropertiesPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedType, setSelectedType] = useState("all")
   const [selectedLocation, setSelectedLocation] = useState("all")
@@ -29,12 +30,6 @@ export default function PropertiesPage() {
   const { properties, loading, error} = useProperties()
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
-  }
-
-  const isRTL = language === "ar"
   // Get unique property types and locations for filters
   const propertyTypes = useMemo(() => {
     const types = [...new Set(properties.map((p) => p.propertyType).filter(Boolean))]
@@ -48,6 +43,7 @@ export default function PropertiesPage() {
 
   // Filter and sort properties
   const filteredAndSortedProperties = useMemo(() => {
+    if (!mounted) return []
     const filtered = properties.filter((property) => {
       const matchesSearch =
         property.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -76,6 +72,10 @@ export default function PropertiesPage() {
 
     return filtered
   }, [properties, searchTerm, selectedType, selectedLocation, sortBy])
+
+  if (!mounted) {
+    return null
+  }
 
   const visibleProperties = filteredAndSortedProperties.slice(0, visibleCount)
 
@@ -186,10 +186,10 @@ export default function PropertiesPage() {
                   <SelectValue placeholder={currentContent.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Featured First</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="featured">{currentContent.featuredFirst}</SelectItem>
+                  <SelectItem value="price-low">{currentContent.priceLowToHigh}</SelectItem>
+                  <SelectItem value="price-high">{currentContent.priceHighToLow}</SelectItem>
+                  <SelectItem value="newest">{currentContent.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

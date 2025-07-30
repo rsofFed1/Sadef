@@ -9,17 +9,16 @@ import { Input } from "@/components/ui/input"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Search } from "lucide-react"
 import { content } from "@/components/language/faqs"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function FAQPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
   const [searchTerm, setSearchTerm] = useState("")
   const [displayCount, setDisplayCount] = useState(6)
 
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
+  if (!mounted) {
+    return null
   }
-
-  const isRTL = language === "ar"
 
   const currentContent = content[language]
 

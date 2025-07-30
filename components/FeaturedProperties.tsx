@@ -168,7 +168,7 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
                       <span className="flex items-center gap-1"><Bath className="w-5 h-5" /> {property.bathrooms}</span>
                     </div>
                     <div className="flex mt-2 justify-center">
-                      <Button className="rounded-full bg-primary hover:bg-primary-hover text-bg-main px-5" asChild><Link href={`/properties/${property.id}`}>View more</Link></Button>
+                      <Button className="rounded-full bg-primary hover:bg-primary-hover text-bg-main px-5" asChild><Link href={`/properties/${property.id}`}>{currentContent.featured.viewMore}</Link></Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -181,7 +181,7 @@ function FeaturedPropertiesContent({ currentContent }: Props) {
         </Swiper>
         <div className="text-center mt-12">
           <Button size="lg" className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-3" asChild>
-              <Link href="/properties">View All Properties</Link>
+              <Link href="/properties">{currentContent.featured.viewAllProperties}</Link>
           </Button>
         </div>
       </div>

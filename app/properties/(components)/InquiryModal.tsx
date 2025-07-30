@@ -77,7 +77,7 @@ export function InquiryModal({ open, onOpenChange, propertyId }: InquiryModalPro
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Inquiry Sent!</h3>
               <p className="text-sm text-gray-500 mb-6">{success}</p>
-              <Button 
+              <Button
                 onClick={() => onOpenChange(false)}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
@@ -113,7 +113,7 @@ export function InquiryModal({ open, onOpenChange, propertyId }: InquiryModalPro
                   <Label htmlFor="fullName">Full Name</Label>
                   <Input id="fullName" {...register("fullName")} className="mt-1" />
                   {errors.fullName && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-red-600 text-sm mt-1"
@@ -131,7 +131,7 @@ export function InquiryModal({ open, onOpenChange, propertyId }: InquiryModalPro
                   <Label htmlFor="email">Email</Label>
                   <Input id="email" type="email" {...register("email")} className="mt-1" />
                   {errors.email && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-red-600 text-sm mt-1"
@@ -149,7 +149,7 @@ export function InquiryModal({ open, onOpenChange, propertyId }: InquiryModalPro
                   <Label htmlFor="phone">Phone</Label>
                   <Input id="phone" {...register("phone")} className="mt-1" />
                   {errors.phone && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-red-600 text-sm mt-1"
@@ -165,14 +165,14 @@ export function InquiryModal({ open, onOpenChange, propertyId }: InquiryModalPro
                   transition={{ delay: 0.25 }}
                 >
                   <Label htmlFor="message">Message</Label>
-                  <Textarea 
-                    id="message" 
-                    {...register("message")} 
+                  <Textarea
+                    id="message"
+                    {...register("message")}
                     className="mt-1 min-h-[100px]"
                     placeholder="Tell us more about your interest in this property..."
                   />
                   {errors.message && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-red-600 text-sm mt-1"

@@ -24,10 +24,10 @@ export default function OurServices( { currentContent }: Props ) {
           </ScrollAnimation>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { Icon: Building2, title: "Property Development", description: "Premium off-plan residential projects with modern amenities" },
-              { Icon: TrendingUp, title: "Investment Consulting", description: "Expert guidance on property investment opportunities" },
-              { Icon: Shield, title: "Property Maintenance", description: "Complete maintenance and management services" },
-              { Icon: Award, title: "Legal Support", description: "Full legal assistance for property transactions" },
+              { Icon: Building2, title: currentContent.services.cardTitle1, description: currentContent.services.cardSubtitle1 },
+              { Icon: TrendingUp, title: currentContent.services.cardTitle2, description: currentContent.services.cardSubtitle2 },
+              { Icon: Shield, title: currentContent.services.cardTitle3, description: currentContent.services.cardSubtitle3 },
+              { Icon: Award, title: currentContent.services.cardTitle4, description: currentContent.services.cardSubtitle4 },
             ].map((service, index) => (
               <ScrollAnimation key={service.title} delay={index * 0.1} direction="right">
                 <Card className="text-center p-6 hover:shadow-lg transition-shadow group bg-bg-main border border-bg-light rounded-lg">
@@ -43,7 +43,7 @@ export default function OurServices( { currentContent }: Props ) {
 
           <div className="text-center mt-12">
             <Button size="lg" className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-3" asChild>
-              <Link href="/services">View All Services</Link>
+              <Link href="/services">{currentContent.services.cta}</Link>
             </Button>
           </div>
         </div>

@@ -16,10 +16,13 @@ type Props = {
   currentContent: {
     mediaCenter: Content["en"]["mediaCenter"] | Content["ar"]["mediaCenter"]
   }
+  language?: "en" | "ar"
 }
 
-export default function MediaCenter({ currentContent }: Props) {
+export default function MediaCenter({ currentContent, language = "en" }: Props) {
   const { blogs, loading, error } = useBlogs()
+
+  const isRTL = language === "ar"
 
   if (loading) {
     return <MediaCenterSkeleton />;
@@ -33,7 +36,7 @@ export default function MediaCenter({ currentContent }: Props) {
             <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.mediaCenter.title}</h2>
           </div>
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BDA25A]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
         </div>
       </section>
@@ -48,7 +51,7 @@ export default function MediaCenter({ currentContent }: Props) {
             <h2 className="text-h2 font-bold text-primary mb-4">{currentContent.mediaCenter.title}</h2>
           </div>
           <div className="flex justify-center items-center h-64">
-            <p className="text-red-600">Error loading blogs: {error}</p>
+            <p className="text-red-600">{currentContent.mediaCenter.error}</p>
           </div>
         </div>
       </section>
@@ -68,13 +71,13 @@ export default function MediaCenter({ currentContent }: Props) {
             className="flex md:flex-col justify-center md:justify-evenly items-center mt-4 w-100 md:w-[450px]"
           >
             <div className="flex md:flex-col gap-4">
-              <h3 className="text-primary text-h3">Latest News</h3>
+              <h3 className="text-primary text-h3">{currentContent.mediaCenter.latestNews}</h3>
               <Link href="/blogs" passHref legacyBehavior>
-                <button className="bg-bg-light rounded-full px-6 py-2 text-primary">Blogs</button>
+                <button className="bg-bg-light rounded-full px-6 py-2 text-primary">{currentContent.mediaCenter.blogs}</button>
               </Link>
             </div>
             <div className="hidden md:flex gap-4 items-center">
-              <button className="custom-prev-button group relative" aria-label="Previous slide">
+              <button className={`${isRTL ? "custom-next-button" : "custom-prev-button"} group relative`} aria-label="Previous slide">
                 <div className="bg-primary p-3 rounded-full transition-all duration-300 group-hover:bg-primary-hover group-hover:shadow-lg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,11 +87,11 @@ export default function MediaCenter({ currentContent }: Props) {
                     stroke="white"
                     className="w-5 h-5 transition-transform group-hover:scale-110"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={isRTL ? "M8.25 4.5l7.5 7.5-7.5 7.5" : "M15.75 19.5L8.25 12l7.5-7.5"} />
                   </svg>
                 </div>
               </button>
-              <button className="custom-next-button group relative" aria-label="Next slide">
+              <button className={`${isRTL ? "custom-prev-button" : "custom-next-button"} group relative`} aria-label="Next slide">
                 <div className="bg-white p-3 rounded-full shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:bg-gray-50">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -98,14 +101,14 @@ export default function MediaCenter({ currentContent }: Props) {
                     stroke="#243242"
                     className="w-5 h-5 transition-transform group-hover:scale-110"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={isRTL ? "M15.75 19.5L8.25 12l7.5-7.5" : "M8.25 4.5l7.5 7.5-7.5 7.5"} />
                   </svg>
                 </div>
               </button>
             </div>
             <div className="hidden md:flex items-center mt-4">
               <Link href="/blogs" className="text-secondary font-medium hover:text-secondary/80 transition-colors">
-                View all News
+                {currentContent.mediaCenter.viewAllNews}
               </Link>
             </div>
           </ScrollAnimation>
@@ -165,7 +168,7 @@ export default function MediaCenter({ currentContent }: Props) {
                       href={`/blogs/${blog.id}`}
                       className="text-secondary font-medium hover:text-secondary/80 transition-colors"
                     >
-                      Read more
+                      {currentContent.mediaCenter.readMore}
                     </Link>
                   </div>
                 </ScrollAnimation>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
-import { locations } from '@/app/data/locations';
+import { locationsEn, locationsAr } from '@/app/data/locations';
 import { ScrollAnimation } from './animations/ScrollAnimation';
 import { Content } from '@/types/content';
 
@@ -10,6 +10,7 @@ type Props = {
     currentContent: {
         interactiveMap: Content["en"]["interactiveMap"] | Content["ar"]["interactiveMap"]
     }
+    language?: "en" | "ar"
   }
 // Dynamic import of Leaflet with no SSR
 const MapComponent = dynamic(() => import('@/components/MapContainer'), {
@@ -19,18 +20,37 @@ const MapComponent = dynamic(() => import('@/components/MapContainer'), {
     </div>
 });
 
-const InteractiveMap = ({ currentContent }: Props) => {
+const InteractiveMap = ({ currentContent, language = "en" }: Props) => {
     const [activeLocation, setActiveLocation] = useState<number | null>(null);
-    const [selectedFilter, setSelectedFilter] = useState<string>("All");
+    const [selectedFilter, setSelectedFilter] = useState<string>("");
+
+    const locations = language === "ar" ? locationsAr : locationsEn;
+    const locationNames = locations.map(loc => loc.name);
+
+    // Set the correct "All" text based on language
+    const allText = currentContent.interactiveMap.all || (language === "ar" ? "الكل" : "All");
+    
+    // Initialize selectedFilter with the correct "All" text
+    React.useEffect(() => {
+      setSelectedFilter(allText);
+    }, [allText]);
+
+    console.log('InteractiveMap Debug:', {
+      language,
+      locations,
+      locationNames,
+      selectedFilter,
+      currentContent: currentContent.interactiveMap
+    });
 
     // Filter locations based on selected filter
-    const filteredLocations = selectedFilter === "All"
+    const filteredLocations = selectedFilter === allText
         ? locations
         : locations.filter(location => location.name === selectedFilter);
 
     const handleFilterChange = (filter: string) => {
         setSelectedFilter(filter);
-        if (filter !== "All") {
+        if (filter !== allText) {
             const location = locations.find(loc => loc.name === filter);
             if (location) {
                 setActiveLocation(location.id);
@@ -62,7 +82,7 @@ const InteractiveMap = ({ currentContent }: Props) => {
                         <ScrollAnimation delay={0.2} direction='down' className="w-full md:w-1/3 bg-bg-light p-6">
                             {/* Map Filters */}
                             <div className="flex flex-wrap justify-start border-b p-4 gap-2">
-                                {["All", "Riyadh", "Jeddah", "Dammam"].map((filter) => (
+                                {[allText, ...locationNames].map((filter) => (
                                     <button
                                         key={filter}
                                         onClick={() => handleFilterChange(filter)}
@@ -75,7 +95,7 @@ const InteractiveMap = ({ currentContent }: Props) => {
                                     </button>
                                 ))}
                             </div>
-                            <h3 className="text-h3 font-bold mb-4 font-tajawal text-secondary">Sadef Locations</h3>
+                            <h3 className="text-h3 font-bold mb-4 font-tajawal text-secondary">{currentContent.interactiveMap.cardTitle}</h3>
 
                             <div className="space-y-4">
                                 {filteredLocations.map((location) => (
@@ -102,7 +122,7 @@ const InteractiveMap = ({ currentContent }: Props) => {
                             </div>
                             <div className="mt-8">
                                 <p className="text-generalText font-tajawal">
-                                    A fully integrated and flourishing lifestyle brimming with diverse social and recreational activities, supporting residents' lives through a comprehensive range of services and facilities including green spaces, children's parks, a library, fitness centers, cafes, and an assortment of other amenities.
+                                    {currentContent.interactiveMap.description}
                                 </p>
                             </div>
                         </ScrollAnimation>

@@ -1,23 +1,19 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Shield, Award, Users, CheckCircle, Phone } from "lucide-react"
+import { CheckCircle } from "lucide-react"
 import { content } from "@/components/language/services"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function ServicesPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
 
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
+  if (!mounted) {
+    return null
   }
-
-  const isRTL = language === "ar"
 
   const currentContent = content[language]
 
@@ -92,85 +88,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      {/* Why Choose Our Services */}
-      <section className="py-20 bg-bg-main">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-h2 font-bold text-primary mb-6">Why Choose Our Services?</h2>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <Award className="h-6 w-6 text-bg-main" />
-                  </div>
-                  <div>
-                    <h3 className="text-h3 font-bold text-primary mb-2">17+ Years Experience</h3>
-                    <p className="text-generalText">Proven track record in Jeddah's real estate market</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <Shield className="h-6 w-6 text-bg-main" />
-                  </div>
-                  <div>
-                    <h3 className="text-h3 font-bold text-primary mb-2">Full Transparency</h3>
-                    <p className="text-generalText">Complete disclosure of all costs and projected returns</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <Users className="h-6 w-6 text-bg-main" />
-                  </div>
-                  <div>
-                    <h3 className="text-h3 font-bold text-primary mb-2">Dedicated Support</h3>
-                    <p className="text-generalText">24/7 customer service and maintenance support</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <Image
-                src="/images/SAFA_01.webp?height=500&width=600"
-                alt="Sadef Services"
-                width={600}
-                height={500}
-                className="rounded-2xl shadow-xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-secondary to-[#A8935A]">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto text-bg-main">
-            <h2 className="text-h2 font-bold mb-4">{currentContent.cta.title}</h2>
-            <p className="text-h3 mb-8 opacity-90">{currentContent.cta.subtitle}</p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-bg-main text-secondary hover:bg-bg-light px-8 py-3 text-body" asChild>
-                <Link href="/contact">{currentContent.cta.button1}</Link>
-              </Button>
-              <Button
-                size="lg"
-                className="bg-bg-main text-secondary hover:bg-bg-light px-8 py-3 text-body"
-                asChild
-              >
-                <Link href="tel:+966XXXXXXXXX">
-                  <Phone className="h-5 w-5 mr-2" />
-                  {currentContent.cta.button2}
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Footer language={language} />
     </div>
   )

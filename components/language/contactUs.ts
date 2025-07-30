@@ -7,7 +7,7 @@ export const content = {
             title: "Send us a Message",
             name: "Name",
             phone: "Phone Number",
-            preferredContact: "Property Type",
+            preferredContact: "Select Property Type",
             submit: "Send Message",
             placeholders: {
                 name: "Enter your name",
@@ -68,7 +68,7 @@ export const content = {
             title: "أرسل لنا رسالة",
             name: "الاسم",
             phone: "رقم الهاتف",
-            preferredContact: "طريقة التواصل المفضلة",
+            preferredContact: "اختر نوع العقار",
             submit: "إرسال الرسالة",
             placeholders: {
                 name: "أدخل اسمك",

@@ -27,10 +27,10 @@ export default function WhyChooseSadef({ currentContent }: Props) {
               <Shield className="h-10 w-10 text-white" />
             </div>
             <h3 className="text-h3 font-bold text-primary mb-3">
-              Full Transparency
+              {currentContent.whyChoose.cardTitle1}
             </h3>
             <p className="text-generalText">
-              Complete disclosure of all costs and projected returns
+              {currentContent.whyChoose.cardSubtitle1}
             </p>
           </ScrollAnimation>
 
@@ -43,10 +43,10 @@ export default function WhyChooseSadef({ currentContent }: Props) {
               <Award className="h-10 w-10 text-white" />
             </div>
             <h3 className="text-h3 font-bold text-primary mb-3">
-              17 Years Experience
+              {currentContent.whyChoose.cardTitle2}
             </h3>
             <p className="text-generalText">
-              Proven track record in Jeddah's real estate market
+              {currentContent.whyChoose.cardSubtitle2}
             </p>
           </ScrollAnimation>
 
@@ -59,10 +59,10 @@ export default function WhyChooseSadef({ currentContent }: Props) {
               <Star className="h-10 w-10 text-white" />
             </div>
             <h3 className="text-h3 font-bold text-primary mb-3">
-              Premium Quality
+              {currentContent.whyChoose.cardTitle3}
             </h3>
             <p className="text-generalText">
-              High-standard construction and modern amenities
+              {currentContent.whyChoose.cardSubtitle3}
             </p>
           </ScrollAnimation>
 
@@ -75,10 +75,10 @@ export default function WhyChooseSadef({ currentContent }: Props) {
               <MessageCircle className="h-10 w-10 text-white" />
             </div>
             <h3 className="text-h3 font-bold text-primary mb-3">
-              24/7 Support
+              {currentContent.whyChoose.cardTitle4}
             </h3>
             <p className="text-generalText">
-              Dedicated customer service and maintenance support
+              {currentContent.whyChoose.cardSubtitle4}
             </p>
           </ScrollAnimation>
         </div>

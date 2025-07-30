@@ -8,9 +8,12 @@ type Props = {
   currentContent: {
     contactCTA: Content["en"]["contactCTA"] | Content["ar"]["contactCTA"]
   }
+  language?: "en" | "ar"
 }
 
-export default function ContactCTA({ currentContent }: Props) {
+export default function ContactCTA({ currentContent, language = "en" }: Props) {
+  const isRTL = language === "ar";
+
   return (
     <section className="py-20 bg-gradient-to-r from-secondary to-[#A8935A]">
       <div className="container mx-auto px-4 text-center">
@@ -25,7 +28,7 @@ export default function ContactCTA({ currentContent }: Props) {
               className="hover:bg-primary-hover px-8 py-3 text-body"
               asChild
             >
-              <Link href="/contact">Get In Touch</Link>
+              <Link href="/contact">{currentContent.contactCTA.getInTouch}</Link>
             </Button>
             <Button
               size="lg"
@@ -33,8 +36,8 @@ export default function ContactCTA({ currentContent }: Props) {
               asChild
             >
               <Link href="https://wa.me/966595344758" target="_blank">
-                <MessageCircle className="h-5 w-5 mr-2" />
-                WhatsApp
+                <MessageCircle className={`h-5 w-5 ${isRTL ? "ml-2" : "mr-2"}`} />
+                {currentContent.contactCTA.whatsApp}
               </Link>
             </Button>
           </div>

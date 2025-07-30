@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import WhatsAppButton from "@/components/WhatsAppButton"
@@ -15,23 +13,23 @@ import OurServices from "@/components/OurServices"
 import WhyChooseSadef from "@/components/WhyChooseSadef"
 import ContactCTA from "@/components/ContactCta"
 import { content } from "../components/language/home"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function HomePage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
-  }
+  const { language, toggleLanguage, mounted, isRTL } = useLanguage()
 
   const currentContent = content[language]
-  const isRTL = language === "ar"
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div className={`min-h-screen overflow-hidden bg-bg-main text-generalText ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>
       <Navigation language={language} onLanguageToggle={toggleLanguage} />
 
       {/* Hero Section component */}
-      <HeroSection currentContent={{hero: currentContent.hero}}/>
+      <HeroSection currentContent={{hero: currentContent.hero}} language={language} />
 
       {/* Stats Section component */}
       <StatsSection currentContent={{stats: currentContent.stats}}/>
@@ -46,10 +44,10 @@ export default function HomePage() {
       <FeaturedSection currentContent={{featureContent: currentContent.featureContent}} />
 
       {/* Interactive Map component */}
-      <InteractiveMap currentContent={{interactiveMap: currentContent.interactiveMap}} />
+      <InteractiveMap currentContent={{interactiveMap: currentContent.interactiveMap}} language={language} />
 
       {/* Media Center component */}
-      <MediaCenter currentContent={{mediaCenter: currentContent.mediaCenter}}/>
+      <MediaCenter currentContent={{mediaCenter: currentContent.mediaCenter}} language={language} />
 
       {/* Success Partners component */}
       <SuccessPartners currentContent={{successPartners: currentContent.successPartners}}/>
@@ -58,7 +56,7 @@ export default function HomePage() {
       <WhyChooseSadef currentContent={{whyChoose: currentContent.whyChoose}} />
 
       {/* Contact CTA component */}
-      <ContactCTA currentContent={{contactCTA: currentContent.contactCTA}} />
+      <ContactCTA currentContent={{contactCTA: currentContent.contactCTA}} language={language} />
 
       <WhatsAppButton />
 

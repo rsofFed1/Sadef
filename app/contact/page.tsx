@@ -13,9 +13,10 @@ import { Card } from "@/components/ui/card"
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Building2, Users, HeadphonesIcon } from "lucide-react"
 import { propertyOptions } from "@/components/constants/constants";
 import { content } from "../../components/language/contactUs"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function ContactPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,11 +26,9 @@ export default function ContactPage() {
     preferredContact: "",
   })
 
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
+  if (!mounted) {
+    return null
   }
-
-  const isRTL = language === "ar"
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -108,7 +107,7 @@ export default function ContactPage() {
                     onValueChange={(value) => setFormData({ ...formData, preferredContact: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Property Type" />
+                      <SelectValue placeholder={currentContent.form.preferredContact} />
                     </SelectTrigger>
                     <SelectContent>
                       {propertyOptions.map((option) => (

@@ -12,21 +12,19 @@ import { useBlogs } from "@/hooks/useBlogs"
 import { BlogCardSkeleton } from "@/components/PropertyCardSkeleton"
 import { formatDateTime } from "../utils/dateUtils"
 import { content } from "@/components/language/blog"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function BlogsPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
   const [searchTerm, setSearchTerm] = useState("")
   const [displayCount, setDisplayCount] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 50 // Fetch more blogs to support load more
+  const pageSize = 50
+  const { blogs, loading, error} = useBlogs(currentPage, pageSize)
 
-  const { blogs, loading, error, totalPages } = useBlogs(currentPage, pageSize)
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
+  if (!mounted) {
+    return null
   }
-
-  const isRTL = language === "ar"
 
   const filteredBlogs = blogs.filter(
     (blog) =>
@@ -127,7 +125,7 @@ export default function BlogsPage() {
                   <CardContent className="p-6 flex flex-col flex-1 justify-between">
                     <div>
                       <div className="flex items-center text-sm text-helper space-x-4 mb-3">
-                        <Calendar className="h-4 w-4 mr-1" />
+                        <Calendar className={`w-4 h-4 mr-2 ${isRTL ? "ml-2" : "ml-2"}`} />
                         <span className="text-body">{formatDateTime(blog.publishedAt)}</span>
                       </div>
                       <h3 className="text-h3 font-bold text-primary line-clamp-2">{blog.title}</h3>

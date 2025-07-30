@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
@@ -9,15 +7,15 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, TrendingUp, Shield, Star, Briefcase, Download, MessageCircle } from "lucide-react"
 import { content } from "../../components/language/aboutUs"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export default function AboutPage() {
-  const [language, setLanguage] = useState<"en" | "ar">("en")
 
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en")
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
+
+  if (!mounted) {
+    return null
   }
-
-  const isRTL = language === "ar"
 
   const currentContent = content[language]
 
@@ -48,7 +46,7 @@ export default function AboutPage() {
                   asChild
                 >
                   <Link href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-5 h-5" />
+                    <MessageCircle className={`w-5 h-5 ${isRTL ? "ml-2" : "mr-2"}`} />
                     {language === "ar" ? "تواصل عبر واتساب" : "Chat on WhatsApp"}
                   </Link>
                 </Button>
@@ -67,7 +65,7 @@ export default function AboutPage() {
                     download
                     className="flex items-center gap-2"
                   >
-                    <Download className="w-5 h-5" />
+                    <Download className={`w-5 h-5 ${isRTL ? "ml-2" : "mr-2"}`} />
                     {language === "ar" ? "تحميل البروشور" : "Download Brochure"}
                   </a>
                 </Button>
@@ -76,11 +74,11 @@ export default function AboutPage() {
                 <Button
                   variant="ghost"
                   size="lg"
-                  className="bg-[#00BCD4] text-white hover:bg-[#00A3BA] flex items-center gap-2"
+                  className="bg-[#00BCD4] text-white hover:bg-[#A8935A] flex items-center gap-2"
                   asChild
                 >
                   <Link href="tel:+966500000000">
-                    <Briefcase className="w-5 h-5" />
+                    <Briefcase className={`w-5 h-5 ${isRTL ? "ml-2" : "mr-2"}`} />
                     {language === "ar" ? "فرص استثمارية" : "Investment Opportunities"}
                   </Link>
                 </Button>
@@ -222,6 +220,8 @@ export default function AboutPage() {
                 <Image
                   className="w-24 h-24 bg-bg-light rounded-full mx-auto mb-4 object-cover shadow-md"
                   src={`/images/MEMBER 0${index + 1}.jpg`}
+                  width={96}
+                  height={96}
                   alt={member.name}
                 />
                 <h3 className="text-h3 font-bold text-primary mb-2">{member.name}</h3>

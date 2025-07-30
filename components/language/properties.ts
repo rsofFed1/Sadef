@@ -32,6 +32,10 @@ export const content = {
         general: "General",
         noImageAvailable: "No Image Available",
         loadMore: "Load More",
+        featuredFirst: "Featured First",
+        priceLowToHigh: "Price: Low to High",
+        priceHighToLow: "Price: High to Low",
+        newestFirst: "Newest First",
     },
     ar: {
         title: "مرحبًا بكم في منصة سدث للتطوير العقاري",
@@ -65,7 +69,11 @@ export const content = {
         investorOnly: "للمستثمرين فقط",
         general: "عام",
         noImageAvailable: "لا توجد صورة متاحة",
-        loadMore: "تحميل المزيد"
+        loadMore: "تحميل المزيد",
+        featuredFirst: "الأكثر مميزات",
+        priceLowToHigh: "السعر: من الأقل إلى الأعلى",
+        priceHighToLow: "السعر: من الأعلى إلى الأقل",
+        newestFirst: "الأحدث أولاً",
     },
 }
 

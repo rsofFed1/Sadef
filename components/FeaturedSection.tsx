@@ -20,13 +20,10 @@ const FeaturedSection = ({ currentContent }: Props) => {
           <ScrollAnimation delay={0.2} direction="left">
             <div className="space-y-6">
               <h2 className="text-h2 font-bold text-secondary font-tajawal">
-                Sustainable Urban Communities
+                {currentContent.featureContent.subtitle}
               </h2>
               <p className="text-generalText text-body leading-relaxed">
-                By combining our long-standing experience and keeping pace with modern
-                engineering developments, we at SAFA work to build upscale, smart and
-                sustainable residential complexes, providing a high-quality living experience
-                for your family.
+                {currentContent.featureContent.description}
               </p>
             </div>
           </ScrollAnimation>
@@ -46,11 +43,10 @@ const FeaturedSection = ({ currentContent }: Props) => {
                   </div>
                   <div className="md:w-1/2 p-6">
                     <h3 className="text-h3 font-bold text-secondary mb-3 font-tajawal">
-                      Exquisite Architecture
+                      {currentContent.featureContent.cardTitle1}
                     </h3>
                     <p className="text-generalText">
-                      Carefully designed to give you comfort, tranquility and relaxation,
-                      making it an ideal place to live and enjoy life.
+                      {currentContent.featureContent.cardSubtitle1}
                     </p>
                   </div>
                 </div>
@@ -71,11 +67,10 @@ const FeaturedSection = ({ currentContent }: Props) => {
                   </div>
                   <div className="md:w-1/2 p-6">
                     <h3 className="text-h3 font-bold text-secondary mb-3 font-tajawal">
-                      Unmatched Quality
+                      {currentContent.featureContent.cardTitle2}
                     </h3>
                     <p className="text-generalText">
-                      Your Ideal Life Begins Here: A Luxurious Residence Where Desires Come to Life,
-                      Without Ever Leaving Home.
+                      {currentContent.featureContent.cardSubtitle2}
                     </p>
                   </div>
                 </div>

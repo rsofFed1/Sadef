@@ -7,9 +7,12 @@ type Props = {
     currentContent: {
         hero: Content['en']['hero'] | Content['ar']['hero'];
     };
+    language?: "en" | "ar";
 }
 
-export default function HeroSection( { currentContent }: Props ) {
+export default function HeroSection( { currentContent, language = "en" }: Props ) {
+  const isRTL = language === "ar";
+
   return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
@@ -39,7 +42,10 @@ export default function HeroSection( { currentContent }: Props ) {
                 className="bg-primary hover:bg-primary-hover text-bg-main px-8 py-4 text-body rounded-full"
                 asChild
               >
-                <Link href="/properties"> {currentContent.hero.cta1} <ArrowRight className="ml-2 h-5 w-5" /> </Link>
+                <Link href="/properties">
+                  {currentContent.hero.cta1}
+                  <ArrowRight className={`${isRTL ? "mr-2 rotate-180" : "ml-2"} h-5 w-5`} />
+                </Link>
               </Button>
 
               <Button
@@ -52,7 +58,7 @@ export default function HeroSection( { currentContent }: Props ) {
 
               <Button className="bg-green-700 hover:bg-green-600 rounded-full text-bg-main" asChild>
                 <Link href="https://wa.me/966595344758" target="_blank">
-                  <MessageCircle className="h-4 w-4 mr-2" />
+                  <MessageCircle className={`h-4 w-4 ${isRTL ? "ml-2" : "mr-2"}`} />
                   {currentContent.hero.whatsAppChat}
                 </Link>
               </Button>

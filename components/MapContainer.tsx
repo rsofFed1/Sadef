@@ -88,13 +88,13 @@ const MapContainer: React.FC<MapContainerProps> = ({ locations, activeLocation, 
         const customIcon = L!.divIcon({
           className: "custom-div-icon",
           html: `
-                        <div style="background-color: #002B5B; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white" width="16" height="16">
-                                <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
-                            </svg>
-                            ${location.id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #D4AF37; color: #002B5B; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center; font-weight: bold;">${location.name}</div>` : ""}
-                        </div>
-                    `,
+                <div style="background-color: #002B5B; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; position: relative;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white" width="16" height="16">
+                        <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
+                    </svg>
+                    ${location.id === activeLocation ? `<div style="position: absolute; top: -40px; right: -50px; background-color: #D4AF37; color: #002B5B; padding: 8px 12px; border-radius: 4px; min-width: 100px; text-align: center; font-weight: bold;">${location.name}</div>` : ""}
+                </div>
+            `,
           iconSize: [30, 30],
           iconAnchor: [15, 30],
         })

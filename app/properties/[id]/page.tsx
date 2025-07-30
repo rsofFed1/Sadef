@@ -19,12 +19,13 @@ import { DetailRow, PropertyDetail, statusMap } from "../(components)/statysMap"
 import { propertyOptions, propertyStatuses } from "@/components/constants/constants";
 import getOptionLabel from "@/app/utils/getOptionLabel";
 import { contentPropertyDeatil } from "@/components/language/properties";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function PropertyDetailPage() {
   const params = useParams();
   const propertyId = Number.parseInt(params.id as string);
   const [activeLocation, setActiveLocation] = useState<number | null>(null);
-  const [language, setLanguage] = useState<"en" | "ar">("en");
+  const {language, isRTL, mounted, toggleLanguage} = useLanguage()
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +39,6 @@ export default function PropertyDetailPage() {
       </div>
     ),
   });
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en");
-  };
-
-  const isRTL = language === "ar";
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -69,6 +64,10 @@ export default function PropertyDetailPage() {
       fetchProperty();
     }
   }, [propertyId]);
+
+  if (!mounted) {
+    return null
+  }
 
   const currentContent = contentPropertyDeatil[language];
 
@@ -148,19 +147,19 @@ export default function PropertyDetailPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex items-start space-x-2 text-sm text-helper">
-              <Link href="/" className="hover:text-primary">
+              <Link href="/" className="hover:text-secondary">
                 {language === "ar" ? "الرئيسية" : "Home"}
               </Link>
               <span>/</span>
-              <Link href="/properties" className="hover:text-primary">
+              <Link href="/properties" className="hover:text-secondary">
                 {language === "ar" ? "العقارات" : "Properties"}
               </Link>
               <span>/</span>
-              <span className="text-primary text-center">{property.title}</span>
+              <span className="text-secondary text-center">{property.title}</span>
             </div>
             <Button className="w-full lg:w-auto mt-4 lg:mt-0" variant="outline" asChild>
               <Link href="/properties">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className={`h-4 w-4 ${isRTL ? "ml-2 rotate-180" : "mr-2"}`} />
                 {currentContent.backToProperties}
               </Link>
             </Button>
